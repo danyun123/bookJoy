@@ -1,6 +1,10 @@
 <template>
   <div class="app">
-		我是嘻嘻嘻嘻嘻嘻嘻嘻寻
+		<router-view v-slot="props">
+			<keep-alive>
+				<component :is="props.Component"></component>
+			</keep-alive>
+		</router-view>
   </div>
 </template>
 
@@ -8,7 +12,8 @@
 
 </script>
 
-<style scoped lang="sass">
-.app
-	font-size: 1rem
+<style scoped lang="scss">
+.app {
+	font-size: 1rem;
+}
 </style>
