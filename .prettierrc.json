@@ -1,0 +1,9 @@
+{
+  "useTabs": true,
+  "tabWidth": 2,
+  "printWidth": 90,
+  "singleQuote": false,
+  "trailingComma": "none",
+  "semi": true,
+  "prettier": "prettier --write."
+}
