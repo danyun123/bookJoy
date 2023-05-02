@@ -8,23 +8,29 @@
 				@confirm="onConfirm"
 				@cancel="onCancel"
 				swipe-duration="399"
+				v-model="pickerValue"
 			/>
 		</van-popup>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
+import { setBookInfo } from "@/utils";
 
+const pickerValue = ref();
 const bookStore = useBooks();
-const { currentMenu, showDialog, fontFamily } = storeToRefs(bookStore);
+const { currentMenu, showDialog, fontFamily, currentBook } = storeToRefs(bookStore);
+
 const showPicker = ref(false);
 watch(currentMenu, () => {
 	showPicker.value = currentMenu.value === "fontFamily";
 });
+
 const onPickerChange = ({ selectedValues }: { selectedValues: any }) => {
 	fontFamily.value = selectedValues[0];
+	setBookInfo(currentBook.value as string, "local_fontFamily", selectedValues[0]);
 };
 const columns = [
 	{ text: "Default", value: "Default" },
@@ -33,6 +39,7 @@ const columns = [
 	{ text: "Montserrat", value: "Montserrat" },
 	{ text: "Tangerine", value: "Tangerine" }
 ];
+
 const onConfirm = () => {
 	showPicker.value = false;
 	showDialog.value = false;
@@ -41,6 +48,9 @@ const onConfirm = () => {
 const onCancel = () => {
 	onConfirm();
 };
+onMounted(() => {
+	pickerValue.value = [`${fontFamily.value}`];
+});
 </script>
 
 <style scoped lang="scss">

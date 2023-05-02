@@ -6,7 +6,7 @@ const useBooks = defineStore("books", {
 	state: () => ({
 		fontSize: 12,
 		fontFamily: "default",
-		currentBookUrl: "",
+		currentBook: "",
 		showBar: true,
 		currentMenu: "" as currentMenuType,
 		showDialog: false
