@@ -20,4 +20,8 @@ $fontSize: 1.5rem;
   transition: opacity $transition, bottom $transition, top $transition;
 }
 
+@mixin bookDialogAnimation {
+  transition: left $transition,transform $transition,visibility $transition,opacity $transition ;
+}
+
 

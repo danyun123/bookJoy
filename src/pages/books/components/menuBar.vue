@@ -1,16 +1,16 @@
 <template>
 	<div :class="classes">
 		<div class="function">
-			<div class="menu">
+			<div class="moreMenu" @click="setCurrentMenu('moreMenu')">
 				<van-icon name="apps-o" />
 			</div>
-			<div class="fontSize">
+			<div class="fontSize" @click="setCurrentMenu('fontSize')">
 				<van-icon name="bar-chart-o" />
 			</div>
-			<div class="light">
+			<div class="light" @click="setCurrentMenu('light')">
 				<van-icon name="fire-o" />
 			</div>
-			<div class="fontFamily">
+			<div class="fontFamily" @click="setCurrentMenu('fontFamily')">
 				<van-icon name="font-o" />
 			</div>
 		</div>
@@ -18,13 +18,14 @@
 </template>
 
 <script lang="ts" setup>
+import type { currentMenuType } from "@/store/books";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 import classNames from "classnames";
 import { ref, watchEffect } from "vue";
 
 const booksStore = useBooks();
-const { showBar } = storeToRefs(booksStore);
+const { showBar, currentMenu, showDialog } = storeToRefs(booksStore);
 let classes = ref("menuBar");
 watchEffect(() => {
 	classes.value = classNames("menuBar", {
@@ -32,6 +33,14 @@ watchEffect(() => {
 		"menuBar-hide": !showBar.value
 	});
 });
+const setCurrentMenu = (type: currentMenuType) => {
+	if (currentMenu.value === type && showDialog.value === true) {
+		showDialog.value = false;
+		return;
+	}
+	currentMenu.value = type;
+	showDialog.value = true;
+};
 </script>
 
 <style lang="scss" scoped>
