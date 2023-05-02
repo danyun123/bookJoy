@@ -1,18 +1,16 @@
 <template>
-  <div class="app">
+	<div class="app">
 		<router-view v-slot="props">
 			<keep-alive>
 				<component :is="props.Component"></component>
 			</keep-alive>
 		</router-view>
-  </div>
+	</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .app {
 	font-size: 1rem;
 }

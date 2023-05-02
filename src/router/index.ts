@@ -17,14 +17,14 @@ const router = createRouter({
 			children: [
 				{
 					path: ":filename",
-					component: () => import("@/pages/books/index.vue"),
+					component: () => import("@/pages/books/index.vue")
 				}
 			]
 		},
 		{
 			path: "/:pathMatch(.*)*",
 			component: () => import("@/pages/404/index.vue")
-		},
+		}
 	]
 });
 

@@ -1,0 +1,23 @@
+//阅读电子书界面
+
+$barHeight: 3rem;
+$raduisWidth: 0.651rem;
+$transition: .45s ease-in-out;
+$themeColor: #9b62f5;
+$fontSize: 1.5rem;
+@mixin bookBar {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: $barHeight;
+  background-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 0 0.600rem 0.069rem #c9c9c9;
+  border-radius: 0.651rem;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity $transition, bottom $transition, top $transition;
+}
+
+

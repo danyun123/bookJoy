@@ -12,10 +12,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "classnames": "^2.3.2",
     "epubjs": "^0.3.93",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.35",
     "sass": "^1.62.1",
+    "vant": "^4.2.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
@@ -24,13 +26,14 @@
     "@types/node": "^18.14.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",
-    "@vue/eslint-config-typescript": "^11.0.2",
+    "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/tsconfig": "^0.1.3",
     "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.8",
     "typescript": "~4.8.4",
+    "unplugin-vue-components": "^0.24.1",
     "vite": "^4.1.4",
     "vue-tsc": "^1.2.0"
   }

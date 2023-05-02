@@ -1,12 +1,10 @@
 <template>
-  <div class="notfound">404   |  The page you visited does not exist</div>
+	<div class="notfound">404 | The page you visited does not exist</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-<style scoped lang="scss" >
+<style scoped lang="scss">
 .notfound {
 	font-size: 1.1rem;
 	position: fixed;

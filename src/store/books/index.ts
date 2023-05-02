@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 
 const useBooks = defineStore("books", {
 	state: () => ({
-		currentBookUrl: ""
+		currentBookUrl: "",
+		showBar: true
 	})
-})
+});
 
 export default useBooks;
