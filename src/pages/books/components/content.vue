@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia/dist/pinia";
 import { ref, watchEffect } from "vue";
 
 const booksStore = useBooks();
-let { currentBookUrl, showBar, showDialog, fontSize } = storeToRefs(booksStore);
+let { currentBookUrl, showBar, showDialog, fontSize, fontFamily } = storeToRefs(booksStore);
 const route = useRoute();
 
 const path = route.path;
@@ -33,6 +33,15 @@ bookExample.on("touchstart", (e: TouchEvent) => {
 	initialSlideDistance.value = e.changedTouches[0].clientX;
 	initialSlideTime.value = e.timeStamp;
 });
+book.rendition.hooks.content.register((contents: any) => {
+	Promise.all([
+		contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/daysOne.css`),
+		contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/cabin.css`),
+		contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/montserrat.css`),
+		contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/tangerine.css`)
+	]);
+});
+localStorage.setItem("kk", "xxx");
 bookExample.on("touchend", (e: TouchEvent) => {
 	if (showDialog.value) return;
 	slideDistance.value = e.changedTouches[0].clientX - initialSlideDistance.value;
@@ -57,6 +66,14 @@ bookExample.on("click", (e: Event) => {
 });
 watchEffect(() => {
 	bookExample.themes.fontSize(fontSize.value + "pt");
+	if (fontFamily.value === "Default") {
+		bookExample.themes.font(
+			'-apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Segoe UI, Arial, Roboto, ' +
+				'"PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif'
+		);
+		return;
+	}
+	bookExample.themes.font(fontFamily.value);
 });
 </script>
 

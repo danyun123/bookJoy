@@ -5,6 +5,7 @@ export type currentMenuType = "" | "fontSize" | "light" | "fontFamily" | "moreMe
 const useBooks = defineStore("books", {
 	state: () => ({
 		fontSize: 12,
+		fontFamily: "default",
 		currentBookUrl: "",
 		showBar: true,
 		currentMenu: "" as currentMenuType,
