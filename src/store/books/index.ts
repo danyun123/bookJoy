@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export type currentMenuType = "" | "fontSize" | "light" | "fontFamily" | "moreMenu";
+export type currentMenuType = "" | "fontSize" | "themeColor" | "fontFamily" | "moreMenu";
 
 const useBooks = defineStore("books", {
 	state: () => ({

@@ -17,11 +17,11 @@
 import { onMounted, ref, watch } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { setBookInfo } from "@/utils";
+import { LOCAL_FONT_FAMILY } from "@/assets/constant";
 
 const pickerValue = ref();
 const bookStore = useBooks();
-const { currentMenu, showDialog, fontFamily, currentBook } = storeToRefs(bookStore);
+const { currentMenu, showDialog, fontFamily } = storeToRefs(bookStore);
 
 const showPicker = ref(false);
 watch(currentMenu, () => {
@@ -30,7 +30,7 @@ watch(currentMenu, () => {
 
 const onPickerChange = ({ selectedValues }: { selectedValues: any }) => {
 	fontFamily.value = selectedValues[0];
-	setBookInfo(currentBook.value as string, "local_fontFamily", selectedValues[0]);
+	localStorage.setItem(LOCAL_FONT_FAMILY, fontFamily.value);
 };
 const columns = [
 	{ text: "Default", value: "Default" },

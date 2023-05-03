@@ -7,8 +7,8 @@
 			<div class="fontSize" @click="setCurrentMenu('fontSize')">
 				<van-icon name="bar-chart-o" />
 			</div>
-			<div class="light" @click="setCurrentMenu('light')">
-				<van-icon name="fire-o" />
+			<div class="theme" @click="setCurrentMenu('themeColor')">
+				<van-icon name="flower-o" />
 			</div>
 			<div class="fontFamily" @click="setCurrentMenu('fontFamily')">
 				<van-icon name="font-o" />

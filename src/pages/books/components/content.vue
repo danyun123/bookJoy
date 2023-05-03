@@ -5,12 +5,16 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router/dist/vue-router";
 import ePub from "epubjs";
-import { getBookInfo, getBookUrl } from "@/utils";
+import { getBooksConfig, getBookUrl } from "@/utils";
 import useBooks from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
 import { onMounted, ref, watchEffect } from "vue";
+import useGlobal, { type themeColorType } from "@/store/global";
+import { entireThemeColor } from "@/assets/data/global";
 
 const booksStore = useBooks();
+const globalStore = useGlobal();
+const { themeColor } = storeToRefs(globalStore);
 let { currentBook, showBar, showDialog, fontSize, fontFamily } = storeToRefs(booksStore);
 const route = useRoute();
 
@@ -35,6 +39,9 @@ const bookExample = book.renderTo("book_content", {
 	width: innerWidth,
 	height: innerHeight
 	// flow: "scrolled-doc"
+});
+entireThemeColor.map((item) => {
+	bookExample.themes.register(item.text, item.style);
 });
 bookExample.display();
 const initialSlideTime = ref(0);
@@ -66,17 +73,19 @@ bookExample.on("click", (e: Event) => {
 	e.stopPropagation();
 });
 onMounted(() => {
-	const { local_fontSize, local_fontFamily } = getBookInfo(currentBook.value);
-	fontSize.value = local_fontSize ?? 12;
-	fontFamily.value = local_fontFamily ?? "Default";
+	const { local_font_family, local_font_size, local_theme_color } = getBooksConfig();
+	fontSize.value = local_font_size ? Number(local_font_size) : 12;
+	fontFamily.value = local_font_family ?? "Default";
+	themeColor.value = (local_theme_color as themeColorType) ?? "default";
 });
 watchEffect(() => {
 	bookExample.themes.fontSize(fontSize.value + "pt");
-	if (fontFamily.value === "Default") {
-		bookExample.themes.font('-apple-system, BlinkMacSystemFont, "Microsoft Yahei", sans-serif');
-		return;
-	}
-	bookExample.themes.font(fontFamily.value);
+	bookExample.themes.font(
+		fontFamily.value === "Default"
+			? '-apple-system, BlinkMacSystemFont, "Microsoft Yahei", sans-serif'
+			: fontFamily.value
+	);
+	bookExample.themes.select(themeColor.value);
 });
 </script>
 

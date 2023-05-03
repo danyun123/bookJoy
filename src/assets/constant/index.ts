@@ -1,1 +1,3 @@
-export const BOOK_INFO_SUFFIX: string = "-info";
+export const LOCAL_FONT_SIZE = "local_font_size";
+export const LOCAL_FONT_FAMILY = "local_font_family";
+export const LOCAL_THEME_COLOR = "local_theme_color";

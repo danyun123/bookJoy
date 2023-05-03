@@ -23,13 +23,13 @@
 import { onMounted, ref } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { setBookInfo } from "@/utils";
+import { LOCAL_FONT_SIZE } from "@/assets/constant";
 
 const pageRef = ref();
 const fontSizeValue = ref(20);
 const pageWidth = ref(0);
 const bookStore = useBooks();
-const { fontSize, currentMenu, showDialog, currentBook } = storeToRefs(bookStore);
+const { fontSize, currentMenu, showDialog } = storeToRefs(bookStore);
 
 onMounted(() => {
 	pageWidth.value = Math.ceil(pageRef.value?.offsetWidth / 0.85);
@@ -37,7 +37,7 @@ onMounted(() => {
 
 const handelSliderChange = (value: number) => {
 	fontSize.value = 12 + (value - 20) / 10;
-	setBookInfo(currentBook.value, "local_fontSize", fontSize.value);
+	localStorage.setItem(LOCAL_FONT_SIZE, String(fontSize.value));
 };
 </script>
 

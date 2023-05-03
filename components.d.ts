@@ -13,6 +13,8 @@ declare module '@vue/runtime-core' {
     FontSize: typeof import('./src/components/book_dialog_list/fontSize/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Theme: typeof import("./src/components/book_dialog_list/themeColor/index.vue")["default"]
+    ThemeColor: typeof import('./src/components/book_dialog_list/themeColor/index.vue')['default']
     VanIcon: typeof import('vant/es')['Icon']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
