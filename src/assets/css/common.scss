@@ -20,8 +20,28 @@ $fontSize: 1.5rem;
   transition: opacity $transition, bottom $transition, top $transition;
 }
 
-@mixin bookDialogAnimation {
+@mixin bookFontSizeAnimation {
   transition: left $transition,transform $transition,visibility $transition,opacity $transition ;
+}
+
+@mixin bookFontProgressAnimation {
+  transition: opacity $transition,scale $transition,visibility $transition;
+}
+
+@mixin clickActiveAnimation {
+  scale: 1;
+  &:active {
+    scale: .85;
+    filter: contrast(160%);
+  }
+  transition: scale .1s ease-in-out;
+}
+
+@mixin disabledStyle {
+  cursor: not-allowed;
+  opacity: 0.5 !important;
+  pointer-events: none;
+  transition: opacity $transition;
 }
 
 

@@ -1,10 +1,7 @@
 <template>
 	<div :class="{ theme: true, show_dialog: currentMenu === 'themeColor' && showDialog }">
 		<template v-for="item in entireThemeColor" :key="item.text">
-			<div
-				:class="{ theme_item: true, select: selectColor.value === item.text }"
-				@click="() => handelClickItem(item.text)"
-			>
+			<div @click="() => handelClickItem(item.text)" :class="{ theme_item: true, select: selectColor === item.text }">
 				<div :class="{ item_bg: true, [item.text]: true }"></div>
 				<span class="title">{{ item.value }}</span>
 			</div>
@@ -20,15 +17,17 @@ import useGlobal from "@/store/global";
 import { ref } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
 import { LOCAL_THEME_COLOR } from "@/assets/constant";
+import { getBooksConfig } from "@/utils";
 
 const bookStore = useBooks();
 const globalStore = useGlobal();
 const { currentMenu, showDialog } = storeToRefs(bookStore);
 const { themeColor } = storeToRefs(globalStore);
-const selectColor = ref(localStorage.getItem(LOCAL_THEME_COLOR));
-
+const { local_theme_color } = getBooksConfig();
+const selectColor = ref(local_theme_color);
 const handelClickItem = (text: themeColorType) => {
-	themeColor.value = selectColor.value = text;
+	themeColor.value = text;
+	selectColor.value = text;
 	localStorage.setItem(LOCAL_THEME_COLOR, themeColor.value);
 };
 </script>
@@ -73,9 +72,9 @@ const handelClickItem = (text: themeColorType) => {
 			background-color: rgb(193 255 207);
 		}
 	}
-	.select {
-		color: red;
-	}
+}
+.select {
+	color: red;
 }
 .show_dialog {
 	bottom: 2.9rem;

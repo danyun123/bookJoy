@@ -54,12 +54,16 @@ watchEffect(() => {
 		display: flex;
 		justify-content: space-around;
 		.fun_item {
-			margin: 0 2.6rem;
+			display: flex;
+			justify-content: center;
+			flex: 1;
 			font-size: $fontSize;
 			color: $themeColor;
-		}
-		.fun_item:last-child {
-			margin-right: 0.6rem;
+			line-height: $barHeight;
+			width: 3.8rem;
+			@include clickActiveAnimation;
+			&:last-child {
+			}
 		}
 	}
 }

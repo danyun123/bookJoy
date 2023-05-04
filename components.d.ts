@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     FontFamily: typeof import('./src/components/book_dialog_list/fontFamily/index.vue')['default']
     FontSize: typeof import('./src/components/book_dialog_list/fontSize/index.vue')['default']
+    Progress: typeof import('./src/components/book_dialog_list/progress/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Theme: typeof import("./src/components/book_dialog_list/themeColor/index.vue")["default"]

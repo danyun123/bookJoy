@@ -1,18 +1,11 @@
 <template>
 	<div :class="classes">
 		<div class="function">
-			<div class="moreMenu" @click="setCurrentMenu('moreMenu')">
-				<van-icon name="apps-o" />
-			</div>
-			<div class="fontSize" @click="setCurrentMenu('fontSize')">
-				<van-icon name="bar-chart-o" />
-			</div>
-			<div class="theme" @click="setCurrentMenu('themeColor')">
-				<van-icon name="flower-o" />
-			</div>
-			<div class="fontFamily" @click="setCurrentMenu('fontFamily')">
-				<van-icon name="font-o" />
-			</div>
+			<template v-for="item in entireMenubar" :key="item.value">
+				<div :class="{ [item.text]: true, menu_item: true }" @click="setCurrentMenu(item.text)">
+					<van-icon :name="item.icon" />
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
@@ -23,6 +16,7 @@ import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 import classNames from "classnames";
 import { ref, watchEffect } from "vue";
+import { entireMenubar } from "@/assets/data/global";
 
 const booksStore = useBooks();
 const { showBar, currentMenu, showDialog } = storeToRefs(booksStore);
@@ -57,6 +51,18 @@ const setCurrentMenu = (type: currentMenuType) => {
 		color: $themeColor;
 		width: 100%;
 		font-size: $fontSize;
+		height: 100%;
+		.menu_item {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-content: center;
+			i {
+				display: inline-block;
+				line-height: $barHeight;
+			}
+			@include clickActiveAnimation;
+		}
 	}
 }
 

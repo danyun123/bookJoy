@@ -2,12 +2,12 @@
 	<div
 		:class="{ fontSize: true, show_dialog: currentMenu === 'fontSize' && showDialog }"
 		ref="pageRef"
-		:style="{ left: -pageWidth + 'px' }"
+		:style="{ left: -pageWidth + 'pt' }"
 	>
 		<div class="title">
 			字体大小:
 			<span class="sizeNum">{{ fontSize }}</span>
-			px
+			pt
 		</div>
 		<van-slider
 			v-model="fontSizeValue"
@@ -55,7 +55,7 @@ const handelSliderChange = (value: number) => {
 	align-content: center;
 	justify-content: center;
 	opacity: 0;
-	@include bookDialogAnimation;
+	@include bookFontSizeAnimation;
 	.title {
 		position: absolute;
 		top: 1.071rem;

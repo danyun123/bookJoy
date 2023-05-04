@@ -8,14 +8,15 @@ import ePub from "epubjs";
 import { getBooksConfig, getBookUrl } from "@/utils";
 import useBooks from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, onUnmounted, ref, watchEffect } from "vue";
 import useGlobal, { type themeColorType } from "@/store/global";
 import { entireThemeColor } from "@/assets/data/global";
 
 const booksStore = useBooks();
 const globalStore = useGlobal();
 const { themeColor } = storeToRefs(globalStore);
-let { currentBook, showBar, showDialog, fontSize, fontFamily } = storeToRefs(booksStore);
+let { currentBook, showBar, showDialog, fontSize, fontFamily, currentMenu, directoryLoadOver } =
+	storeToRefs(booksStore);
 const route = useRoute();
 
 const path = route.path;
@@ -33,6 +34,10 @@ book.ready.then(() => {
 			contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/montserrat.css`),
 			contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/tangerine.css`)
 		]);
+	});
+	book.locations.generate((750 * (window.innerWidth / 375) * fontSize.value) / 12).then((res) => {
+		console.log(res);
+		directoryLoadOver.value = true;
 	});
 });
 const bookExample = book.renderTo("book_content", {
@@ -70,6 +75,7 @@ bookExample.on("click", (e: Event) => {
 		return;
 	}
 	showBar.value = !showBar.value;
+	currentMenu.value = "";
 	e.stopPropagation();
 });
 onMounted(() => {
@@ -86,6 +92,9 @@ watchEffect(() => {
 			: fontFamily.value
 	);
 	bookExample.themes.select(themeColor.value);
+});
+onUnmounted(() => {
+	directoryLoadOver.value = false;
 });
 </script>
 
