@@ -16,8 +16,7 @@ import type { themeColorType } from "@/store/global";
 import useGlobal from "@/store/global";
 import { ref } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
-import { LOCAL_THEME_COLOR } from "@/assets/constant";
-import { getBooksConfig } from "@/utils";
+import { getBooksConfig } from "@/utils/common";
 
 const bookStore = useBooks();
 const globalStore = useGlobal();
@@ -28,7 +27,6 @@ const selectColor = ref(local_theme_color);
 const handelClickItem = (text: themeColorType) => {
 	themeColor.value = text;
 	selectColor.value = text;
-	localStorage.setItem(LOCAL_THEME_COLOR, themeColor.value);
 };
 </script>
 

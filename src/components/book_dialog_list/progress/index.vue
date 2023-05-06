@@ -8,13 +8,24 @@
 			</div>
 			<div class="percentage">
 				<div class="text">进度:</div>
-				<div class="detail_time_percentage">20%</div>
+				<div class="detail_time_percentage">{{ currentLocationPercentage }}%</div>
 			</div>
 		</div>
 		<div class="switch">
-			<div :class="{ prev: true, but: true, disabled: !directoryLoadOver }"><van-icon name="arrow-left" />上一章</div>
+			<div
+				:class="{ prev: true, but: true, disabled: !directoryLoadOver || currentSection === 0 }"
+				@click="() => handelButClick(false)"
+			>
+				<van-icon name="arrow-left" />上一章
+			</div>
 			<div class="loading" v-show="!directoryLoadOver">目录解析中.........</div>
-			<div :class="{ prev: true, but: true, disabled: !directoryLoadOver }">下一章<van-icon name="arrow" /></div>
+			<!--			<div class="title" v-show="directoryLoadOver">{{ currentSectionTitle }}</div>-->
+			<div
+				:class="{ prev: true, but: true, disabled: !directoryLoadOver || currentSection === maxSectionLength - 2 }"
+				@click="handelButClick"
+			>
+				下一章<van-icon name="arrow" />
+			</div>
 		</div>
 	</div>
 </template>
@@ -23,9 +34,18 @@
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 import { computed, onMounted, onUnmounted, ref } from "vue";
+import { showToast } from "vant";
 
 const bookStore = useBooks();
-const { currentMenu, showDialog, directoryLoadOver } = storeToRefs(bookStore);
+const {
+	currentMenu,
+	showDialog,
+	directoryLoadOver,
+	currentSection,
+	maxSectionLength,
+	currentLocationPercentage
+	// currentSectionTitle
+} = storeToRefs(bookStore);
 const currentTime = ref(0);
 let timeoutID: number | NodeJS.Timer;
 onMounted(() => {
@@ -34,9 +54,7 @@ onMounted(() => {
 	}, 1000);
 });
 const formatTime = computed({
-	set(temp) {
-		console.log(temp);
-	},
+	set() {},
 	get() {
 		return Math.floor(currentTime.value / 60);
 	}
@@ -44,6 +62,20 @@ const formatTime = computed({
 onUnmounted(() => {
 	clearTimeout(timeoutID);
 });
+const handelButClick = (isNext: boolean = true) => {
+	if (isNext) {
+		const index = ++(currentSection.value as number);
+		if (index === maxSectionLength.value - 2)
+			showToast({
+				message: "下一章节为后记暂不提供跳转",
+				duration: 2000,
+				closeOnClick: true,
+				className: "tips"
+			});
+	} else {
+		(currentSection.value as number)--;
+	}
+};
 </script>
 
 <style scoped lang="scss">
@@ -84,8 +116,8 @@ onUnmounted(() => {
 		font-size: 0.9rem;
 		display: flex;
 		align-content: center;
-		flex-wrap: nowrap;
-		justify-content: space-between;
+		flex-wrap: wrap;
+		justify-content: space-around;
 		margin: 10px 10px 0 10px;
 		.but {
 			background-color: $themeColor;
@@ -102,6 +134,14 @@ onUnmounted(() => {
 		}
 		.loading {
 			line-height: 1.6rem;
+		}
+		.title {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			line-height: 1.6rem;
+			width: 63%;
+			text-align: center;
 		}
 		.disabled {
 			@include disabledStyle;

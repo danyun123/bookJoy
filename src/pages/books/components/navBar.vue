@@ -59,10 +59,11 @@ watchEffect(() => {
 			flex: 1;
 			font-size: $fontSize;
 			color: $themeColor;
-			line-height: $barHeight;
 			width: 3.8rem;
+			height: $barHeight;
 			@include clickActiveAnimation;
-			&:last-child {
+			.van-icon {
+				line-height: $barHeight;
 			}
 		}
 	}

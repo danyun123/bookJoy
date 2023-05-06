@@ -16,6 +16,7 @@
 			:step="10"
 			@update:model-value="handelSliderChange"
 		/>
+		<div class="tip">tip: 若字体大小大于 16pt 可能会影响观看体验</div>
 	</div>
 </template>
 
@@ -23,21 +24,20 @@
 import { onMounted, ref } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { LOCAL_FONT_SIZE } from "@/assets/constant";
 
 const pageRef = ref();
-const fontSizeValue = ref(20);
+const fontSizeValue = ref();
 const pageWidth = ref(0);
 const bookStore = useBooks();
 const { fontSize, currentMenu, showDialog } = storeToRefs(bookStore);
 
 onMounted(() => {
 	pageWidth.value = Math.ceil(pageRef.value?.offsetWidth / 0.85);
+	fontSizeValue.value = (fontSize.value - 12) * 10 + 20;
 });
 
 const handelSliderChange = (value: number) => {
 	fontSize.value = 12 + (value - 20) / 10;
-	localStorage.setItem(LOCAL_FONT_SIZE, String(fontSize.value));
 };
 </script>
 
@@ -70,6 +70,11 @@ const handelSliderChange = (value: number) => {
 		transform: translateY(-50%);
 		top: 50%;
 		width: 80%;
+	}
+	.tip {
+		font-size: 0.857rem;
+		position: absolute;
+		bottom: 0.429rem;
 	}
 }
 .show_dialog {

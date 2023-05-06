@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     Theme: typeof import("./src/components/book_dialog_list/themeColor/index.vue")["default"]
     ThemeColor: typeof import('./src/components/book_dialog_list/themeColor/index.vue')['default']
     VanIcon: typeof import('vant/es')['Icon']
+    VanNoticeBar: typeof import('vant/es')['NoticeBar']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
     VanSlider: typeof import('vant/es')['Slider']

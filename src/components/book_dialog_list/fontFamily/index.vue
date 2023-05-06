@@ -17,7 +17,6 @@
 import { onMounted, ref, watch } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { LOCAL_FONT_FAMILY } from "@/assets/constant";
 
 const pickerValue = ref();
 const bookStore = useBooks();
@@ -30,7 +29,6 @@ watch(currentMenu, () => {
 
 const onPickerChange = ({ selectedValues }: { selectedValues: any }) => {
 	fontFamily.value = selectedValues[0];
-	localStorage.setItem(LOCAL_FONT_FAMILY, fontFamily.value);
 };
 const columns = [
 	{ text: "Default", value: "Default" },

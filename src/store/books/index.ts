@@ -5,9 +5,14 @@ export type currentMenuType = "" | "fontSize" | "themeColor" | "fontFamily" | "m
 const useBooks = defineStore("books", {
 	state: () => ({
 		directoryLoadOver: false,
-		fontSize: 12,
-		fontFamily: "default",
+		fontSize: 0,
+		fontFamily: "",
 		currentBook: "",
+		currentSection: 0 as number | { isInitialize: boolean; section: number },
+		maxSectionLength: 0,
+		totalPageLength: 0,
+		currentSectionTitle: "",
+		currentLocationPercentage: 0,
 		showBar: true,
 		currentMenu: "" as currentMenuType,
 		showDialog: false
