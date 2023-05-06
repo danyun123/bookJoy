@@ -37,6 +37,7 @@ const path = route.path;
 const bookUrl = getBookUrl(path);
 const slideDistance = ref(0);
 const slideTime = ref(0);
+const isTouchToChangePage = ref(false);
 
 const book = ePub(bookUrl);
 
@@ -91,7 +92,11 @@ bookExample.on("touchstart", (e: TouchEvent) => {
 });
 const slideSwitch = () => {
 	showBar.value = false;
-	currentSection.value = getCurrentSectionInfo(book).index;
+	const newSection = getCurrentSectionInfo(book).index;
+	if (currentSection.value !== newSection) {
+		isTouchToChangePage.value = true;
+		currentSection.value = newSection;
+	}
 	currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value);
 	getCurrentLocation(book, totalPageLength.value, currentSection.value);
 };
@@ -149,17 +154,20 @@ watch([currentSection], async (newValue, oldValue) => {
 	// const sectionInfo = await getCurrentSectionInfo(book);
 	// currentSectionTitle.value = newValue[0] === 0 ? "" : book.navigation.get(sectionInfo.href).label;
 	// const currentCfi = book.rendition.currentLocation().start.cfi;
-	if (!(oldValue[0] instanceof Object)) {
-		if (typeof newValue[0] === "number" && directoryLoadOver) {
-			const currentCfi = book.spine.get(newValue[0]).href;
-			book.rendition.display(currentCfi).then(() => {
-				currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value, newValue[0] as number);
-			});
-		} else {
-			//@ts-ignore
-			currentSection.value = newValue[0].section.section!;
+	if (!isTouchToChangePage.value) {
+		if (!(oldValue[0] instanceof Object)) {
+			if (typeof newValue[0] === "number" && directoryLoadOver) {
+				const currentCfi = book.spine.get(newValue[0]).href;
+				book.rendition.display(currentCfi).then(() => {
+					currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value, newValue[0] as number);
+				});
+			} else {
+				//@ts-ignore
+				currentSection.value = newValue[0].section.section!;
+			}
 		}
 	}
+	isTouchToChangePage.value = false;
 });
 onBeforeUnmount(() => {
 	directoryLoadOver.value = false;
