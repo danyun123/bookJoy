@@ -39,9 +39,9 @@ export const entireThemeColor = [
 
 export const entireMenubar = [
 	{
-		text: "moreMenu",
-		value: "更多菜单",
-		icon: "apps-o"
+		text: "directory",
+		value: "目录",
+		icon: "newspaper-o"
 	},
 	{
 		text: "progress",

@@ -2,7 +2,7 @@
 	<div :class="{ progress: true, show_dialog: currentMenu === 'progress' && showDialog }">
 		<div class="record">
 			<div class="time">
-				<div class="text">当前已读:</div>
+				<div class="text">本次已读:</div>
 				<div class="detail_time_percentage">{{ formatTime }}</div>
 				<div class="text">分钟</div>
 			</div>
@@ -19,9 +19,8 @@
 				<van-icon name="arrow-left" />上一章
 			</div>
 			<div class="loading" v-show="!directoryLoadOver">目录解析中.........</div>
-			<!--			<div class="title" v-show="directoryLoadOver">{{ currentSectionTitle }}</div>-->
 			<div
-				:class="{ prev: true, but: true, disabled: !directoryLoadOver || currentSection === maxSectionLength - 2 }"
+				:class="{ prev: true, but: true, disabled: !directoryLoadOver || currentSection === maxSectionLength - 1 }"
 				@click="handelButClick"
 			>
 				下一章<van-icon name="arrow" />
@@ -33,7 +32,7 @@
 <script setup lang="ts">
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { showToast } from "vant";
 
 const bookStore = useBooks();
@@ -43,14 +42,16 @@ const {
 	directoryLoadOver,
 	currentSection,
 	maxSectionLength,
-	currentLocationPercentage
-	// currentSectionTitle
+	currentLocationPercentage,
+	presentReadTime,
+	entireReadTime
 } = storeToRefs(bookStore);
 const currentTime = ref(0);
 let timeoutID: number | NodeJS.Timer;
 onMounted(() => {
 	timeoutID = setInterval(() => {
 		currentTime.value += 1;
+		entireReadTime.value += 1;
 	}, 1000);
 });
 const formatTime = computed({
@@ -59,19 +60,23 @@ const formatTime = computed({
 		return Math.floor(currentTime.value / 60);
 	}
 });
+watch([formatTime], () => {
+	presentReadTime.value = formatTime.value;
+});
 onUnmounted(() => {
-	clearTimeout(timeoutID);
+	clearInterval(timeoutID);
 });
 const handelButClick = (isNext: boolean = true) => {
 	if (isNext) {
-		const index = ++(currentSection.value as number);
-		if (index === maxSectionLength.value - 2)
+		if ((currentSection.value as number) === maxSectionLength.value - 2) {
 			showToast({
 				message: "下一章节为后记暂不提供跳转",
 				duration: 2000,
 				closeOnClick: true,
 				className: "tips"
 			});
+		}
+		(currentSection.value as number)++;
 	} else {
 		(currentSection.value as number)--;
 	}
@@ -136,9 +141,7 @@ const handelButClick = (isNext: boolean = true) => {
 			line-height: 1.6rem;
 		}
 		.title {
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+			@include displayOneLine;
 			line-height: 1.6rem;
 			width: 63%;
 			text-align: center;

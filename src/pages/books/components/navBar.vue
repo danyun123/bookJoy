@@ -1,5 +1,5 @@
 <template>
-	<div :class="classes">
+	<div :class="{ navBar: true, 'navBar-show': showBar, 'navBar-hide': !showBar }">
 		<div class="back">
 			<van-icon name="arrow-left" size="1.6rem" />
 			<span>返回</span>
@@ -21,18 +21,9 @@
 <script lang="ts" setup>
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import classNames from "classnames";
-import { ref, watchEffect } from "vue";
 
 const booksStore = useBooks();
 const { showBar } = storeToRefs(booksStore);
-let classes = ref("navBar");
-watchEffect(() => {
-	classes.value = classNames("navBar", {
-		"navBar-show": showBar.value,
-		"navBar-hide": !showBar.value
-	});
-});
 </script>
 
 <style lang="scss" scoped>

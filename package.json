@@ -12,7 +12,6 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "classnames": "^2.3.2",
     "epubjs": "^0.3.93",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.35",

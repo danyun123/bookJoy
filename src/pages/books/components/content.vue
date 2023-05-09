@@ -1,24 +1,33 @@
 <template>
-	<div id="book_content"></div>
+	<div id="book_content" :style="{ width: pageWidth, height: pageHeight }"></div>
 </template>
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router/dist/vue-router";
 import ePub from "epubjs";
 import { getBooksConfig } from "@/utils/common";
-import { getBookUrl, getCurrentLocation, getCurrentSectionInfo } from "@/utils/bookContent";
-import useBooks from "../../../store/books/index";
+import {
+	flatNavArr,
+	formatFlatNavArr,
+	getBookUrl,
+	getCurrentLocation,
+	getCurrentSectionInfo
+} from "@/utils/bookContent";
+import useBooks, { type currentBookMetaDataType, type themeColorType } from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
-import useGlobal, { type themeColorType } from "@/store/global";
+import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
 import { LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
 
+const pageWidth = ref("");
+const pageHeight = ref("");
+watchEffect(() => {
+	pageWidth.value = innerWidth + "px";
+	pageHeight.value = innerHeight + "px";
+});
 const booksStore = useBooks();
-const globalStore = useGlobal();
-const { themeColor } = storeToRefs(globalStore);
 let {
-	currentBook,
+	currentBookMetaData,
 	showBar,
 	showDialog,
 	fontSize,
@@ -28,8 +37,10 @@ let {
 	currentSection,
 	maxSectionLength,
 	currentLocationPercentage,
-	totalPageLength
-	// currentSectionTitle
+	totalPageLength,
+	themeColor,
+	currentBookCover,
+	entireDirectory
 } = storeToRefs(booksStore);
 const route = useRoute();
 
@@ -40,10 +51,20 @@ const slideTime = ref(0);
 const isTouchToChangePage = ref(false);
 
 const book = ePub(bookUrl);
-
+book.loaded.cover.then((cover) => {
+	book.archive.createUrl(cover, { base64: false }).then((url) => {
+		currentBookCover.value = url;
+	});
+});
+book.loaded.metadata.then((data) => {
+	currentBookMetaData.value = data as currentBookMetaDataType;
+});
+book.loaded.navigation.then((nav) => {
+	const flatedNav = flatNavArr(nav.toc);
+	entireDirectory.value = formatFlatNavArr(flatedNav);
+});
 book.ready.then(() => {
 	//@ts-ignore
-	currentBook.value = book.cover;
 	book.rendition.hooks.content.register((contents: any) => {
 		Promise.all([
 			contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/daysOne.css`),
@@ -120,6 +141,7 @@ bookExample.on("touchend", (e: TouchEvent) => {
 bookExample.on("click", (e: Event) => {
 	if (showDialog.value) {
 		showDialog.value = false;
+		currentMenu.value = "";
 		return;
 	}
 	showBar.value = !showBar.value;
@@ -151,9 +173,6 @@ watch([themeColor], () => {
 	localStorage.setItem(LOCAL_THEME_COLOR, themeColor.value);
 });
 watch([currentSection], async (newValue, oldValue) => {
-	// const sectionInfo = await getCurrentSectionInfo(book);
-	// currentSectionTitle.value = newValue[0] === 0 ? "" : book.navigation.get(sectionInfo.href).label;
-	// const currentCfi = book.rendition.currentLocation().start.cfi;
 	if (!isTouchToChangePage.value) {
 		if (!(oldValue[0] instanceof Object)) {
 			if (typeof newValue[0] === "number" && directoryLoadOver) {
@@ -163,7 +182,7 @@ watch([currentSection], async (newValue, oldValue) => {
 				});
 			} else {
 				//@ts-ignore
-				currentSection.value = newValue[0].section.section!;
+				currentSection.value = newValue[0].section;
 			}
 		}
 	}
@@ -174,4 +193,9 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#book_content {
+	width: 100% !important;
+	height: 100% !important;
+}
+</style>

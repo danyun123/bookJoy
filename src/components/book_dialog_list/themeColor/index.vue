@@ -10,18 +10,15 @@
 </template>
 
 <script setup lang="ts">
+import type { themeColorType } from "@/store/books";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import type { themeColorType } from "@/store/global";
-import useGlobal from "@/store/global";
 import { ref } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
 import { getBooksConfig } from "@/utils/common";
 
 const bookStore = useBooks();
-const globalStore = useGlobal();
-const { currentMenu, showDialog } = storeToRefs(bookStore);
-const { themeColor } = storeToRefs(globalStore);
+const { currentMenu, showDialog, themeColor } = storeToRefs(bookStore);
 const { local_theme_color } = getBooksConfig();
 const selectColor = ref(local_theme_color);
 const handelClickItem = (text: themeColorType) => {

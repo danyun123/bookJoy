@@ -10,3 +10,8 @@ export const getBooksConfig = () => {
 		local_theme_color
 	};
 };
+
+export const strToNum = (str: string) => {
+	const arr = str.match(/\d+/g) as string[];
+	return +arr[0];
+};

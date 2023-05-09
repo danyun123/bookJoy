@@ -1,5 +1,5 @@
 <template>
-	<div :class="classes">
+	<div :class="{ menuBar: true, 'menuBar-show': showBar, 'menuBar-hide': !showBar }">
 		<div class="function">
 			<template v-for="item in entireMenubar" :key="item.value">
 				<div :class="{ [item.text]: true, menu_item: true }" @click="setCurrentMenu(item.text)">
@@ -14,21 +14,13 @@
 import type { currentMenuType } from "@/store/books";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import classNames from "classnames";
-import { ref, watchEffect } from "vue";
 import { entireMenubar } from "@/assets/data/global";
 
 const booksStore = useBooks();
 const { showBar, currentMenu, showDialog } = storeToRefs(booksStore);
-let classes = ref("menuBar");
-watchEffect(() => {
-	classes.value = classNames("menuBar", {
-		"menuBar-show": showBar.value,
-		"menuBar-hide": !showBar.value
-	});
-});
 const setCurrentMenu = (type: currentMenuType) => {
-	if (currentMenu.value === type && showDialog.value === true) {
+	if (currentMenu.value === type && showDialog.value) {
+		currentMenu.value = "";
 		showDialog.value = false;
 		return;
 	}
