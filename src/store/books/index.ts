@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import type { Book } from "epubjs";
 
 export type currentMenuType = "" | "fontSize" | "themeColor" | "fontFamily" | "directory" | "progress";
 export type themeColorType = "default" | "fresh" | "eye_protection" | "wood";
@@ -22,6 +23,7 @@ export interface currentBookMetaDataType {
 }
 const useBooks = defineStore("books", {
 	state: () => ({
+		bookPrototype: {} as Book,
 		directoryLoadOver: false,
 		fontSize: 0,
 		fontFamily: "",

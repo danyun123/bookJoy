@@ -14,6 +14,7 @@
   "dependencies": {
     "epubjs": "^0.3.93",
     "normalize.css": "^8.0.1",
+    "p-limit": "^4.0.0",
     "pinia": "^2.0.35",
     "sass": "^1.62.1",
     "vant": "^4.2.1",

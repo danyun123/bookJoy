@@ -67,7 +67,7 @@ onMounted(() => {
 		}
 	}
 	:deep(.van-collapse-item__title) {
-		background-color: #eaeaea;
+		background-color: rgba(226, 226, 226, 0.8);
 		transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 	}
 	:deep(.van-cell__title) > span {

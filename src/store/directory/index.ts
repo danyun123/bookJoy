@@ -4,7 +4,9 @@ type displayCpmType = "Directory_bookmark" | "Directory_content" | "Directory_se
 
 const useDirectory = defineStore("directory", {
 	state: () => ({
-		displayCpm: "Directory_content" as displayCpmType
+		displayCpm: "Directory_content" as displayCpmType,
+		searchValue: "",
+		confirmSearch: false
 	})
 });
 

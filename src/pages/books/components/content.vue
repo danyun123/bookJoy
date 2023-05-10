@@ -40,7 +40,8 @@ let {
 	totalPageLength,
 	themeColor,
 	currentBookCover,
-	entireDirectory
+	entireDirectory,
+	bookPrototype
 } = storeToRefs(booksStore);
 const route = useRoute();
 
@@ -51,6 +52,7 @@ const slideTime = ref(0);
 const isTouchToChangePage = ref(false);
 
 const book = ePub(bookUrl);
+bookPrototype.value = book;
 book.loaded.cover.then((cover) => {
 	book.archive.createUrl(cover, { base64: false }).then((url) => {
 		currentBookCover.value = url;

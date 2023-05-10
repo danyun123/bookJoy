@@ -1,15 +1,21 @@
 <template>
 	<div class="directory_content">
-		<van-search
-			v-model="inputValue"
-			:show-action="displayCancelBtn"
-			placeholder="搜索全文内容"
-			@search="handelOnSearch"
-			background="transparent"
-			@focus="handelInputFocus"
-			@cancel="handelInputBlur"
-		>
-		</van-search>
+		<div class="search_content">
+			<van-search
+				v-model="searchValue"
+				clearable
+				placeholder="搜索全文内容"
+				@search="handelOnSearch"
+				background="transparent"
+				@focus="handelInputFocus"
+				@keydown.exact.enter="confirmSearch = true"
+			>
+				<template #left v-if="displayReturnBtn">
+					<div class="return"><van-icon name="arrow-left" @click="handelReturnClick" />返回</div>
+				</template>
+			</van-search>
+			<div class="confirm" v-if="displayReturnBtn" @click="confirmSearch = true">确认</div>
+		</div>
 		<component :is="currentPage" />
 	</div>
 </template>
@@ -23,17 +29,17 @@ import Directory_detailed from "../directory_detailed/index.vue";
 import Directory_search from "../directory_search/index.vue";
 
 const directoryStore = useDirectory();
-const { displayCpm } = storeToRefs(directoryStore);
-const displayCancelBtn = ref(false);
-const inputValue = ref();
+const { displayCpm, searchValue, confirmSearch } = storeToRefs(directoryStore);
+const displayReturnBtn = ref(false);
 const currentPage = shallowRef<Component>(Directory_detailed);
 const handelInputFocus = () => {
-	displayCancelBtn.value = true;
+	displayReturnBtn.value = true;
 	displayCpm.value = "Directory_search";
 };
-const handelInputBlur = () => {
-	displayCancelBtn.value = false;
+const handelReturnClick = () => {
+	displayReturnBtn.value = false;
 	displayCpm.value = "Directory_content";
+	searchValue.value = "";
 };
 const handelOnSearch = () => {};
 watchEffect(() => {
@@ -56,6 +62,29 @@ watchEffect(() => {
 	:deep(.van-search__content--square) {
 		border-radius: 1.071rem;
 		background-color: #fbfbfb;
+	}
+	:deep(.van-field__control) {
+		&::placeholder {
+			color: #656565;
+		}
+	}
+	.search_content {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		.confirm {
+			background-color: #fafafa;
+			border-radius: 1.271rem;
+			padding: 2px 6px;
+			margin: 0 0.222rem 0 0;
+			height: 34px;
+			line-height: 34px;
+			font-size: 0.9rem;
+			white-space: nowrap;
+		}
+		.return {
+			margin: 0 0.414rem 0 -0.387rem;
+		}
 	}
 }
 </style>

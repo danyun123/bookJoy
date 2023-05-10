@@ -2,9 +2,10 @@
 
 import type { Book } from "epubjs";
 import { strToNum } from "@/utils/common";
+import pLimit from "p-limit";
 
 export const getBookUrl = (url: String): string => {
-	const baseURL = "http://localhost";
+	const baseURL = "http://47.109.26.179:8888";
 	return `${baseURL}${url}`;
 };
 
@@ -69,3 +70,29 @@ export const isChildSelected = (id: number, subitems: any[]): boolean => {
 	}
 	return false; // 未找到目标节点，返回false
 };
+
+// export function doSearch(book: Book, q: string | number) {
+// 	return Promise.all(
+// 		book.spine.spineItems.map((item) =>
+// 			item.load(book.load.bind(book)).then(item.find.bind(item, q)).finally(item.unload.bind(item))
+// 		)
+// 	).then((results) => {
+// 		console.log(results.flat());
+// 		return results.flat();
+// 	});
+// }
+
+const limit = pLimit(5); // 同时执行的最大数量为 5
+
+export function doSearch(book: Book, q: string | number) {
+	return Promise.all(
+		book.spine.spineItems.map((item) =>
+			limit(() =>
+				// 限制并发执行的数量
+				item.load(book.load.bind(book)).then(item.find.bind(item, q)).finally(item.unload.bind(item))
+			)
+		)
+	).then((results) => {
+		return results.flat();
+	});
+}
