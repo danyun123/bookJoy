@@ -15,7 +15,7 @@ import {
 } from "@/utils/bookContent";
 import useBooks, { type currentBookMetaDataType, type themeColorType } from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
-import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
+import { onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
 import { LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
 
@@ -53,6 +53,7 @@ const isTouchToChangePage = ref(false);
 
 const book = ePub(bookUrl);
 bookPrototype.value = book;
+// 设置封面
 book.loaded.cover.then((cover) => {
 	book.archive.createUrl(cover, { base64: false }).then((url) => {
 		currentBookCover.value = url;
@@ -90,7 +91,7 @@ book.ready.then(() => {
 				section: null,
 				currentLocation: null
 		  };
-	if (percentage && section && currentLocation) {
+	if ((percentage || percentage === 0) && section && currentLocation) {
 		// 跳转到指定页面
 		book.rendition.display(currentLocation);
 		// 设置进度百分比
@@ -157,11 +158,11 @@ onMounted(() => {
 	themeColor.value = (local_theme_color as themeColorType) ?? "default";
 });
 
-watch([fontSize], () => {
+const stopWatchFontSize = watch([fontSize], () => {
 	bookExample.themes.fontSize(fontSize.value + "pt");
 	localStorage.setItem(LOCAL_FONT_SIZE, String(fontSize.value));
 });
-watch([fontFamily], () => {
+const stopWatchFontFamily = watch([fontFamily], () => {
 	bookExample.themes.font(
 		fontFamily.value === "Default"
 			? '-apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif'
@@ -169,12 +170,12 @@ watch([fontFamily], () => {
 	);
 	localStorage.setItem(LOCAL_FONT_FAMILY, fontFamily.value);
 });
-watch([themeColor], () => {
+const stopWatchFontColor = watch([themeColor], () => {
 	bookExample.themes.select(themeColor.value);
 	``;
 	localStorage.setItem(LOCAL_THEME_COLOR, themeColor.value);
 });
-watch([currentSection], async (newValue, oldValue) => {
+const stopWatchFontSection = watch([currentSection], async (newValue, oldValue) => {
 	if (!isTouchToChangePage.value) {
 		if (!(oldValue[0] instanceof Object)) {
 			if (typeof newValue[0] === "number" && directoryLoadOver) {
@@ -192,6 +193,12 @@ watch([currentSection], async (newValue, oldValue) => {
 });
 onBeforeUnmount(() => {
 	directoryLoadOver.value = false;
+});
+onUnmounted(() => {
+	stopWatchFontSize();
+	stopWatchFontColor();
+	stopWatchFontFamily();
+	stopWatchFontSection();
 });
 </script>
 

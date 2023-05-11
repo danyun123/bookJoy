@@ -2,6 +2,7 @@
 	--van-popup-background: rgba(97, 177, 245, 0.9);
 	--van-collapse-item-content-background: rgba(226, 226, 226, 0.8);
 	--van-cell-right-icon-color: #202020;
+	--van-search-input-height: 2.3rem;
 }
 html,
 body {
@@ -18,15 +19,21 @@ body {
 	}
 }
 
-@media screen and (min-width: 481px) and (max-width: 768px) {
+@media screen and (min-width: 481px) and (max-width: 699px) {
 	html {
 		font-size: 16px;
 	}
 }
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 699px) and (max-width: 912px) {
 	html {
 		font-size: 18px;
+	}
+}
+
+@media screen and (min-width: 912px)  {
+	html {
+		font-size: 25px;
 	}
 }
 

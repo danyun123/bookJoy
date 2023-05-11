@@ -63,6 +63,9 @@ watchEffect(() => {
 		border-radius: 1.071rem;
 		background-color: #fbfbfb;
 	}
+	:deep(.van-search) {
+		flex: 1;
+	}
 	:deep(.van-field__control) {
 		&::placeholder {
 			color: #656565;

@@ -15,7 +15,8 @@ export const getCurrentSectionInfo = (book: Book) => {
 	return book.spine.get(currentLocation.start.index);
 };
 
-export const getCurrentLocation = (book: Book, pageLength: number, section?: number) => {
+export const getCurrentLocation = (book: Book, pageLength: number = 7000, section?: number) => {
+	if (pageLength === 0) pageLength = 7000;
 	// 获取当前位置（CFI）
 	const currentLocation = book.rendition.currentLocation().start?.cfi;
 	// 使用当前位置 CFI 获取当前页数

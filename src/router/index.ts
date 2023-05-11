@@ -9,7 +9,13 @@ const router = createRouter({
 		},
 		{
 			path: "/home",
-			component: () => import("@/pages/home/index.vue")
+			component: () => import("@/pages/home/index.vue"),
+			children: [
+				{
+					path: "search",
+					component: () => import("@/pages/home/components/search_detail/index.vue")
+				}
+			]
 		},
 		{
 			path: "/books/:category",

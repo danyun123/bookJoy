@@ -5,6 +5,8 @@ $raduisWidth: 0.651rem;
 $transition: .45s ease-in-out;
 $themeColor: #9b62f5;
 $fontSize: 1.5rem;
+$pagePadding: 1.071rem;
+$themeGreyColor: #8d8a8a;
 @mixin bookBar {
   position: absolute;
   display: flex;

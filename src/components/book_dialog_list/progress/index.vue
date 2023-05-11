@@ -60,7 +60,7 @@ const formatTime = computed({
 		return Math.floor(currentTime.value / 60);
 	}
 });
-watch([formatTime], () => {
+const stopWatchTime = watch([formatTime], () => {
 	presentReadTime.value = formatTime.value;
 });
 onUnmounted(() => {
@@ -81,6 +81,9 @@ const handelButClick = (isNext: boolean = true) => {
 		(currentSection.value as number)--;
 	}
 };
+onUnmounted(() => {
+	stopWatchTime();
+});
 </script>
 
 <style scoped lang="scss">

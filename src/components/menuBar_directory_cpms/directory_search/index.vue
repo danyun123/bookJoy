@@ -1,20 +1,14 @@
 <template>
 	<div class="search" ref="searchRef" @scroll.stop="(e) => handelSearchScroll(e)">
-		<template v-if="JSON.parse(JSON.stringify(listContent ?? [])).length !== 0">
-			<div class="list" ref="listRef" v-if="JSON.parse(JSON.stringify(listContent ?? [])).length > 0">
-				<template
-					v-for="item in JSON.parse(JSON.stringify(listContent ?? [])).splice(0, contentSubsection)"
-					:key="item.cfi"
-				>
+		<template v-if="realProxyObject(listContent ?? []).length !== 0">
+			<div class="list" ref="listRef" v-if="realProxyObject(listContent ?? []).length > 0">
+				<template v-for="item in realProxyObject(listContent ?? []).splice(0, contentSubsection)" :key="item.cfi">
 					<div class="item" v-html="item.excerpt" @click="() => handelClickSearchItem(item)"></div>
 				</template>
 			</div>
 		</template>
 		<div v-if="isSearching" class="searching">正在为您全速搜索--------</div>
-		<div
-			v-else-if="listContent && JSON.parse(JSON.stringify(listContent))?.length === 0 && !isSearching"
-			class="searching"
-		>
+		<div v-else-if="listContent && realProxyObject(listContent)?.length === 0 && !isSearching" class="searching">
 			未找到结果
 		</div>
 	</div>
@@ -24,8 +18,9 @@
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 import { doSearch } from "@/utils/bookContent";
+import { realProxyObject } from "@/utils/common";
 import type { Book } from "epubjs";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import throttle from "@/utils/throttle";
 import useDirectory from "@/store/directory";
 
@@ -44,7 +39,7 @@ const isSearching = ref(false);
 bookPrototype.value.ready.then(() => {
 	isAnalysisOver.value = true;
 });
-watch(
+const stopWatchSrarch = watch(
 	[confirmSearch, searchValue],
 	() => {
 		if (confirmSearch.value && searchValue.value.trim().length > 0) {
@@ -70,7 +65,7 @@ watch(
 	},
 	{ deep: true }
 );
-watch([listRef], () => {
+const stopWatchList = watch([listRef], () => {
 	listEleHeight.value = listRef.value?.offsetHeight as number;
 });
 onMounted(() => {
@@ -93,6 +88,10 @@ const handelClickSearchItem = (item: any) => {
 	showDialog.value = false;
 	currentMenu.value = "";
 };
+onUnmounted(() => {
+	stopWatchList();
+	stopWatchSrarch();
+});
 </script>
 
 <style scoped lang="scss">
