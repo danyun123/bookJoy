@@ -102,7 +102,7 @@
 		<van-form>
 			<van-cell-group inset>
 				<van-field
-					v-model="account.name"
+					v-model="forget.name"
 					name="name"
 					clearable
 					label="用户名"
@@ -117,7 +117,7 @@
 					]"
 				/>
 				<van-field
-					v-model="account.password"
+					v-model="forget.password"
 					type="password"
 					name="password"
 					clearable

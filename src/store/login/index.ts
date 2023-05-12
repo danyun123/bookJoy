@@ -2,16 +2,13 @@ import { defineStore } from "pinia";
 import { localCache } from "@/utils/cache";
 import router from "@/router";
 import { accountCreate, accountLoginRequest, passwordmodify } from "@/service/login/login";
+import { USERNAME } from "@/assets/constant";
 
 interface StateType {
-	username: string;
-	password: string;
 	token: string;
 }
 const useLoginStore = defineStore("login", {
 	state: (): StateType => ({
-		username: "",
-		password: "",
 		token: ""
 	}),
 	actions: {
@@ -19,6 +16,7 @@ const useLoginStore = defineStore("login", {
 			const loginREsult = await accountLoginRequest(values);
 			try {
 				this.token = loginREsult.data.token;
+				localStorage.setItem(USERNAME, loginREsult.data.name);
 			} catch (error) {
 				alert(loginREsult.message);
 			}

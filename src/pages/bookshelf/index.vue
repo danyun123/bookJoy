@@ -21,12 +21,11 @@
 						<van-icon name="cross" />
 					</div>
 				</div>
-				<div class="remind" v-if="books.length === 0">您还未收藏电子书，快去逛逛吧！</div>
 			</template>
+			<div class="remind" v-if="books.length === 0">您还未收藏电子书，快去逛逛吧！</div>
 		</div>
 	</div>
 </template>
-
 <script setup lang="ts">
 import { ref, watchEffect } from "vue";
 import { ALLBOOKSHELFNAME, BOOKSHELF } from "@/assets/constant";

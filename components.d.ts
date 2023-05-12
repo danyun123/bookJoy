@@ -37,5 +37,7 @@ declare module '@vue/runtime-core' {
     VanPopup: typeof import('vant/es')['Popup']
     VanSearch: typeof import('vant/es')['Search']
     VanSlider: typeof import('vant/es')['Slider']
+    VanUploader: typeof import('vant/es')['Uploader']
+    VanWatermark: typeof import('vant/es')['Watermark']
   }
 }
