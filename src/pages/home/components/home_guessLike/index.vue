@@ -3,7 +3,7 @@
 		<Description_head title="猜你喜欢" @rightSizeClick="changeBatch" />
 		<div class="list">
 			<template v-for="item in formatList" :key="item.id">
-				<div class="item">
+				<div class="item" @click="() => itemClick(item)">
 					<div class="cover">
 						<img :src="item.cover" alt="封面加载错误" />
 					</div>
@@ -29,6 +29,7 @@
 import Description_head from "@/baseUI/description_head/index.vue";
 import { ref, watch } from "vue";
 import { getRandomArr } from "@/utils/common";
+import { useRouter } from "vue-router";
 
 interface IProps {
 	data: any;
@@ -40,6 +41,13 @@ watch([props], () => {
 });
 const changeBatch = () => {
 	formatList.value = getRandomArr(props.data ?? [], 3);
+};
+const router = useRouter();
+const itemClick = (book: any) => {
+	router.push({
+		path: `/bookDetail/${book.fileName}`,
+		query: book
+	});
 };
 </script>
 

@@ -410,7 +410,7 @@ export default {
 			]
 		},
 		{
-			categoryText: "电脑科学",
+			categoryText: "教育学",
 			list: [
 				{
 					cover: "http://47.99.166.157/book/res/cover/edu/A978-981-13-0194-0_CoverFigure.jpg",
@@ -452,7 +452,7 @@ export default {
 			]
 		},
 		{
-			categoryText: "教育学",
+			categoryText: "计算机科学",
 			list: [
 				{
 					cover: "http://47.99.166.157/book/res/cover/cs/A978-3-319-89722-6_CoverFigure.jpg",

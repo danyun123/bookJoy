@@ -18,7 +18,7 @@ import Home_banner from "./components/home_banner/index.vue";
 import Home_guessLike from "./components/home_guessLike/index.vue";
 import Home_recommend from "./components/home_recommend/index.vue";
 import Home_featured from "./components/home_featured/index.vue";
-import Home_slot from "./components/home_slot/index.vue";
+import Home_slot from "./components/home_sort/index.vue";
 import Home_classification from "@/components/home_classification/index.vue";
 import useHome from "@/store/home";
 import { onBeforeMount } from "vue";
@@ -35,7 +35,7 @@ onBeforeMount(() => {
 <style scoped lang="scss">
 .home {
 	width: 100%;
-	height: 100vh;
+	height: calc(100vh - 2.428rem);
 	background-color: #f4f4f4;
 	overflow: scroll;
 }

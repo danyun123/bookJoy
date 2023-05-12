@@ -31,51 +31,55 @@ export const realProxyObject = (obj: object | any[]) => {
 	return JSON.parse(JSON.stringify(obj));
 };
 
-export function categoryText(category: number) {
+export const categoryText = (category: number) => {
 	switch (category) {
 		case 1:
-			return "computerScience";
+			return ["computerScience", "计算机科学"];
 		case 2:
-			return "socialSciences";
+			return ["socialSciences", "社会科学"];
 		case 3:
-			return "economics";
+			return ["economics", "经济学"];
 		case 4:
-			return "education";
+			return ["education", "教育学"];
 		case 5:
-			return "engineering";
+			return ["engineering", "工程学"];
 		case 6:
-			return "environment";
+			return ["environment", "环境学"];
 		case 7:
-			return "geography";
+			return ["geography", "地理学"];
 		case 8:
-			return "history";
+			return ["history", "历史学"];
 		case 9:
-			return "laws";
+			return ["laws", "法律学"];
 		case 10:
-			return "lifeSciences";
+			return ["lifeSciences", "生命科学"];
 		case 11:
-			return "literature";
+			return ["literature", "文学"];
 		case 12:
-			return "biomedicine";
+			return ["biomedicine", "生物医学"];
 		case 13:
-			return "businessandManagement";
+			return ["businessandManagement", "管理学"];
 		case 14:
-			return "earthSciences";
+			return ["earthSciences", "地球学"];
 		case 15:
-			return "materialsScience";
+			return ["materialsScience", "材料学"];
 		case 16:
-			return "mathematics";
+			return ["mathematics", "数学"];
 		case 17:
-			return "medicineAndPublicHealth";
+			return ["medicineAndPublicHealth", "生活健康学"];
 		case 18:
-			return "philosophy";
+			return ["philosophy", "哲学"];
 		case 19:
-			return "physics";
+			return ["physics", "物理学"];
 		case 20:
-			return "politicalScienceAndInternationalRelations";
+			return ["politicalScienceAndInternationalRelations", "社会关系学"];
 		case 21:
-			return "psychology";
+			return ["psychology", "心理学"];
 		case 22:
-			return "statistics";
+			return ["statistics", "统计数据学"];
 	}
-}
+};
+
+export const strFistWordToUp = (str: string): string => {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+};

@@ -5,7 +5,7 @@ import { strToNum } from "@/utils/common";
 import pLimit from "p-limit";
 
 export const getBookUrl = (url: String): string => {
-	const baseURL = "http://47.109.26.179:8888";
+	const baseURL = `${import.meta.env.VITE_BASE_URL}/`;
 	return `${baseURL}${url}`;
 };
 

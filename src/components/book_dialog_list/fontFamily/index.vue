@@ -23,7 +23,7 @@ const bookStore = useBooks();
 const { currentMenu, showDialog, fontFamily } = storeToRefs(bookStore);
 
 const showPicker = ref(false);
-const stopWatchCurrentMenu = watch(currentMenu, () => {
+watch(currentMenu, () => {
 	showPicker.value = currentMenu.value === "fontFamily";
 });
 
@@ -48,7 +48,6 @@ const onCancel = () => {
 };
 onMounted(() => {
 	pickerValue.value = [`${fontFamily.value}`];
-	stopWatchCurrentMenu();
 });
 </script>
 

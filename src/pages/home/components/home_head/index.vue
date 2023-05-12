@@ -1,9 +1,6 @@
 <template>
 	<div class="head">
 		<div :class="{ nav: true, isHeadHide: hideHead }" v-if="route.path === '/home'">
-			<div class="return">
-				<van-icon name="arrow-left" />
-			</div>
 			<div class="title">书城</div>
 			<div class="random" @click="randomClick"><van-icon name="guide-o" /></div>
 		</div>
@@ -69,15 +66,19 @@ const randomClick = () => {
 	font-size: 1.1rem;
 	.nav {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
 		visibility: visible;
 		opacity: 1;
+		position: relative;
 		.return {
 			margin-left: 0.714rem;
 		}
 		.title {
 			font-size: 1.25rem;
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 		.random {
 			margin-right: 0.714rem;

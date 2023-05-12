@@ -1,9 +1,9 @@
 <template>
 	<div class="featured">
-		<Description_head title="精选" right="查看更多" @rightSizeClick="viewAll" />
+		<Description_head title="精选" right="" />
 		<div class="list">
 			<template v-for="item in props.data" :key="item.id">
-				<div class="item">
+				<div class="item" @click="() => itemClick(item)">
 					<div class="cover">
 						<img :src="item.cover" alt="封面加载错误" />
 					</div>
@@ -23,13 +23,18 @@
 
 <script setup lang="ts">
 import Description_head from "@/baseUI/description_head/index.vue";
+import { useRouter } from "vue-router";
 
 interface IProps {
 	data: any;
 }
 const props = defineProps<IProps>();
-const viewAll = () => {
-	console.log(545);
+const router = useRouter();
+const itemClick = (book: any) => {
+	router.push({
+		path: `/bookDetail/${book.fileName}`,
+		query: book
+	});
 };
 </script>
 

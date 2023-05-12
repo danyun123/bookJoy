@@ -2,7 +2,7 @@
 	<div :class="{ navBar: true, 'navBar-show': showBar, 'navBar-hide': !showBar }">
 		<div class="back">
 			<van-icon name="arrow-left" size="1.6rem" />
-			<span>返回</span>
+			<span @click="returnClick">返回</span>
 		</div>
 		<div class="function">
 			<div class="bookshelf fun_item" title="书架">
@@ -21,9 +21,14 @@
 <script lang="ts" setup>
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
+import { useRouter } from "vue-router";
 
 const booksStore = useBooks();
 const { showBar } = storeToRefs(booksStore);
+const router = useRouter();
+const returnClick = () => {
+	router.back();
+};
 </script>
 
 <style lang="scss" scoped>

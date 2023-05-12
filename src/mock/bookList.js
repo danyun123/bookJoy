@@ -2128,22 +2128,6 @@ export default {
 		],
 		Engineering: [
 			{
-				id: 16,
-				fileName: "2018_Book_ControlTheoryTutorial",
-				cover: "http://47.99.166.157/book/res/img/Engineering/978-3-319-91707-8_CoverFigure.jpg",
-				title: "Control Theory Tutorial",
-				author: "Steven A. Frank",
-				publisher: "Springer International Publishing",
-				bookId: "2018_Book_ControlTheoryTutorial",
-				category: 5,
-				categoryText: "Engineering",
-				language: "en",
-				selected: false,
-				private: false,
-				cache: false,
-				haveRead: 0
-			},
-			{
 				id: 17,
 				fileName: "2018_Book_FoundationsOfTrustedAutonomy",
 				cover: "http://47.99.166.157/book/res/img/Engineering/978-3-319-64816-3_CoverFigure.jpg",
@@ -4145,22 +4129,6 @@ export default {
 		],
 		Geography: [
 			{
-				id: 34,
-				fileName: "2018_Book_GeographiesOfTheUniversity",
-				cover: "http://47.99.166.157/book/res/img/Geography/978-3-319-75593-9_CoverFigure.jpg",
-				title: "Geographies of the University",
-				author: "Peter Meusburger",
-				publisher: "Springer International Publishing",
-				bookId: "2018_Book_GeographiesOfTheUniversity",
-				category: 7,
-				categoryText: "Geography",
-				language: "en",
-				selected: false,
-				private: false,
-				cache: false,
-				haveRead: 0
-			},
-			{
 				id: 35,
 				fileName: "2018_Book_HousingEstatesInEurope",
 				cover: "http://47.99.166.157/book/res/img/Geography/978-3-319-92813-5_CoverFigure.jpg",
@@ -4548,22 +4516,6 @@ export default {
 			}
 		],
 		Laws: [
-			{
-				id: 43,
-				fileName: "2018_Book_EthicsAndCivilDrones",
-				cover: "http://47.99.166.157/book/res/img/Laws/978-3-319-71087-7_CoverFigure.jpg",
-				title: "Ethics and Civil Drones",
-				author: "María de Miguel Molina",
-				publisher: "Springer International Publishing",
-				bookId: "2018_Book_EthicsAndCivilDrones",
-				category: 9,
-				categoryText: "Laws",
-				language: "en",
-				selected: false,
-				private: false,
-				cache: false,
-				haveRead: 0
-			},
 			{
 				id: 44,
 				fileName: "2018_Book_Multi-dimensionalApproachesTow",
@@ -6100,22 +6052,6 @@ export default {
 			}
 		],
 		Mathematics: [
-			{
-				id: 68,
-				fileName: "2016_Book_FiniteDifferenceComputingWithE",
-				cover: "http://47.99.166.157/book/res/img/Mathematics/978-3-319-29439-1_CoverFigure.jpg",
-				title: "Finite Difference Computing with Exponential Decay Models",
-				author: "Hans Petter Langtangen",
-				publisher: "Springer International Publishing",
-				bookId: "2016_Book_FiniteDifferenceComputingWithE",
-				category: 16,
-				categoryText: "Mathematics",
-				language: "en",
-				selected: false,
-				private: false,
-				cache: false,
-				haveRead: 0
-			},
 			{
 				id: 372,
 				fileName: "2015_Book_InnovationsInQuantitativeRiskM",

@@ -1,12 +1,12 @@
 <template>
-	<div class="slot">
+	<div class="sort">
 		<Description_head title="分类" right="查看全部" @rightSizeClick="viewAll" />
 		<div class="list">
 			<template v-for="(item, index) in props.data" :key="index">
-				<div class="item">
+				<div class="item" @click="() => bookClick(item.category)">
 					<div class="box">
 						<div class="info">
-							<div class="title">{{ categoryText(item.category) }}</div>
+							<div class="title">{{ categoryText(item.category)[1] }}</div>
 							<div class="num">{{ item.num }}本书</div>
 						</div>
 						<div class="img_wrapper">
@@ -23,23 +23,34 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
 import Description_head from "@/baseUI/description_head/index.vue";
 import { categoryText } from "@/utils/common";
+import { useRouter } from "vue-router";
 
 interface IProps {
 	data: any;
 }
+const router = useRouter();
 const props = defineProps<IProps>();
 const viewAll = () => {
-	console.log(545);
+	router.push({
+		path: `/sortBook/allBook`
+	});
+};
+const bookClick = (category: number) => {
+	router.push({
+		path: `/sortBook/${category}`,
+		query: {
+			sort_name: `${categoryText(category)![0]}`
+		}
+	});
 };
 </script>
 
 <style scoped lang="scss">
 @import "../../../../assets/css/common";
 
-.slot {
+.sort {
 	padding: 0 $pagePadding;
 	margin: 1.814rem 0;
 	:deep(.title) {

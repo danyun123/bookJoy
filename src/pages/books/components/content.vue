@@ -1,5 +1,6 @@
 <template>
 	<div id="book_content" :style="{ width: pageWidth, height: pageHeight }"></div>
+	<div v-if="!isReady" class="ing">正在解析中，请稍等~~~~~</div>
 </template>
 
 <script lang="ts" setup>
@@ -21,6 +22,8 @@ import { LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/
 
 const pageWidth = ref("");
 const pageHeight = ref("");
+const route = useRoute();
+const isReady = ref(false);
 watchEffect(() => {
 	pageWidth.value = innerWidth + "px";
 	pageHeight.value = innerHeight + "px";
@@ -43,14 +46,15 @@ let {
 	entireDirectory,
 	bookPrototype
 } = storeToRefs(booksStore);
-const route = useRoute();
 
+watch([route], () => {
+	if (route.path.split("/")[1] === "books") location.reload();
+});
 const path = route.path;
 const bookUrl = getBookUrl(path);
 const slideDistance = ref(0);
 const slideTime = ref(0);
 const isTouchToChangePage = ref(false);
-
 const book = ePub(bookUrl);
 bookPrototype.value = book;
 // 设置封面
@@ -67,6 +71,7 @@ book.loaded.navigation.then((nav) => {
 	entireDirectory.value = formatFlatNavArr(flatedNav);
 });
 book.ready.then(() => {
+	isReady.value = true;
 	//@ts-ignore
 	book.rendition.hooks.content.register((contents: any) => {
 		Promise.all([
@@ -203,8 +208,12 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../assets/css/common";
 #book_content {
 	width: 100% !important;
 	height: 100% !important;
+}
+.ing {
+	@include remindInfo;
 }
 </style>

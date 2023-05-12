@@ -1,12 +1,12 @@
-//阅读电子书界面
-
 $barHeight: 3rem;
 $raduisWidth: 0.651rem;
 $transition: .45s ease-in-out;
 $themeColor: #9b62f5;
+$themeColor2: #5e5eff;
 $fontSize: 1.5rem;
 $pagePadding: 1.071rem;
-$themeGreyColor: #8d8a8a;
+$themeGreyColor: #a19f9f;
+$boxShadow: 0 0 0.6rem 0.069rem #c9c9c9;
 @mixin bookBar {
   position: absolute;
   display: flex;
@@ -15,7 +15,7 @@ $themeGreyColor: #8d8a8a;
   width: 100%;
   height: $barHeight;
   background-color: rgba(255, 255, 255, .9);
-  box-shadow: 0 0 0.600rem 0.069rem #c9c9c9;
+  box-shadow: $boxShadow;
   border-radius: 0.651rem;
   z-index: 999;
   opacity: 0;
@@ -59,4 +59,36 @@ $themeGreyColor: #8d8a8a;
   -webkit-line-clamp: $lines;
 }
 
+@mixin remindInfo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  color: #d92626;
+  transform: translateY(-50%) translateX(-50%);
+  font-size: 1.5rem;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+$shakeAnimation: shake 0.5s ease-in-out infinite;
 

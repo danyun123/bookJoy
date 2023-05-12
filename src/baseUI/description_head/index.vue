@@ -18,6 +18,7 @@ const rightClick = () => {
 </script>
 
 <style scoped lang="scss">
+@import "../../assets/css/common";
 .head {
 	display: flex;
 	justify-content: space-between;
@@ -26,8 +27,9 @@ const rightClick = () => {
 	font-size: 1rem;
 	font-weight: 600;
 	.right {
-		color: #5e5eff;
+		color: $themeColor2;
 		transform: translateY(15%);
+		@include clickActiveAnimation();
 	}
 }
 </style>

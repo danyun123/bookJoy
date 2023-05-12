@@ -2,13 +2,16 @@
 	<div class="app">
 		<router-view v-slot="props">
 			<keep-alive>
-				<component :is="props.Component"></component>
+				<Component :is="props.Component"></Component>
 			</keep-alive>
 		</router-view>
+		<Tabbar v-if="!$route.meta.hideTabbar" />
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import Tabbar from "./baseUI/tabbar/index.vue";
+</script>
 
 <style lang="scss" scoped>
 .app {
