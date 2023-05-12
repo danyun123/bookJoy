@@ -26,7 +26,7 @@ const useLoginStore = defineStore("login", {
 				return;
 			}
 			localCache.setCache("token", this.token);
-			router.push("/main");
+			router.push("/home");
 		},
 		async fetchCreateAccount(account: any) {
 			const createReult = await accountCreate(account);
