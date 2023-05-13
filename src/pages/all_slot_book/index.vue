@@ -1,5 +1,5 @@
 <template>
-	<div class="all_sort">
+	<div class="all_sort" ref="routRef" @scroll="allSortScroll">
 		<div class="title">
 			<div class="return" @click="returnClick"><van-icon name="arrow-left" />返回</div>
 			<span v-if="chineseName">{{ chineseName }}</span>
@@ -39,9 +39,11 @@
 import useHome from "@/store/home";
 import { storeToRefs } from "pinia/dist/pinia";
 import { useRoute } from "vue-router/dist/vue-router";
-import { onBeforeMount, ref, watchEffect } from "vue";
+import { onActivated, onBeforeMount, ref, watchEffect } from "vue";
 import { categoryText, realProxyObject, strFistWordToUp } from "@/utils/common";
 import { useRouter } from "vue-router";
+import throttle from "@/utils/throttle";
+import { ALLSORTSCROLLTOP } from "@/assets/constant";
 
 const homeStore = useHome();
 const { bookList } = storeToRefs(homeStore);
@@ -51,6 +53,13 @@ const route = useRoute();
 const router = useRouter();
 let chineseName = ref<string>();
 const dataList = ref<any>();
+const routRef = ref<HTMLElement>();
+
+const allSortScroll = throttle((e: Event) => {
+	//@ts-ignore
+	localStorage.setItem(ALLSORTSCROLLTOP, e.target.scrollTop);
+}, 500);
+
 const returnClick = () => {
 	router.back();
 };
@@ -75,6 +84,9 @@ const itemClick = (book: any) => {
 };
 onBeforeMount(() => {
 	fetchBookList();
+});
+onActivated(() => {
+	if (routRef.value) routRef.value.scrollTop = parseInt(localStorage.getItem(ALLSORTSCROLLTOP) ?? "0") ?? 0;
 });
 </script>
 

@@ -1,5 +1,12 @@
 <template>
-	<div class="home">
+	<div
+		class="home"
+		:style="{
+			overflow: !insideSearch ? 'scroll' : 'hidden'
+		}"
+		ref="homeRef"
+		@scroll.stop="(e) => homeScroll(e)"
+	>
 		<Home_head />
 		<Home_banner :banner="homeData.banner" />
 		<Home_guessLike :data="homeData.guessYouLike" />
@@ -21,14 +28,30 @@ import Home_featured from "./components/home_featured/index.vue";
 import Home_slot from "./components/home_sort/index.vue";
 import Home_classification from "@/components/home_classification/index.vue";
 import useHome from "@/store/home";
-import { onBeforeMount } from "vue";
+import { onActivated, onBeforeMount, ref, watch } from "vue";
 import { storeToRefs } from "pinia/dist/pinia";
+import { useRoute } from "vue-router/dist/vue-router";
+import throttle from "@/utils/throttle";
+import { HOMESCROLLTOP } from "@/assets/constant";
 
 const homeStore = useHome();
 const { fetchHomeData } = homeStore;
-const { homeData } = storeToRefs(homeStore);
+const { homeData, insideSearch } = storeToRefs(homeStore);
+const route = useRoute();
+const homeRef = ref<HTMLDivElement>();
+
+const homeScroll = throttle((e: Event) => {
+	//@ts-ignore
+	localStorage.setItem(HOMESCROLLTOP, e.target.scrollTop);
+}, 500);
 onBeforeMount(() => {
 	fetchHomeData();
+});
+watch([route], () => {
+	insideSearch.value = false;
+});
+onActivated(() => {
+	if (homeRef.value) homeRef.value.scrollTop = parseInt(localStorage.getItem(HOMESCROLLTOP) ?? "0") ?? 0;
 });
 </script>
 

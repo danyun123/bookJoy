@@ -59,17 +59,17 @@ export const formatFlatNavArr = (navArr: any[]) => {
 };
 
 export const isChildSelected = (id: number, subitems: any[]): boolean => {
-	const stack = [...subitems]; // 使用一个栈来存储待处理的子节点
+	const stack = [...subitems];
 	while (stack.length) {
-		const item = stack.pop(); // 取出栈顶节点
+		const item = stack.pop();
 		if (strToNum(item.id) - 1 === id) {
-			return true; // 找到目标节点，直接返回true
+			return true;
 		}
 		if (item.subitems) {
-			stack.push(...item.subitems); // 将子节点压入栈中进行后续处理
+			stack.push(...item.subitems);
 		}
 	}
-	return false; // 未找到目标节点，返回false
+	return false;
 };
 
 // export function doSearch(book: Book, q: string | number) {
@@ -83,15 +83,12 @@ export const isChildSelected = (id: number, subitems: any[]): boolean => {
 // 	});
 // }
 
-const limit = pLimit(5); // 同时执行的最大数量为 5
+const limit = pLimit(5);
 
 export function doSearch(book: Book, q: string | number) {
 	return Promise.all(
 		book.spine.spineItems.map((item) =>
-			limit(() =>
-				// 限制并发执行的数量
-				item.load(book.load.bind(book)).then(item.find.bind(item, q)).finally(item.unload.bind(item))
-			)
+			limit(() => item.load(book.load.bind(book)).then(item.find.bind(item, q)).finally(item.unload.bind(item)))
 		)
 	).then((results) => {
 		return results.flat();

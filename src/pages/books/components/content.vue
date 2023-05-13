@@ -16,7 +16,7 @@ import {
 } from "@/utils/bookContent";
 import useBooks, { type currentBookMetaDataType, type themeColorType } from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
-import { onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
+import { onActivated, onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
 import { LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
 
@@ -47,9 +47,6 @@ let {
 	bookPrototype
 } = storeToRefs(booksStore);
 
-watch([route], () => {
-	if (route.path.split("/")[1] === "books") location.reload();
-});
 const path = route.path;
 const bookUrl = getBookUrl(path);
 const slideDistance = ref(0);
@@ -57,12 +54,22 @@ const slideTime = ref(0);
 const isTouchToChangePage = ref(false);
 const book = ePub(bookUrl);
 bookPrototype.value = book;
+onActivated(() => {
+	const isRefreshed = localStorage.getItem("isRefreshed");
+	if (isRefreshed !== "true") {
+		localStorage.setItem("isRefreshed", "true");
+		location.reload();
+	} else {
+		localStorage.removeItem("isRefreshed");
+	}
+});
 // 设置封面
 book.loaded.cover.then((cover) => {
 	book.archive.createUrl(cover, { base64: false }).then((url) => {
 		currentBookCover.value = url;
 	});
 });
+
 book.loaded.metadata.then((data) => {
 	currentBookMetaData.value = data as currentBookMetaDataType;
 });

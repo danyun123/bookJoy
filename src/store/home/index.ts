@@ -31,7 +31,8 @@ const useHome = defineStore("home", {
 		hideHead: false,
 		search_history: [] as string[],
 		homeData: {},
-		bookList: {} as bookListType
+		bookList: {} as bookListType,
+		insideSearch: false
 	}),
 	actions: {
 		async fetchHomeData() {

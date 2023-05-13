@@ -1,6 +1,23 @@
 export default {
 	guessYouLike: [
 		{
+			id: 360,
+			fileName: "2016_Book_TechnologicalAndInstitutionalI",
+			cover: "http://47.99.166.157/book/res/img/LifeSciences/2016_Book_TechnologicalAndInstitutionalI.jpeg",
+			title: "Technological and Institutional Innovations for Marginalized Smallholders in Agricultural Development",
+			author: "Franz W. Gatzweiler and Joachim von Braun",
+			publisher: "Springer International Publishing, Cham",
+			bookId: "2016_Book_TechnologicalAndInstitutionalI",
+			category: 10,
+			categoryText: "LifeSciences",
+			language: "en",
+			selected: false,
+			private: false,
+			cache: false,
+			haveRead: 0,
+			result: "《Improving Psychiatric Care》"
+		},
+		{
 			id: 197,
 			fileName: "2016_Book_NewHorizonsForAData-DrivenEcon",
 			cover: "http://47.99.166.157/book/res/img/ComputerScience/2016_Book_NewHorizonsForAData-DrivenEcon.jpeg",

@@ -49,7 +49,7 @@ import { getRandomArr, realProxyObject } from "@/utils/common";
 const historyData = ref<string[]>(JSON.parse(localStorage.getItem(SEARCH_HISTORY) ?? "[]"));
 const hotSearchList = ref<any[]>(hotSearch.slice(0, 5));
 const homeStore = useHome();
-const { search_history } = storeToRefs(homeStore);
+const { search_history, insideSearch } = storeToRefs(homeStore);
 const changeBatchClick = () => {
 	hotSearchList.value = getRandomArr(hotSearch, 5) as any[];
 };
@@ -58,11 +58,14 @@ const clearHistoryClick = () => {
 };
 const deleteIconClick = (index: number) => {
 	historyData.value.splice(realProxyObject(historyData.value).length - 1 - index, 1);
+	localStorage.setItem(SEARCH_HISTORY, JSON.stringify(realProxyObject(historyData.value)));
 };
+
 watch([search_history], () => {
 	historyData.value = search_history.value;
 });
 onBeforeMount(() => {
+	insideSearch.value = true;
 	window.onbeforeunload = () => {
 		search_history.value = historyData.value;
 		localStorage.setItem(SEARCH_HISTORY, JSON.stringify(realProxyObject(historyData.value)));
@@ -72,7 +75,6 @@ onBeforeMount(() => {
 
 <style scoped lang="scss">
 .search_detail {
-	overflow: scroll;
 	height: calc(100vh - 3.214rem - 10px);
 	.rightBtn {
 		position: absolute;
@@ -116,6 +118,8 @@ onBeforeMount(() => {
 		font-size: 1.15rem;
 		.history_list {
 			margin-top: 1.071rem;
+			height: calc(100vh - 36rem);
+			overflow: scroll;
 			.history_item {
 				margin: 1.071rem 0;
 				.history_icon {

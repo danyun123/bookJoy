@@ -45,6 +45,7 @@ const handelSearchFocus = () => {
 	router.push("/home/search");
 };
 const handelReturnClick = () => {
+	searchValue.value = "";
 	hideHead.value = false;
 	router.push("/home");
 };
