@@ -84,11 +84,15 @@ const router = createRouter({
 			meta: {
 				hideTabbar: true
 			}
+		},
+		{
+			path: "/test",
+			component: () => import("@/baseUI/animation/book_directory_loading/index.vue")
 		}
 	]
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
 	const token = localCache.getCache("token");
 	if (to.path.startsWith("/home") && !token) {
 		return "/login";

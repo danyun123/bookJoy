@@ -33,6 +33,7 @@ const itemClick = (page: string) => {
 	color: $themeColor;
 	.item {
 		@include clickActiveAnimation();
+		padding: 0.21rem;
 	}
 }
 </style>

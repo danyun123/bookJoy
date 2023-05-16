@@ -15,16 +15,21 @@ export const getCurrentSectionInfo = (book: Book) => {
 	return book.spine.get(currentLocation.start.index);
 };
 
-export const getCurrentLocation = (book: Book, pageLength: number = 7000, section?: number) => {
+export const getCurrentLocation = (book: Book, pageLength: number = 7000) => {
 	if (pageLength === 0) pageLength = 7000;
 	// 获取当前位置（CFI）
-	const currentLocation = book.rendition.currentLocation().start?.cfi;
+	const currentLocationCFI = book.rendition.currentLocation().start?.cfi;
 	// 使用当前位置 CFI 获取当前页数
-	const currentPage = book.locations.locationFromCfi(currentLocation);
+	const currentPage = book.locations.locationFromCfi(currentLocationCFI);
 	// 计算当前位置百分比
 	const percentage = Math.floor((currentPage / pageLength) * 100);
-	localStorage.setItem(book.cover, JSON.stringify({ currentLocation, percentage, pageLength, section }));
-	return percentage;
+	// 获取当前章节
+	const section = book.spine.get(currentLocationCFI).index;
+	localStorage.setItem(book.cover, JSON.stringify({ currentLocationCFI, percentage, pageLength, section }));
+	return {
+		percentage,
+		section
+	};
 };
 
 export const flatNavArr = (navArr: any[]) => {

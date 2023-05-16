@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
-import { doSearch } from "@/utils/bookContent";
+import { doSearch, getCurrentLocation } from "@/utils/bookContent";
 import { realProxyObject } from "@/utils/common";
 import type { Book } from "epubjs";
 import { onMounted, onUnmounted, ref, watch } from "vue";
@@ -29,7 +29,8 @@ const listRef = ref<HTMLDivElement>();
 const bookStore = useBooks();
 const directoryStore = useDirectory();
 const { confirmSearch, searchValue } = storeToRefs(directoryStore);
-const { bookPrototype, showDialog, currentMenu } = storeToRefs(bookStore);
+const { bookPrototype, showDialog, currentMenu, currentLocationPercentage, totalPageLength, currentSection } =
+	storeToRefs(bookStore);
 const listContent = ref<any[] | undefined>(undefined);
 const contentSubsection = ref(10);
 const searchEleHeight = ref(0);
@@ -47,14 +48,13 @@ const stopWatchSrarch = watch(
 				isSearching.value = true;
 				doSearch(bookPrototype.value as Book, searchValue.value)
 					.then((res) => {
-						listContent.value = res;
-						// JSON.parse(JSON.stringify(listContent.value)).map((item: any) => {
-						// 	item.excerpt = item.except.relace(
-						// 		searchValue.value,
-						// 		"<span class='light_height_text'>${searchValue.value}</span>"
-						// 	);
-						// 	return item;
-						// });
+						listContent.value = res.map((item: any) => {
+							item.excerpt = item.excerpt.replace(
+								new RegExp(searchValue.value, "gi"),
+								`<span class='light_height_text'>$&</span>`
+							);
+							return item;
+						});
 					})
 					.then(() => {
 						isSearching.value = false;
@@ -82,11 +82,13 @@ const handelSearchScroll = throttle((e: Event) => {
 	}
 }, 1000);
 const handelClickSearchItem = (item: any) => {
-	bookPrototype.value.rendition.display(item.cfi);
-	// currentLocationPercentage.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value);
-	// getCurrentLocation(bookPrototype.value as Book, totalPageLength.value, currentSection.value);
+	bookPrototype.value.rendition.display(item.cfi).then(() => {
+		currentLocationPercentage.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).percentage;
+		currentSection.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).section;
+	});
 	showDialog.value = false;
 	currentMenu.value = "";
+	bookPrototype.value.rendition.annotations.highlight(item.cfi);
 };
 onUnmounted(() => {
 	stopWatchList();
@@ -107,6 +109,10 @@ onUnmounted(() => {
 			margin: 1.214rem 0;
 			border-bottom: 1px solid #9b8d8d;
 			box-sizing: border-box;
+			:deep(.light_height_text) {
+				color: red;
+				font-weight: 600;
+			}
 		}
 	}
 	.searching {
@@ -120,9 +126,6 @@ onUnmounted(() => {
 		white-space: nowrap;
 		background-color: #d7cf96;
 		padding: 0.714rem;
-	}
-	.light_height_text {
-		color: red;
 	}
 }
 </style>

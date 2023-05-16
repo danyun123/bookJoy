@@ -21,7 +21,8 @@
     "sass": "^1.62.1",
     "vant": "^4.2.1",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-lottie": "^2.7.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

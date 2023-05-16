@@ -166,7 +166,7 @@ watchEffect(() => {
 		bottom: 0;
 		display: flex;
 		justify-content: space-around;
-		margin: 0 -$pagePadding;
+		margin: 0 - $pagePadding;
 		margin-top: 0;
 		margin-bottom: 0.357rem;
 		border-radius: 1.429rem;

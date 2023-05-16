@@ -47,11 +47,11 @@ let {
 	bookPrototype
 } = storeToRefs(booksStore);
 
-const path = route.path;
-const bookUrl = getBookUrl(path);
 const slideDistance = ref(0);
 const slideTime = ref(0);
 const isTouchToChangePage = ref(false);
+const path = route.path;
+const bookUrl = getBookUrl(path);
 const book = ePub(bookUrl);
 bookPrototype.value = book;
 onActivated(() => {
@@ -62,22 +62,26 @@ onActivated(() => {
 	} else {
 		localStorage.removeItem("isRefreshed");
 	}
+	// const path = route.path;
+	// const bookUrl = getBookUrl(path);
+	// book = ePub(bookUrl);
+	// bookPrototype.value = book;
+	// console.log(book);
 });
 // 设置封面
-book.loaded.cover.then((cover) => {
-	book.archive.createUrl(cover, { base64: false }).then((url) => {
+book?.loaded.cover.then((cover) => {
+	book?.archive.createUrl(cover, { base64: false }).then((url) => {
 		currentBookCover.value = url;
 	});
 });
-
-book.loaded.metadata.then((data) => {
+book?.loaded.metadata.then((data) => {
 	currentBookMetaData.value = data as currentBookMetaDataType;
 });
-book.loaded.navigation.then((nav) => {
+book?.loaded.navigation.then((nav) => {
 	const flatedNav = flatNavArr(nav.toc);
 	entireDirectory.value = formatFlatNavArr(flatedNav);
 });
-book.ready.then(() => {
+book?.ready.then(() => {
 	isReady.value = true;
 	//@ts-ignore
 	book.rendition.hooks.content.register((contents: any) => {
@@ -88,7 +92,7 @@ book.ready.then(() => {
 			contents.addStylesheet(`${import.meta.env.VITE_BASE_URL}/fonts/tangerine.css`)
 		]);
 	});
-	book.locations.generate(150).then((res) => {
+	book?.locations.generate(150).then((res) => {
 		totalPageLength.value = res.length;
 		directoryLoadOver.value = true;
 	});
@@ -96,64 +100,63 @@ book.ready.then(() => {
 	maxSectionLength.value = book.spine.length;
 	//@ts-ignore
 	const progressConfig = localStorage.getItem(book.cover);
-	const { percentage, section, currentLocation } = progressConfig
+	const { percentage, section, currentLocationCFI } = progressConfig
 		? JSON.parse(progressConfig)
 		: {
 				percentage: null,
 				section: null,
-				currentLocation: null
+				currentLocationCFI: null
 		  };
-	if ((percentage || percentage === 0) && section && currentLocation) {
+	if ((percentage || percentage === 0) && section && currentLocationCFI) {
 		// 跳转到指定页面
-		book.rendition.display(currentLocation);
+		book?.rendition.display(currentLocationCFI);
 		// 设置进度百分比
 		currentLocationPercentage.value = percentage;
 		currentSection.value = { isInitialize: true, section: section };
 	}
 });
-const bookExample = book.renderTo("book_content", {
+const bookExample = book?.renderTo("book_content", {
 	width: innerWidth,
 	height: innerHeight
-	// flow: "scrolled-doc",
+	// flow: "scrolled-doc"
 });
 entireThemeColor.map((item) => {
-	bookExample.themes.register(item.text, item.style);
+	bookExample?.themes.register(item.text, item.style);
 });
-bookExample.display();
+bookExample?.display();
 const initialSlideTime = ref(0);
 const initialSlideDistance = ref(0);
-bookExample.on("touchstart", (e: TouchEvent) => {
+bookExample?.on("touchstart", (e: TouchEvent) => {
 	initialSlideDistance.value = e.changedTouches[0].clientX;
 	initialSlideTime.value = e.timeStamp;
 });
 const slideSwitch = () => {
 	showBar.value = false;
-	const newSection = getCurrentSectionInfo(book).index;
+	const newSection = getCurrentSectionInfo(book!).index;
 	if (currentSection.value !== newSection) {
 		isTouchToChangePage.value = true;
 		currentSection.value = newSection;
 	}
-	currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value);
-	getCurrentLocation(book, totalPageLength.value, currentSection.value);
+	currentLocationPercentage.value = getCurrentLocation(book!, totalPageLength.value).percentage;
 };
-bookExample.on("touchend", (e: TouchEvent) => {
+bookExample?.on("touchend", (e: TouchEvent) => {
 	if (showDialog.value) return;
 	slideDistance.value = e.changedTouches[0].clientX - initialSlideDistance.value;
 	slideTime.value = e.timeStamp - initialSlideTime.value;
 	if (slideTime.value < 1000) {
-		if (slideDistance.value > 80) {
+		if (slideDistance.value > 40) {
 			bookExample.prev().then(() => {
 				slideSwitch();
 			});
 			showBar.value = false;
-		} else if (slideDistance.value < -80) {
+		} else if (slideDistance.value < -40) {
 			bookExample.next().then(() => {
 				slideSwitch();
 			});
 		}
 	}
 });
-bookExample.on("click", (e: Event) => {
+bookExample?.on("click", (e: Event) => {
 	if (showDialog.value) {
 		showDialog.value = false;
 		currentMenu.value = "";
@@ -171,11 +174,11 @@ onMounted(() => {
 });
 
 const stopWatchFontSize = watch([fontSize], () => {
-	bookExample.themes.fontSize(fontSize.value + "pt");
+	bookExample?.themes.fontSize(fontSize.value + "pt");
 	localStorage.setItem(LOCAL_FONT_SIZE, String(fontSize.value));
 });
 const stopWatchFontFamily = watch([fontFamily], () => {
-	bookExample.themes.font(
+	bookExample?.themes.font(
 		fontFamily.value === "Default"
 			? '-apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif'
 			: fontFamily.value
@@ -183,7 +186,7 @@ const stopWatchFontFamily = watch([fontFamily], () => {
 	localStorage.setItem(LOCAL_FONT_FAMILY, fontFamily.value);
 });
 const stopWatchFontColor = watch([themeColor], () => {
-	bookExample.themes.select(themeColor.value);
+	bookExample?.themes.select(themeColor.value);
 	``;
 	localStorage.setItem(LOCAL_THEME_COLOR, themeColor.value);
 });
@@ -191,9 +194,9 @@ const stopWatchFontSection = watch([currentSection], async (newValue, oldValue) 
 	if (!isTouchToChangePage.value) {
 		if (!(oldValue[0] instanceof Object)) {
 			if (typeof newValue[0] === "number" && directoryLoadOver) {
-				const currentCfi = book.spine.get(newValue[0]).href;
-				book.rendition.display(currentCfi).then(() => {
-					currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value, newValue[0] as number);
+				const currentCfi = book?.spine.get(newValue[0]).href;
+				book?.rendition.display(currentCfi).then(() => {
+					currentLocationPercentage.value = getCurrentLocation(book!, totalPageLength.value).percentage;
 				});
 			} else {
 				//@ts-ignore
