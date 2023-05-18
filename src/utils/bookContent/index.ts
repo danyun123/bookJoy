@@ -18,7 +18,7 @@ export const getCurrentSectionInfo = (book: Book) => {
 export const getCurrentLocation = (book: Book, pageLength: number = 7000) => {
 	if (pageLength === 0) pageLength = 7000;
 	// 获取当前位置（CFI）
-	const currentLocationCFI = book.rendition.currentLocation().start?.cfi;
+	const currentLocationCFI = book.rendition.currentLocation().end?.cfi;
 	// 使用当前位置 CFI 获取当前页数
 	const currentPage = book.locations.locationFromCfi(currentLocationCFI);
 	// 计算当前位置百分比
@@ -30,6 +30,29 @@ export const getCurrentLocation = (book: Book, pageLength: number = 7000) => {
 		percentage,
 		section
 	};
+};
+
+export interface bookmarkType {
+	cfi: string;
+	text: {
+		date: string;
+		name: string;
+	};
+}
+
+// export const getCurrentCFIText = (book: Book, section: number) => {
+// 	const currentCFI: string = getCurrentPageCFI(book);
+// 	const currentBookmark: bookmarkType[] = [{ cfi: currentCFI, text: "" }];
+// 	console.log(book.spine.get(section));
+// 	// const cfibase = currentCFI.replace(/!.*/, "");
+// 	// const cfistart = currentCFI.replace(/.*!/, "").replace(/\)$/, "");
+// 	// const cfiend = book.rendition.currentLocation().end.cfi.replace(/.*!/, "").replace(/\)$/, "");
+// 	// const cfirange = `${cfibase}!,${cfistart},${cfiend})`;
+// 	return currentBookmark;
+// };
+
+export const getCurrentPageCFI = (book: Book) => {
+	return book.rendition.currentLocation().end.cfi;
 };
 
 export const flatNavArr = (navArr: any[]) => {

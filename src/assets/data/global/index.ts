@@ -65,4 +65,25 @@ export const entireMenubar = [
 	}
 ];
 
-// export const;
+// export const entireNavbar = [
+// 	{
+// 		text: "bookmark",
+// 		value: "书签",
+// 		icon: "bookmark-o"
+// 	},
+// 	{
+// 		text: "bookshelf",
+// 		value: "书架",
+// 		icon: "home-o"
+// 	},
+// 	{
+// 		text: "shoppingCar",
+// 		value: "购物车",
+// 		icon: "shopping-cart-o"
+// 	},
+// 	{
+// 		text: "more",
+// 		value: "更多",
+// 		icon: "descending"
+// 	}
+// ];

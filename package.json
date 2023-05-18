@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "dayjs": "^1.11.7",
     "epubjs": "^0.3.93",
     "express": "^4.18.2",
     "mockjs": "^1.1.0",

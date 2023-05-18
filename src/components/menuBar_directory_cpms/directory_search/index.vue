@@ -3,7 +3,7 @@
 		<template v-if="realProxyObject(listContent ?? []).length !== 0">
 			<div class="list" ref="listRef" v-if="realProxyObject(listContent ?? []).length > 0">
 				<template v-for="item in realProxyObject(listContent ?? []).splice(0, contentSubsection)" :key="item.cfi">
-					<div class="item" v-html="item.excerpt" @click="() => handelClickSearchItem(item)"></div>
+					<div class="item" v-html="item.excerpt" @click="() => handelClickSearchItem(item.cfi)"></div>
 				</template>
 			</div>
 		</template>
@@ -81,14 +81,14 @@ const handelSearchScroll = throttle((e: Event) => {
 		if (contentSubsection.value < listContent.value?.length) contentSubsection.value += 15;
 	}
 }, 1000);
-const handelClickSearchItem = (item: any) => {
-	bookPrototype.value.rendition.display(item.cfi).then(() => {
+const handelClickSearchItem = (cfi: string) => {
+	bookPrototype.value.rendition.display(cfi).then(() => {
 		currentLocationPercentage.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).percentage;
 		currentSection.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).section;
 	});
 	showDialog.value = false;
 	currentMenu.value = "";
-	bookPrototype.value.rendition.annotations.highlight(item.cfi);
+	bookPrototype.value.rendition.annotations.highlight(cfi);
 };
 onUnmounted(() => {
 	stopWatchList();

@@ -87,7 +87,7 @@ const router = createRouter({
 		},
 		{
 			path: "/test",
-			component: () => import("@/baseUI/animation/book_directory_loading/index.vue")
+			component: () => import("@/baseUI/bookmark/index.vue")
 		}
 	]
 });

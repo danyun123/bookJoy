@@ -7,3 +7,4 @@ export const ALLBOOKSHELFNAME = "all_bookshelf_names";
 export const USERNAME = "username";
 export const HOMESCROLLTOP = "homeScrollTop";
 export const ALLSORTSCROLLTOP = "allSortScrollTop";
+export const ALLBOOKMARK = "allBookmark";

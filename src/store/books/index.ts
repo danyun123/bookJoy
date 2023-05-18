@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { Book } from "epubjs";
+import type { bookmarkType } from "@/utils/bookContent";
 
 export type currentMenuType = "" | "fontSize" | "themeColor" | "fontFamily" | "directory" | "progress";
 export type themeColorType = "default" | "fresh" | "eye_protection" | "wood";
@@ -36,11 +37,14 @@ const useBooks = defineStore("books", {
 		presentReadTime: 0,
 		currentLocationPercentage: 0,
 		entireDirectory: [] as any[],
+		allBookmarks: [] as bookmarkType[],
 		currentBookCover: "",
 		themeColor: "" as themeColorType,
 		showBar: true,
+		entireFlatDirectory: [] as any[],
 		currentMenu: "" as currentMenuType,
-		showDialog: false
+		showDialog: false,
+		showBookmark: false
 	})
 });
 

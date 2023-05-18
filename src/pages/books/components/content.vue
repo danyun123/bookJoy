@@ -1,5 +1,7 @@
 <template>
-	<div id="book_content" :style="{ width: pageWidth, height: pageHeight }"></div>
+	<div id="book_content" :style="{ width: pageWidth, height: pageHeight }">
+		<Bookmark v-if="showBookmark" class="bookmark" />
+	</div>
 	<div v-if="!isReady" class="ing">正在解析中，请稍等~~~~~</div>
 </template>
 
@@ -7,18 +9,21 @@
 import { useRoute } from "vue-router/dist/vue-router";
 import ePub from "epubjs";
 import { getBooksConfig } from "@/utils/common";
+import type { bookmarkType } from "@/utils/bookContent";
 import {
 	flatNavArr,
 	formatFlatNavArr,
 	getBookUrl,
 	getCurrentLocation,
+	getCurrentPageCFI,
 	getCurrentSectionInfo
 } from "@/utils/bookContent";
 import useBooks, { type currentBookMetaDataType, type themeColorType } from "../../../store/books/index";
 import { storeToRefs } from "pinia/dist/pinia";
 import { onActivated, onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
-import { LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
+import { ALLBOOKMARK, LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
+import Bookmark from "@/baseUI/bookmark/index.vue";
 
 const pageWidth = ref("");
 const pageHeight = ref("");
@@ -28,6 +33,7 @@ watchEffect(() => {
 	pageWidth.value = innerWidth + "px";
 	pageHeight.value = innerHeight + "px";
 });
+
 const booksStore = useBooks();
 let {
 	currentBookMetaData,
@@ -44,7 +50,10 @@ let {
 	themeColor,
 	currentBookCover,
 	entireDirectory,
-	bookPrototype
+	bookPrototype,
+	allBookmarks,
+	entireFlatDirectory,
+	showBookmark
 } = storeToRefs(booksStore);
 
 const slideDistance = ref(0);
@@ -54,6 +63,7 @@ const path = route.path;
 const bookUrl = getBookUrl(path);
 const book = ePub(bookUrl);
 bookPrototype.value = book;
+
 onActivated(() => {
 	const isRefreshed = localStorage.getItem("isRefreshed");
 	if (isRefreshed !== "true") {
@@ -62,11 +72,6 @@ onActivated(() => {
 	} else {
 		localStorage.removeItem("isRefreshed");
 	}
-	// const path = route.path;
-	// const bookUrl = getBookUrl(path);
-	// book = ePub(bookUrl);
-	// bookPrototype.value = book;
-	// console.log(book);
 });
 // 设置封面
 book?.loaded.cover.then((cover) => {
@@ -79,6 +84,7 @@ book?.loaded.metadata.then((data) => {
 });
 book?.loaded.navigation.then((nav) => {
 	const flatedNav = flatNavArr(nav.toc);
+	entireFlatDirectory.value = flatedNav;
 	entireDirectory.value = formatFlatNavArr(flatedNav);
 });
 book?.ready.then(() => {
@@ -95,6 +101,10 @@ book?.ready.then(() => {
 	book?.locations.generate(150).then((res) => {
 		totalPageLength.value = res.length;
 		directoryLoadOver.value = true;
+		//@ts-ignore
+		const local_allBookmark: bookmarkType[] = JSON.parse(localStorage.getItem(ALLBOOKMARK + book.cover));
+		allBookmarks.value = local_allBookmark ?? [];
+		showBookmark.value = allBookmarks.value.some((item) => item.cfi === getCurrentPageCFI(book));
 	});
 	//@ts-ignore
 	maxSectionLength.value = book.spine.length;
@@ -132,6 +142,7 @@ bookExample?.on("touchstart", (e: TouchEvent) => {
 });
 const slideSwitch = () => {
 	showBar.value = false;
+	showBookmark.value = allBookmarks.value.some((item) => item.cfi === getCurrentPageCFI(book));
 	const newSection = getCurrentSectionInfo(book!).index;
 	if (currentSection.value !== newSection) {
 		isTouchToChangePage.value = true;
@@ -196,6 +207,7 @@ const stopWatchFontSection = watch([currentSection], async (newValue, oldValue) 
 			if (typeof newValue[0] === "number" && directoryLoadOver) {
 				const currentCfi = book?.spine.get(newValue[0]).href;
 				book?.rendition.display(currentCfi).then(() => {
+					showBookmark.value = allBookmarks.value.includes(getCurrentPageCFI(book));
 					currentLocationPercentage.value = getCurrentLocation(book!, totalPageLength.value).percentage;
 				});
 			} else {
@@ -205,6 +217,9 @@ const stopWatchFontSection = watch([currentSection], async (newValue, oldValue) 
 		}
 	}
 	isTouchToChangePage.value = false;
+});
+watch([allBookmarks], () => {
+	showBookmark.value = allBookmarks.value.some((item) => item.cfi === getCurrentPageCFI(book));
 });
 onBeforeUnmount(() => {
 	directoryLoadOver.value = false;
@@ -222,6 +237,13 @@ onUnmounted(() => {
 #book_content {
 	width: 100% !important;
 	height: 100% !important;
+	position: relative;
+	.bookmark {
+		position: absolute;
+		top: 0;
+		right: 1.071rem;
+		z-index: 1;
+	}
 }
 .ing {
 	@include remindInfo;
