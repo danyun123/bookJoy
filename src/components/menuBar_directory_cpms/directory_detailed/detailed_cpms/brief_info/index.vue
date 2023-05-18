@@ -47,7 +47,9 @@ const { currentBookCover, currentBookMetaData, currentLocationPercentage, entire
 	}
 	.metaData {
 		margin: 0 0.314rem 0 0.714rem;
-		width: 60%;
+		max-width: 60%;
+		width: auto;
+		height: auto;
 		.name {
 			@include displayMultiline();
 			margin-bottom: 1.429rem;

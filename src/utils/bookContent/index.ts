@@ -52,7 +52,7 @@ export interface bookmarkType {
 // };
 
 export const getCurrentPageCFI = (book: Book) => {
-	return book.rendition.currentLocation().end.cfi;
+	return book.rendition.currentLocation()?.end.cfi;
 };
 
 export const flatNavArr = (navArr: any[]) => {

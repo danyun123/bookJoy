@@ -4,7 +4,9 @@ export const entireThemeColor = [
 		value: "默认",
 		style: {
 			".default": {
-				"background-color": "#ffffff"
+				"background-color": "#ffffff",
+				color: "#2c2c2c",
+				"padding-top": "2.057rem !important"
 			}
 		}
 	},
@@ -13,7 +15,9 @@ export const entireThemeColor = [
 		value: "清新",
 		style: {
 			".fresh": {
-				"background-color": "rgb(193 255 207)"
+				"background-color": "rgb(193 255 207)",
+				color: "#A12727FF",
+				"padding-top": "2.057rem !important"
 			}
 		}
 	},
@@ -22,7 +26,9 @@ export const entireThemeColor = [
 		value: "护眼",
 		style: {
 			".eye_protection": {
-				"background-color": "#ececbd"
+				"background-color": "#ececbd",
+				color: "#464545",
+				"padding-top": "2.057rem !important"
 			}
 		}
 	},
@@ -31,7 +37,9 @@ export const entireThemeColor = [
 		value: "木质",
 		style: {
 			".wood": {
-				"background-color": "rgb(198 124 14)"
+				"background-color": "rgb(220 136 11)",
+				color: "rgb(49 49 49)",
+				"padding-top": "2.057rem !important"
 			}
 		}
 	}

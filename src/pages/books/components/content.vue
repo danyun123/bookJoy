@@ -167,7 +167,25 @@ bookExample?.on("touchend", (e: TouchEvent) => {
 		}
 	}
 });
-bookExample?.on("click", (e: Event) => {
+bookExample?.on("click", (e: Event & { offsetX: number }) => {
+	const targetElement = e.target as HTMLElement;
+	const xPosition = e.offsetX;
+	const targetWidth = targetElement.offsetWidth;
+	if (xPosition < 80) {
+		bookExample.prev().then(() => {
+			showBar.value = false;
+			currentMenu.value = "";
+			slideSwitch();
+		});
+		return;
+	} else if (xPosition > targetWidth - 80) {
+		bookExample.next().then(() => {
+			showBar.value = false;
+			currentMenu.value = "";
+			slideSwitch();
+		});
+		return;
+	}
 	if (showDialog.value) {
 		showDialog.value = false;
 		currentMenu.value = "";

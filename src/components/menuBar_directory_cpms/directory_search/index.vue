@@ -81,7 +81,7 @@ const handelSearchScroll = throttle((e: Event) => {
 		if (contentSubsection.value < listContent.value?.length) contentSubsection.value += 15;
 	}
 }, 1000);
-const handelClickSearchItem = (cfi: string) => {
+const handelClickSearchItem = throttle((cfi: string) => {
 	bookPrototype.value.rendition.display(cfi).then(() => {
 		currentLocationPercentage.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).percentage;
 		currentSection.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).section;
@@ -89,7 +89,7 @@ const handelClickSearchItem = (cfi: string) => {
 	showDialog.value = false;
 	currentMenu.value = "";
 	bookPrototype.value.rendition.annotations.highlight(cfi);
-};
+}, 1000);
 onUnmounted(() => {
 	stopWatchList();
 	stopWatchSrarch();

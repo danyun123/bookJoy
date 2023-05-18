@@ -29,12 +29,13 @@ import Fold_recursion from "./fold_recursion.vue";
 import type { CollapseInstance } from "vant";
 import { strToNum } from "@/utils/common";
 import { isChildSelected } from "@/utils/bookContent";
+import throttle from "@/utils/throttle";
 
 const collapseRef = ref<CollapseInstance>();
 const bookStore = useBooks();
 const { entireDirectory, currentSection, directorySelected } = storeToRefs(bookStore);
 const activeName = ref(["1"]);
-const handelClick = (e: Event, sectionId: string) => {
+const handelClick = throttle((e: Event, sectionId: string) => {
 	if (
 		(e.target as (EventTarget & { className: string }) | null)?.className ===
 			"van-badge__wrapper van-icon van-icon-arrow van-cell__right-icon" ||
@@ -43,7 +44,7 @@ const handelClick = (e: Event, sectionId: string) => {
 		return;
 	directorySelected.value = sectionId;
 	currentSection.value = strToNum(sectionId) - 1;
-};
+}, 1000);
 onMounted(() => {
 	collapseRef.value?.toggleAll(true);
 });

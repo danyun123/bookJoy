@@ -24,6 +24,7 @@ import { strToNum } from "@/utils/common";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia";
 import { isChildSelected } from "@/utils/bookContent";
+import throttle from "@/utils/throttle";
 
 interface IPropsType {
 	data: any[];
@@ -32,7 +33,7 @@ interface IPropsType {
 const bookStore = useBooks();
 const { directorySelected, currentSection } = storeToRefs(bookStore);
 const IProps = defineProps<IPropsType>();
-const handelClick = (e: Event, sectionId: string) => {
+const handelClick = throttle((e: Event, sectionId: string) => {
 	if (
 		(e.target as (EventTarget & { className: string }) | null)?.className ===
 			"van-badge__wrapper van-icon van-icon-arrow van-cell__right-icon" ||
@@ -41,7 +42,7 @@ const handelClick = (e: Event, sectionId: string) => {
 		return;
 	directorySelected.value = sectionId;
 	currentSection.value = strToNum(sectionId) - 1;
-};
+}, 1000);
 </script>
 
 <style scoped lang="scss">

@@ -12,7 +12,7 @@
 				@keydown.exact.enter="confirmSearch = true"
 			>
 				<template #left v-if="displayReturnBtn">
-					<div class="return"><van-icon name="arrow-left" @click="handelReturnClick" />返回</div>
+					<div class="return" @click="handelReturnClick"><van-icon name="arrow-left" />返回</div>
 				</template>
 			</van-search>
 			<div class="confirm" v-if="displayReturnBtn" @click="confirmSearch = true">确认</div>
