@@ -4,7 +4,7 @@
 			<div class="title">书城</div>
 			<div class="random" @click="randomClick"><van-icon name="guide-o" /></div>
 		</div>
-		<div class="search">
+		<div class="search" :style="{ top: searchScrollTop, transition: transitionStyle }" ref="searchRef">
 			<div class="search_return" v-if="route.path === '/home/search'" @click="handelReturnClick">
 				<van-icon name="arrow-left" />
 				返回
@@ -14,6 +14,7 @@
 				placeholder="请输入搜索关键词"
 				@focus="handelSearchFocus"
 				@keydown.stop.exact.enter="confirmSearch"
+				:style="{ scale: scaleNum, transition: 'scale 100ms linear,width 100ms linear' }"
 			/>
 			<div class="confirm" v-if="route.path === '/home/search'" @click="confirmSearch">确认</div>
 		</div>
@@ -28,17 +29,23 @@
 import useHome from "@/store/home";
 import { storeToRefs } from "pinia/dist/pinia";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { onDeactivated, ref, watch } from "vue";
 import { useRoute } from "vue-router/dist/vue-router";
 import { SEARCH_HISTORY } from "@/assets/constant";
 import Home_Random from "../home_random/index.vue";
 
 const searchValue = ref();
 const homeStore = useHome();
-const { hideHead, search_history } = storeToRefs(homeStore);
+const { hideHead, search_history, homeScrollTop } = storeToRefs(homeStore);
 const router = useRouter();
 const route = useRoute();
+const scaleNum = ref(1);
+const searchRef = ref<Element>();
+const HTMLFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
 const showRandom = ref(false);
+const transitionStyle = ref<null | string>(null);
+const searchScrollTop = ref<string>("2.671rem");
+
 const handelSearchFocus = () => {
 	if (route.path === "/home/search") return;
 	hideHead.value = true;
@@ -55,16 +62,38 @@ const confirmSearch = () => {
 	localStorage.setItem(SEARCH_HISTORY, JSON.stringify([...data, searchValue.value]));
 	searchValue.value = "";
 };
+const stopWatchHomeScrollTop = watch([homeScrollTop], () => {
+	let top = 2.65 * HTMLFontSize - Math.floor(homeScrollTop.value);
+	if (top < 0) {
+		transitionStyle.value = "top 100ms linear";
+		top = 0;
+	} else {
+		transitionStyle.value = null;
+	}
+	scaleNum.value = top / (2.65 * HTMLFontSize) < 0.9 ? 0.9 : top / (2.65 * HTMLFontSize);
+	searchScrollTop.value = top + "px";
+});
+const stopWatchRoute = watch([route], () => {
+	transitionStyle.value = "top 100ms linear";
+	if (route.path === "/home/search") {
+		searchScrollTop.value = "0";
+	} else {
+		searchScrollTop.value = "2.65rem";
+	}
+});
 const randomClick = () => {
 	console.log("推荐书籍");
 };
+onDeactivated(() => {
+	stopWatchRoute();
+	stopWatchHomeScrollTop();
+});
 </script>
 
 <style scoped lang="scss">
 @import "../../../../assets/css/common";
 .head {
 	padding: $pagePadding $pagePadding 0 $pagePadding;
-	font-size: 1.1rem;
 	.nav {
 		display: flex;
 		justify-content: flex-end;
@@ -95,6 +124,13 @@ const randomClick = () => {
 	.search {
 		display: flex;
 		justify-content: space-between;
+		width: auto;
+		position: fixed;
+		left: 0;
+		right: 0;
+		z-index: 2;
+		top: 2.65rem;
+		padding: 0 $pagePadding;
 		.search_return,
 		.confirm {
 			line-height: 54px;
@@ -103,14 +139,20 @@ const randomClick = () => {
 			margin-left: -0.357rem;
 		}
 		.van-search {
-			background-color: transparent;
+			background: none;
+			padding: 10px 5px;
 			flex: 1;
 			:deep(.van-search__content) {
 				padding: 0;
+				background-color: #e2e2e2;
+				border-radius: 1.071rem;
+				overflow: hidden;
+			}
+			:deep(.van-field__control) {
+				background-color: #e2e2e2;
 			}
 			:deep(.van-search__field) {
 				background-color: #e2e2e2;
-				border-radius: 1.071rem;
 				color: black;
 				padding-left: 0.714rem;
 				input {

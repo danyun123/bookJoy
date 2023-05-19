@@ -36,14 +36,22 @@ import { HOMESCROLLTOP } from "@/assets/constant";
 
 const homeStore = useHome();
 const { fetchHomeData } = homeStore;
-const { homeData, insideSearch } = storeToRefs(homeStore);
+const { homeData, insideSearch, homeScrollTop } = storeToRefs(homeStore);
 const route = useRoute();
 const homeRef = ref<HTMLDivElement>();
+let throttleTime = ref(0);
 
 const homeScroll = throttle((e: Event) => {
 	//@ts-ignore
-	localStorage.setItem(HOMESCROLLTOP, e.target.scrollTop);
-}, 500);
+	const scrollTop = e.target.scrollTop;
+	if (scrollTop < window.innerHeight / 4) {
+		homeScrollTop.value = scrollTop;
+		throttleTime.value = 0;
+		return;
+	}
+	throttleTime.value = 666;
+	localStorage.setItem(HOMESCROLLTOP, scrollTop);
+}, throttleTime.value);
 onBeforeMount(() => {
 	fetchHomeData();
 });

@@ -76,6 +76,7 @@ onBeforeMount(() => {
 <style scoped lang="scss">
 .search_detail {
 	height: calc(100vh - 3.214rem - 10px);
+	margin-top: 2.65rem;
 	.rightBtn {
 		position: absolute;
 		right: 0;
