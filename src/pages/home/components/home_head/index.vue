@@ -48,6 +48,7 @@ const searchScrollTop = ref<string>("2.671rem");
 
 const handelSearchFocus = () => {
 	if (route.path === "/home/search") return;
+	homeScrollTop.value = 0;
 	hideHead.value = true;
 	router.push("/home/search");
 };

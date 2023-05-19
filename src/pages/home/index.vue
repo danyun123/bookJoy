@@ -5,7 +5,7 @@
 			overflow: !insideSearch ? 'scroll' : 'hidden'
 		}"
 		ref="homeRef"
-		@scroll.stop="(e) => homeScroll(e)"
+		@scroll.passive="(e) => homeScroll(e)"
 	>
 		<Home_head />
 		<Home_banner :banner="homeData.banner" />
@@ -52,21 +52,32 @@ const homeScroll = throttle((e: Event) => {
 	throttleTime.value = 666;
 	localStorage.setItem(HOMESCROLLTOP, scrollTop);
 }, throttleTime.value);
+const setHomeScrollTop = () => {
+	homeRef.value!.scrollTop = parseInt(localStorage.getItem(HOMESCROLLTOP) ?? "0") ?? 0;
+};
+onActivated(() => {
+	if (homeRef.value) setHomeScrollTop();
+});
 onBeforeMount(() => {
 	fetchHomeData();
 });
 watch([route], () => {
+	// if (route.path === "/home") {
+	// 	setHomeScrollTop();
+	// }
 	insideSearch.value = false;
 });
-onActivated(() => {
-	if (homeRef.value) homeRef.value.scrollTop = parseInt(localStorage.getItem(HOMESCROLLTOP) ?? "0") ?? 0;
+watch([homeScrollTop], () => {
+	if (homeScrollTop.value === 0) {
+		homeRef.value!.scrollTop = 0;
+	}
 });
 </script>
 
 <style scoped lang="scss">
 .home {
 	width: 100%;
-	height: calc(100vh - 2.428rem);
+	height: 100vh;
 	background-color: #f4f4f4;
 	overflow: scroll;
 }

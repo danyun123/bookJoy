@@ -52,7 +52,7 @@ const bookClick = (category: number) => {
 
 .sort {
 	padding: 0 $pagePadding;
-	margin: 1.814rem 0;
+	margin: 1.814rem 0 3.28rem 0;
 	:deep(.title) {
 		font-size: 1.25rem;
 	}
