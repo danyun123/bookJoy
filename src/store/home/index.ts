@@ -33,7 +33,9 @@ const useHome = defineStore("home", {
 		homeData: {},
 		bookList: {} as bookListType,
 		insideSearch: false,
-		homeScrollTop: 0 as number
+		homeScrollTop: 0 as number,
+		showRecommendCard: false,
+		RecommendCardBookIndex: null as null | number
 	}),
 	actions: {
 		async fetchHomeData() {

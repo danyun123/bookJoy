@@ -5,5 +5,5 @@
 <script setup lang="ts">
 import * as lotties from "@/assets/lotties/index";
 
-const lottieArr = lotties.book_directory_loading;
+const lottieArr = lotties.book_loading;
 </script>

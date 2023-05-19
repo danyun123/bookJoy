@@ -2,7 +2,7 @@
 	<div class="head">
 		<div :class="{ nav: true, isHeadHide: hideHead }" v-if="route.path === '/home'">
 			<div class="title">书城</div>
-			<div class="random" @click="randomClick"><van-icon name="guide-o" /></div>
+			<div class="random" @click="randomRcmdClick"><van-icon name="guide-o" /></div>
 		</div>
 		<div class="search" :style="{ top: searchScrollTop, transition: transitionStyle }" ref="searchRef">
 			<div class="search_return" v-if="route.path === '/home/search'" @click="handelReturnClick">
@@ -36,7 +36,8 @@ import Home_Random from "../home_random/index.vue";
 
 const searchValue = ref();
 const homeStore = useHome();
-const { hideHead, search_history, homeScrollTop } = storeToRefs(homeStore);
+const { hideHead, search_history, homeScrollTop, showRecommendCard, homeData, RecommendCardBookIndex } =
+	storeToRefs(homeStore);
 const router = useRouter();
 const route = useRoute();
 const scaleNum = ref(1);
@@ -82,8 +83,12 @@ const stopWatchRoute = watch([route], () => {
 		searchScrollTop.value = "2.65rem";
 	}
 });
-const randomClick = () => {
-	console.log("推荐书籍");
+const randomRcmdClick = () => {
+	if (homeData) {
+		//@ts-ignore
+		RecommendCardBookIndex.value = Math.floor(Math.random() * homeData.value.random.length);
+	}
+	showRecommendCard.value = true;
 };
 onDeactivated(() => {
 	stopWatchRoute();

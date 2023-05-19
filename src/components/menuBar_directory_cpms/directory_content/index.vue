@@ -28,7 +28,7 @@ import useDirectory from "@/store/directory";
 import { storeToRefs } from "pinia/dist/pinia";
 import Directory_detailed from "../directory_detailed/index.vue";
 import Directory_search from "../directory_search/index.vue";
-import Book_directory_loading from "@/baseUI/animation/book_directory_loading/index.vue";
+import Book_directory_loading from "@/baseUI/animation/book_loading/index.vue";
 import useBooks from "@/store/books";
 
 const directoryStore = useDirectory();
