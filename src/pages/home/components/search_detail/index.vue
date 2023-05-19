@@ -54,6 +54,7 @@ const changeBatchClick = () => {
 	hotSearchList.value = getRandomArr(hotSearch, 5) as any[];
 };
 const clearHistoryClick = () => {
+	localStorage.setItem(SEARCH_HISTORY, JSON.stringify([]));
 	historyData.value = [];
 };
 const deleteIconClick = (index: number) => {
@@ -76,7 +77,7 @@ onBeforeMount(() => {
 <style scoped lang="scss">
 .search_detail {
 	height: calc(100vh - 3.214rem - 10px);
-	margin-top: 2.65rem;
+	margin-top: 2.95rem;
 	.rightBtn {
 		position: absolute;
 		right: 0;
