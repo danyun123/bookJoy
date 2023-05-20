@@ -37,6 +37,7 @@ declare module "@vue/runtime-core" {
 		VanLoading: typeof import("vant/es")["Loading"];
 		VanPicker: typeof import("vant/es")["Picker"];
 		VanPopup: typeof import("vant/es")["Popup"];
+		VanPullRefresh: typeof import("vant/es")["PullRefresh"];
 		VanSearch: typeof import("vant/es")["Search"];
 		VanSlider: typeof import("vant/es")["Slider"];
 		VanUploader: typeof import("vant/es")["Uploader"];

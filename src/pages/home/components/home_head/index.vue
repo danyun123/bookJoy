@@ -18,7 +18,7 @@
 			/>
 			<div class="confirm" v-if="route.path === '/home/search'" @click="confirmSearch">确认</div>
 		</div>
-		<router-view />
+		<router-view @searchPageInto="searchPageInto" />
 	</div>
 	<template v-if="showRandom">
 		<Home_Random />
@@ -29,7 +29,7 @@
 import useHome from "@/store/home";
 import { storeToRefs } from "pinia/dist/pinia";
 import { useRouter } from "vue-router";
-import { onDeactivated, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router/dist/vue-router";
 import { SEARCH_HISTORY } from "@/assets/constant";
 import Home_Random from "../home_random/index.vue";
@@ -42,10 +42,10 @@ const router = useRouter();
 const route = useRoute();
 const scaleNum = ref(1);
 const searchRef = ref<Element>();
-const HTMLFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+const HTMLFontSize = ref(parseFloat(getComputedStyle(document.documentElement).fontSize));
 const showRandom = ref(false);
 const transitionStyle = ref<null | string>(null);
-const searchScrollTop = ref<string>("2.671rem");
+const searchScrollTop = ref<string>("2.65rem");
 
 const handelSearchFocus = () => {
 	if (route.path === "/home/search") return;
@@ -58,24 +58,37 @@ const handelReturnClick = () => {
 	hideHead.value = false;
 	router.push("/home");
 };
+const searchPageInto = () => {
+	searchScrollTop.value = "0";
+};
 const confirmSearch = () => {
+	if (searchValue.value.trim() === "") return;
+	router.push({
+		path: `/sortBook/home_search`,
+		query: {
+			searchValue: searchValue.value
+		}
+	});
 	const data = JSON.parse(localStorage.getItem(SEARCH_HISTORY) ?? "[]");
 	search_history.value = [...data, searchValue.value];
 	localStorage.setItem(SEARCH_HISTORY, JSON.stringify([...data, searchValue.value]));
 	searchValue.value = "";
 };
-const stopWatchHomeScrollTop = watch([homeScrollTop], () => {
-	let top = 2.65 * HTMLFontSize - Math.floor(homeScrollTop.value);
+window.addEventListener("resize", () => {
+	HTMLFontSize.value = parseFloat(getComputedStyle(document.documentElement).fontSize);
+});
+watch([homeScrollTop], () => {
+	let top = 2.65 * HTMLFontSize.value - Math.floor(homeScrollTop.value);
 	if (top < 0) {
 		transitionStyle.value = "top 100ms linear";
 		top = 0;
 	} else {
 		transitionStyle.value = null;
 	}
-	scaleNum.value = top / (2.65 * HTMLFontSize) < 0.9 ? 0.9 : top / (2.65 * HTMLFontSize);
+	scaleNum.value = top / (2.65 * HTMLFontSize.value) < 0.9 ? 0.9 : top / (2.65 * HTMLFontSize.value);
 	searchScrollTop.value = top + "px";
 });
-const stopWatchRoute = watch([route], () => {
+watch([route], () => {
 	transitionStyle.value = "top 100ms linear";
 	if (route.path === "/home/search") {
 		searchScrollTop.value = "0";
@@ -90,10 +103,6 @@ const randomRcmdClick = () => {
 	}
 	showRecommendCard.value = true;
 };
-onDeactivated(() => {
-	stopWatchRoute();
-	stopWatchHomeScrollTop();
-});
 </script>
 
 <style scoped lang="scss">

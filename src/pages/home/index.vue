@@ -30,7 +30,7 @@ import Home_slot from "./components/home_sort/index.vue";
 import Home_classification from "@/components/home_classification/index.vue";
 import Home_random from "./components/home_random/index.vue";
 import useHome from "@/store/home";
-import { onActivated, onBeforeMount, onUnmounted, ref, watch } from "vue";
+import { onActivated, onBeforeMount, onMounted, onUnmounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia/dist/pinia";
 import { useRoute } from "vue-router/dist/vue-router";
 import throttle from "@/utils/throttle";
@@ -60,13 +60,13 @@ const setHomeScrollTop = () => {
 onActivated(() => {
 	if (homeRef.value) setHomeScrollTop();
 });
+onMounted(() => {
+	setHomeScrollTop();
+});
 onBeforeMount(() => {
 	fetchHomeData();
 });
 watch([route], () => {
-	// if (route.path === "/home") {
-	// 	setHomeScrollTop();
-	// }
 	insideSearch.value = false;
 });
 watch([homeScrollTop], () => {

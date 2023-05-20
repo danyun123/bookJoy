@@ -20,14 +20,14 @@
 			<Description_head title="搜索历史" right="清空" @rightSizeClick="clearHistoryClick" />
 			<div class="history_list">
 				<template v-for="(item, index) in historyData.toReversed()" :key="item">
-					<div class="history_item">
+					<div class="history_item" @click="() => itemCLick(item)">
 						<span class="history_icon">
 							<van-icon name="search" />
 						</span>
 						<span>
 							{{ item }}
 						</span>
-						<span class="history_delete" @click="() => deleteIconClick(index)">
+						<span class="history_delete" @click.stop="() => deleteIconClick(index)">
 							<van-icon name="cross" />
 						</span>
 					</div>
@@ -39,17 +39,20 @@
 
 <script setup lang="ts">
 import { hotSearch } from "@/assets/data/search_detail";
-import { onBeforeMount, ref, watch } from "vue";
+import { onActivated, onBeforeMount, ref, watch } from "vue";
 import { SEARCH_HISTORY } from "@/assets/constant";
 import useHome from "@/store/home";
 import { storeToRefs } from "pinia/dist/pinia";
 import Description_head from "@/baseUI/description_head/index.vue";
 import { getRandomArr, realProxyObject } from "@/utils/common";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const historyData = ref<string[]>(JSON.parse(localStorage.getItem(SEARCH_HISTORY) ?? "[]"));
 const hotSearchList = ref<any[]>(hotSearch.slice(0, 5));
 const homeStore = useHome();
 const { search_history, insideSearch } = storeToRefs(homeStore);
+const emit = defineEmits(["historyItemClick", "searchPageInto"]);
 const changeBatchClick = () => {
 	hotSearchList.value = getRandomArr(hotSearch, 5) as any[];
 };
@@ -59,7 +62,16 @@ const clearHistoryClick = () => {
 };
 const deleteIconClick = (index: number) => {
 	historyData.value.splice(realProxyObject(historyData.value).length - 1 - index, 1);
-	localStorage.setItem(SEARCH_HISTORY, JSON.stringify(realProxyObject(historyData.value)));
+	localStorage.setItem(SEARCH_HISTORY, JSON.stringify(historyData.value));
+};
+
+const itemCLick = (item: string) => {
+	router.push({
+		path: `/sortBook/home_search`,
+		query: {
+			searchValue: item
+		}
+	});
 };
 
 watch([search_history], () => {
@@ -69,8 +81,11 @@ onBeforeMount(() => {
 	insideSearch.value = true;
 	window.onbeforeunload = () => {
 		search_history.value = historyData.value;
-		localStorage.setItem(SEARCH_HISTORY, JSON.stringify(realProxyObject(historyData.value)));
+		localStorage.setItem(SEARCH_HISTORY, JSON.stringify(historyData.value));
 	};
+});
+onActivated(() => {
+	emit("searchPageInto", 0);
 });
 </script>
 
@@ -120,7 +135,7 @@ onBeforeMount(() => {
 		font-size: 1.15rem;
 		.history_list {
 			margin-top: 1.071rem;
-			height: calc(100vh - 36rem);
+			height: calc(100vh - 33rem);
 			overflow: scroll;
 			.history_item {
 				margin: 1.071rem 0;
