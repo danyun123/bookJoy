@@ -1,12 +1,12 @@
 <template>
 	<div class="search" ref="searchRef" @scroll.stop="(e) => handelSearchScroll(e)">
-		<template v-if="realProxyObject(listContent ?? []).length !== 0">
-			<div class="list" ref="listRef" v-if="realProxyObject(listContent ?? []).length > 0">
+		<div class="list" ref="listRef" v-if="realProxyObject(listContent ?? []).length > 0">
+			<TransitionGroup name="list">
 				<template v-for="item in realProxyObject(listContent ?? []).splice(0, contentSubsection)" :key="item.cfi">
 					<div class="item" v-html="item.excerpt" @click="() => handelClickSearchItem(item.cfi)"></div>
 				</template>
-			</div>
-		</template>
+			</TransitionGroup>
+		</div>
 		<div v-if="isSearching" class="searching">正在为您全速搜索--------</div>
 		<div v-else-if="listContent && realProxyObject(listContent)?.length === 0 && !isSearching" class="searching">
 			未找到结果
@@ -100,10 +100,18 @@ onUnmounted(() => {
 .search {
 	width: 100%;
 	height: calc(100% - 54px);
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	box-sizing: border-box;
 	position: relative;
 	.list {
+		.list-enter-active {
+			transition: all 0.7s ease;
+		}
+		.list-enter-from {
+			opacity: 0;
+			transform: translateX(30px);
+		}
 		.item {
 			padding: 0 0.714rem 1.429rem 1.234rem;
 			margin: 1.214rem 0;

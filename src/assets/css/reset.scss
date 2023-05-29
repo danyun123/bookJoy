@@ -4,6 +4,21 @@
 	--van-cell-right-icon-color: #202020;
 	--van-search-input-height: 2.3rem;
 	--van-dialog-width: 90%;
+	.van-toast--text {
+		background: #e2cdff;
+		padding: 0.714rem 1.429rem;
+		border-radius: 20px;
+		overflow: hidden;
+		color: #383737;
+		text-align: center;
+		font-size: 1rem;
+	}
+	.van-popup--center {
+		top: 20%;
+	}
+	.van-dialog {
+		top: 45%;
+	}
 }
 html,
 body {

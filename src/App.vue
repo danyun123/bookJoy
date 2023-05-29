@@ -2,7 +2,7 @@
 	<div class="app">
 		<router-view v-slot="props">
 			<keep-alive>
-				<Component :is="props.Component"></Component>
+				<component :is="props.Component"></component>
 			</keep-alive>
 		</router-view>
 		<Tabbar v-if="!$route.meta.hideTabbar ?? false" />
@@ -15,8 +15,8 @@ import Tabbar from "./baseUI/tabbar/index.vue";
 
 <style lang="scss" scoped>
 .app {
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	font-size: 1rem;
 }
 </style>

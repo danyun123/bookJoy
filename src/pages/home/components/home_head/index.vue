@@ -45,7 +45,8 @@ const searchRef = ref<Element>();
 const HTMLFontSize = ref(parseFloat(getComputedStyle(document.documentElement).fontSize));
 const showRandom = ref(false);
 const transitionStyle = ref<null | string>(null);
-const searchScrollTop = ref<string>("2.65rem");
+const initSearchTop = "3.1";
+const searchScrollTop = ref<string>(initSearchTop + "rem");
 
 const handelSearchFocus = () => {
 	if (route.path === "/home/search") return;
@@ -78,14 +79,15 @@ window.addEventListener("resize", () => {
 	HTMLFontSize.value = parseFloat(getComputedStyle(document.documentElement).fontSize);
 });
 watch([homeScrollTop], () => {
-	let top = 2.65 * HTMLFontSize.value - Math.floor(homeScrollTop.value);
+	let top = Number(initSearchTop) * HTMLFontSize.value - Math.floor(homeScrollTop.value);
 	if (top < 0) {
 		transitionStyle.value = "top 100ms linear";
 		top = 0;
 	} else {
 		transitionStyle.value = null;
 	}
-	scaleNum.value = top / (2.65 * HTMLFontSize.value) < 0.9 ? 0.9 : top / (2.65 * HTMLFontSize.value);
+	scaleNum.value =
+		top / (Number(initSearchTop) * HTMLFontSize.value) < 0.9 ? 0.9 : top / (Number(initSearchTop) * HTMLFontSize.value);
 	searchScrollTop.value = top + "px";
 });
 watch([route], () => {
@@ -93,7 +95,7 @@ watch([route], () => {
 	if (route.path === "/home/search") {
 		searchScrollTop.value = "0";
 	} else {
-		searchScrollTop.value = "2.65rem";
+		searchScrollTop.value = initSearchTop + "rem";
 	}
 });
 const randomRcmdClick = () => {
@@ -108,7 +110,9 @@ const randomRcmdClick = () => {
 <style scoped lang="scss">
 @import "../../../../assets/css/common";
 .head {
-	padding: $pagePadding $pagePadding 0 $pagePadding;
+	background: linear-gradient(to right, #efbec3, #e7e7e7);
+
+	padding: $pagePadding $pagePadding 0.529rem $pagePadding;
 	.nav {
 		display: flex;
 		justify-content: flex-end;
@@ -144,7 +148,6 @@ const randomRcmdClick = () => {
 		left: 0;
 		right: 0;
 		z-index: 2;
-		top: 2.65rem;
 		padding: 0 $pagePadding;
 		.search_return,
 		.confirm {

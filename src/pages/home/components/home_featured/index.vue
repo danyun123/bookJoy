@@ -9,7 +9,7 @@
 					</div>
 					<div class="info">
 						<div class="name">
-							{{ item.fileName }}
+							{{ item.title }}
 						</div>
 						<div class="author">
 							{{ item.author }}

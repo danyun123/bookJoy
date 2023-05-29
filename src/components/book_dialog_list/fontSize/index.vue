@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref, watchEffect } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 
@@ -31,7 +31,7 @@ const pageWidth = ref(0);
 const bookStore = useBooks();
 const { fontSize, currentMenu, showDialog } = storeToRefs(bookStore);
 
-onMounted(() => {
+watchEffect(() => {
 	pageWidth.value = Math.ceil(pageRef.value?.offsetWidth / 0.85);
 	fontSizeValue.value = (fontSize.value - 12) * 10 + 20;
 });

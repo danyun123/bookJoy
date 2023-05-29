@@ -19,7 +19,7 @@
 			</div>
 			<div class="sort clo">
 				<div class="title">分类:</div>
-				<div class="title_info">{{ data?.categoryText ?? categoryText(+data?.category)[0] }}</div>
+				<div class="title_info">{{ getCHNameByEn(data?.categoryText) ?? categoryText(+data?.category)[1] }}</div>
 			</div>
 			<div class="lang clo">
 				<div class="title">语言:</div>
@@ -28,6 +28,7 @@
 		</div>
 		<div class="btn">
 			<div class="readBook" @click="readClick">立即阅读</div>
+			<span class="dividing_line"></span>
 			<div :class="{ addBook: true, isadded: isAdded }" @click="addBook">
 				<span v-if="isAdded">
 					<span class="icon">
@@ -44,8 +45,8 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router/dist/vue-router";
 import { useRouter } from "vue-router";
-import { categoryText, strFistWordToUp } from "@/utils/common";
-import { onBeforeMount, ref, watchEffect } from "vue";
+import { categoryText, getCHNameByEn, strFistWordToUp } from "@/utils/common";
+import { onActivated, onBeforeMount, onDeactivated, ref, watchEffect } from "vue";
 import { ALLBOOKSHELFNAME, BOOKSHELF } from "@/assets/constant";
 
 const router = useRouter();
@@ -71,15 +72,22 @@ const addBook = () => {
 			names.findIndex((item: string) => item === bookName.value),
 			1
 		);
-		books.splice(
-			books.findIndex((item: any) => item._rawValue.fileName === bookName.value),
-			1
-		);
+		books.forEach((item: any) => {
+			if (item.type === "group") {
+				const index = item.bookList.findIndex((book: any) => book.fileName === bookName.value);
+				if (index !== -1) item.bookList.splice(index, 1);
+			}
+		});
+		const index = books.findIndex((item: any) => {
+			if (item.type === "group") return false;
+			return item._rawValue.fileName === bookName.value;
+		});
+		if (index !== -1) books.splice(index, 1);
 		localStorage.setItem(ALLBOOKSHELFNAME, JSON.stringify(names));
 		localStorage.setItem(BOOKSHELF, JSON.stringify(books));
 	} else {
-		localStorage.setItem(ALLBOOKSHELFNAME, JSON.stringify([...names, bookName.value]));
-		localStorage.setItem(BOOKSHELF, JSON.stringify([...books, data]));
+		localStorage.setItem(ALLBOOKSHELFNAME, JSON.stringify([bookName.value, ...names]));
+		localStorage.setItem(BOOKSHELF, JSON.stringify([data, ...books]));
 	}
 	isAdded.value = !isAdded.value;
 };
@@ -87,11 +95,23 @@ onBeforeMount(() => {
 	const names = JSON.parse(localStorage.getItem(ALLBOOKSHELFNAME) ?? "[]");
 	isAdded.value = names.includes();
 });
-watchEffect(() => {
+const getBookData = () => {
 	const names = JSON.parse(localStorage.getItem(ALLBOOKSHELFNAME) ?? "[]");
 	data.value = route.query;
 	bookName.value = data.value.fileName;
 	isAdded.value = names.includes(bookName.value);
+};
+const stopWatch = watchEffect(() => {
+	if (!route.path.includes("bookDetail")) {
+		return;
+	}
+	getBookData();
+});
+onActivated(() => {
+	getBookData();
+});
+onDeactivated(() => {
+	stopWatch();
 });
 </script>
 
@@ -109,7 +129,7 @@ watchEffect(() => {
 		width: 100%;
 		border-bottom: 1px solid #cccaca;
 		padding: 0.714rem $pagePadding 30px $pagePadding;
-		margin: 0 -$pagePadding;
+		margin: 0 -#{$pagePadding};
 		margin-top: 1.143rem;
 		.cover {
 			width: 40%;
@@ -166,6 +186,7 @@ watchEffect(() => {
 		bottom: 0;
 		display: flex;
 		justify-content: space-around;
+		align-items: center;
 		margin: 0 - $pagePadding;
 		margin-top: 0;
 		margin-bottom: 0.357rem;
@@ -177,8 +198,12 @@ watchEffect(() => {
 		.readBook {
 			flex: 1;
 			box-sizing: border-box;
-			border-right: 1px solid red;
 			@include clickActiveAnimation;
+		}
+		.dividing_line {
+			width: 0.061rem;
+			height: 1.8rem;
+			background-color: red;
 		}
 		.addBook {
 			flex: 1;

@@ -55,7 +55,6 @@ onMounted(() => {
 .fold {
 	height: calc(88.5% - 21px - 2.55rem);
 	overflow: scroll;
-	-webkit-overflow-scrolling: touch;
 	.van-collapse-item {
 		border-bottom: 0.123rem solid #c0c0c0;
 	}

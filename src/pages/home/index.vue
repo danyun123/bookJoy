@@ -61,7 +61,7 @@ onActivated(() => {
 	if (homeRef.value) setHomeScrollTop();
 });
 onMounted(() => {
-	setHomeScrollTop();
+	localStorage.setItem(HOMESCROLLTOP, "0");
 });
 onBeforeMount(() => {
 	fetchHomeData();

@@ -8,7 +8,7 @@
 						<img :src="item.cover" alt="图片加载错误" />
 					</div>
 					<div class="name">
-						{{ item.fileName }}
+						{{ item.title }}
 					</div>
 					<div class="readersNum">{{ item.readers }}人同时在读</div>
 				</div>

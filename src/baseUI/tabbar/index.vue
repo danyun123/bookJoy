@@ -21,7 +21,7 @@ const itemClick = (page: string) => {
 @import "../../assets/css/common";
 .list {
 	position: fixed;
-	bottom: 0;
+	bottom: -1px;
 	width: 100%;
 	padding: 0.714rem 0;
 	background-color: rgba(255, 255, 255, 0.95);

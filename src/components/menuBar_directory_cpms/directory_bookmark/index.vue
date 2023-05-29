@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia/dist/pinia";
 import useBooks from "@/store/books";
-import { getCurrentLocation, getCurrentPageCFI } from "@/utils/bookContent";
+import { getCurrentLocation } from "@/utils/bookContent";
 import type { Book } from "epubjs";
 
 const {
@@ -33,7 +33,7 @@ const itemClick = (cfi: string) => {
 		currentLocationPercentage.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).percentage;
 		currentSection.value = getCurrentLocation(bookPrototype.value as Book, totalPageLength.value).section;
 	});
-	showBookmark.value = allBookmarks.value.some((item) => item.cfi === getCurrentPageCFI(bookPrototype.value));
+	showBookmark.value = true;
 	showDialog.value = false;
 	currentMenu.value = "";
 };

@@ -14,7 +14,7 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { ref, watch, watchEffect } from "vue";
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 
@@ -46,7 +46,7 @@ const onConfirm = () => {
 const onCancel = () => {
 	onConfirm();
 };
-onMounted(() => {
+watchEffect(() => {
 	pickerValue.value = [`${fontFamily.value}`];
 });
 </script>

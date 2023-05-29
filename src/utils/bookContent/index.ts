@@ -10,8 +10,7 @@ export const getBookUrl = (url: String): string => {
 };
 
 export const getCurrentSectionInfo = (book: Book) => {
-	const currentLocation = book.rendition.currentLocation();
-	//@ts-ignore
+	const currentLocation = book.rendition?.currentLocation();
 	return book.spine.get(currentLocation.start.index);
 };
 

@@ -2,19 +2,21 @@
 	<div class="search_detail">
 		<div class="hot_search">
 			<Description_head @rightSizeClick="changeBatchClick" title="热门搜索" />
-			<template v-for="(item, index) in realProxyObject(hotSearchList)" :key="item.name + index">
-				<div class="hot_item">
-					<div class="item_icon">
-						<van-icon name="fire-o" />
-					</div>
-					<div class="item_content">
-						<div class="name">
-							{{ item.name }}
+			<TransitionGroup name="list">
+				<template v-for="(item, index) in realProxyObject(hotSearchList)" :key="item.name + index">
+					<div class="hot_item">
+						<div class="item_icon">
+							<van-icon name="fire-o" />
 						</div>
-						<div class="num">{{ item.num }} 万人搜索</div>
+						<div class="item_content">
+							<div class="name">
+								{{ item.name }}
+							</div>
+							<div class="num">{{ item.num }} 万人搜索</div>
+						</div>
 					</div>
-				</div>
-			</template>
+				</template>
+			</TransitionGroup>
 		</div>
 		<div class="search_history">
 			<Description_head title="搜索历史" right="清空" @rightSizeClick="clearHistoryClick" />
@@ -109,7 +111,13 @@ onActivated(() => {
 		flex-direction: column;
 		margin-bottom: 1.071rem;
 		border-bottom: 1px solid #8d8a8a;
-
+		.list-enter-active {
+			transition: all 0.7s ease;
+		}
+		.list-enter-from {
+			opacity: 0;
+			transform: translateX(30px);
+		}
 		.hot_item {
 			display: flex;
 			align-content: center;

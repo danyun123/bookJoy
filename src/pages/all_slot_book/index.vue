@@ -1,25 +1,25 @@
 <template>
-	<div class="all_sort" ref="routRef" @scroll="allSortScroll">
+	<div class="all_sort">
 		<div class="title">
 			<div class="return" @click="returnClick"><van-icon name="arrow-left" />返回</div>
 			<span v-if="chineseName">{{ chineseName }}</span>
 			<span v-else>共有{{ booksNum }}本书</span>
 		</div>
-		<div class="list" v-if="dataList">
+		<div class="list" v-if="dataList" @scroll="allSortScroll" ref="listRef">
 			<template v-for="(value, key) in dataList.total ? dataList.data : dataList" :key="key">
-				<div class="book_list">
-					<div class="sort_far_name" v-if="!chineseName">{{ categoryText(value[0].category)[1] }}</div>
-					<div class="item" v-if="chineseName" @click="() => itemClick(value)">
-						<div class="cover">
-							<img :src="value.cover" alt="图片加载错误" />
-						</div>
-						<div class="info">
-							<div class="name">{{ value.fileName }}</div>
-							<div class="author">{{ value.author }}</div>
-							<div class="sort_name">{{ chineseName }}</div>
-						</div>
+				<div class="sort_far_name" v-if="!chineseName">{{ categoryText(value[0].category)[1] }}</div>
+				<div class="item" v-if="chineseName" @click="() => itemClick(value)">
+					<div class="cover">
+						<img :src="value.cover" alt="图片加载错误" />
 					</div>
-					<template v-else v-for="item in value" :key="item.id">
+					<div class="info">
+						<div class="name">{{ value.fileName }}</div>
+						<div class="author">{{ value.author }}</div>
+						<div class="sort_name">{{ chineseName }}</div>
+					</div>
+				</div>
+				<div class="all_sort_books_list" v-else>
+					<template v-for="item in value" :key="item.id">
 						<div class="item" @click="() => itemClick(item)">
 							<div class="cover">
 								<img :src="item.cover" alt="图片加载错误" />
@@ -41,7 +41,7 @@
 import useHome from "@/store/home";
 import { storeToRefs } from "pinia/dist/pinia";
 import { useRoute } from "vue-router/dist/vue-router";
-import { onActivated, onBeforeMount, onDeactivated, ref, watch } from "vue";
+import { onActivated, onBeforeMount, onDeactivated, onMounted, ref, watch } from "vue";
 import { categoryText, strFistWordToUp } from "@/utils/common";
 import { useRouter } from "vue-router";
 import throttle from "@/utils/throttle";
@@ -55,13 +55,13 @@ const route = useRoute();
 const router = useRouter();
 let chineseName = ref<string | null>();
 const dataList = ref<any>();
-const routRef = ref<HTMLElement>();
+const listRef = ref<HTMLElement>();
 const booksNum = ref(0);
 
 const allSortScroll = throttle((e: Event) => {
 	//@ts-ignore
 	localStorage.setItem(ALLSORTSCROLLTOP, e.target.scrollTop);
-}, 500);
+}, 444);
 
 const returnClick = () => {
 	router.back();
@@ -108,12 +108,22 @@ watch([bookList], (newValue, oldValue) => {
 	if ((newValue[0] as any).total === (oldValue[0] as any).total) return;
 	getDataByRoute();
 });
+
 onActivated(() => {
-	if (routRef.value) routRef.value.scrollTop = parseInt(localStorage.getItem(ALLSORTSCROLLTOP) ?? "0") ?? 0;
+	if (listRef.value) {
+		setTimeout(() => {
+			listRef.value!.scrollTop = parseInt(JSON.parse(localStorage.getItem(ALLSORTSCROLLTOP) ?? "0"));
+		}, 0);
+	}
 	getDataByRoute();
 });
-onDeactivated(() => {
+onMounted(() => {
 	localStorage.setItem(ALLSORTSCROLLTOP, "0");
+});
+onDeactivated(() => {
+	if (route.path === "/home") {
+		localStorage.setItem(ALLSORTSCROLLTOP, "0");
+	}
 	dataList.value = [];
 	chineseName.value = null;
 });
@@ -152,62 +162,77 @@ onBeforeMount(() => {
 		margin-top: 2.814rem;
 		overflow: scroll;
 		height: calc(100vh - 2.814rem);
-		.book_list {
-			.sort_far_name {
-				font-size: 1.35rem;
-				width: 100% !important;
-				height: auto;
-				color: #6d80ff;
-				font-weight: 600;
-				margin: 0.714rem 0;
-				border-bottom: 1px solid #a9a4a4;
-				padding-bottom: 0.571rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		.sort_far_name {
+			font-size: 1.35rem;
+			width: 100%;
+			height: auto;
+			color: #6d80ff;
+			font-weight: 600;
+			margin: 0.714rem 0;
+			border-bottom: 1px solid #a9a4a4;
+			padding-bottom: 0.571rem;
+		}
+		.item {
+			margin: 1.071rem 0;
+			display: flex;
+			width: calc(48.8% - 0.857rem);
+			box-sizing: border-box;
+			flex-shrink: 0;
+			.cover {
+				width: 30%;
+				flex-grow: 1;
+				flex-shrink: 0;
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
 			}
-			.item {
-				margin: 1.071rem 0;
+			.info {
+				width: 70%;
+				flex-grow: 1;
+				flex-shrink: 0;
+				font-size: 1.1rem;
+				margin-left: 10px;
 				display: flex;
-				width: 100%;
-				.info {
-					width: 70%;
-					font-size: 1.1rem;
-					margin-left: 10px;
-					display: flex;
-					flex-direction: column;
-					position: relative;
-					margin-bottom: 1.429rem;
-					.name {
-						width: 100%;
-						margin-bottom: 0.529rem;
-						word-wrap: break-word;
-						font-size: 1rem;
-						@include displayMultiline();
-					}
-					.author {
-						color: $themeGreyColor;
-						font-size: 1rem;
-						@include displayMultiline();
-					}
-					.sort_name {
-						color: $themeGreyColor;
-						font-size: 1rem;
-						@include displayMultiline();
-						position: absolute;
-						bottom: -1.429rem;
-						right: 0.214rem;
-					}
+				flex-direction: column;
+				position: relative;
+				margin-bottom: 1.429rem;
+				.name {
+					width: 100%;
+					margin-bottom: 0.529rem;
+					word-wrap: break-word;
+					font-size: 1rem;
+					@include displayMultiline();
 				}
-				.cover {
-					width: 30%;
-					img {
-						width: 100%;
-						height: 100%;
-						object-fit: cover;
-					}
+				.author {
+					color: $themeGreyColor;
+					font-size: 1rem;
+					@include displayMultiline();
+				}
+				.sort_name {
+					color: $themeGreyColor;
+					font-size: 1rem;
+					@include displayMultiline();
+					position: absolute;
+					bottom: -1.429rem;
+					right: 0.214rem;
 				}
 			}
-			.item:nth-of-type(2n - 1) {
-				margin-right: 20px;
-			}
+		}
+		.item:nth-of-type(2n -1) {
+			margin-right: 1.7141rem;
+		}
+		.all_sort_books_list {
+			display: flex;
+			flex-wrap: wrap;
+			width: 100%;
+		}
+		.all_sort_books_list:nth-of-type(2n -1) {
+			margin-right: 10px;
 		}
 	}
 }

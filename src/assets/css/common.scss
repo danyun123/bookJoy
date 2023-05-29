@@ -1,12 +1,13 @@
 $barHeight: 3rem;
 $raduisWidth: 0.651rem;
-$transition: .45s ease-in-out;
+$transition: .35s ease-in-out;
 $themeColor: #9b62f5;
 $themeColor2: #5e5eff;
 $fontSize: 1.5rem;
 $pagePadding: 1.071rem;
 $themeGreyColor: #a19f9f;
 $boxShadow: 0 0 0.6rem 0.069rem #c9c9c9;
+$shakeAnimation: shake 0.5s ease-in-out infinite;
 @mixin bookBar {
   position: absolute;
   display: flex;
@@ -60,11 +61,11 @@ $boxShadow: 0 0 0.6rem 0.069rem #c9c9c9;
 }
 
 @mixin remindInfo {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   white-space: nowrap;
-  color: #d92626;
+  color: $themeColor;
   transform: translateY(-50%) translateX(-50%);
   font-size: 1.5rem;
 }
@@ -90,5 +91,47 @@ $boxShadow: 0 0 0.6rem 0.069rem #c9c9c9;
   }
 }
 
-$shakeAnimation: shake 0.5s ease-in-out infinite;
+@mixin textDisplayInit {
+  opacity: 0 ;
+  visibility: hidden ;
+  @include bookFontProgressAnimation
+}
+@mixin textDisplayOver {
+  opacity: 1;
+  visibility: visible;
+  @include bookFontProgressAnimation
+}
+
+@mixin hideScrollBar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin bookFartherStyle($isBookHeight: 2.8rem,$isBookWidth: 0.571rem) {
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: $isBookWidth;
+    height: calc(100% - #{$isBookHeight});
+    border-right: 1px solid #b8abab;
+    border-left: 1px solid #a2a2a2;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+}
+
+@mixin bookStyle {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  background: linear-gradient(to bottom, #fff, #eee);
+}
 

@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { localCache } from "@/utils/cache";
 
 const router = createRouter({
 	history: createWebHashHistory(),
@@ -92,11 +91,11 @@ const router = createRouter({
 	]
 });
 
-router.beforeEach((to) => {
-	const token = localCache.getCache("token");
-	if (to.path.startsWith("/home") && !token) {
-		return "/login";
-	}
-	if (to.path.startsWith("/login") && token) return false;
-});
+// router.beforeEach((to) => {
+// 	const token = localCache.getCache("token");
+// 	if (to.path.startsWith("/home") && !token) {
+// 		return "/login";
+// 	}
+// 	if (to.path.startsWith("/login") && token) return false;
+// });
 export default router;

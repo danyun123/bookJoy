@@ -2,25 +2,29 @@
 	<div class="guessLike">
 		<Description_head title="猜你喜欢" @rightSizeClick="changeBatch" />
 		<div class="list">
-			<template v-for="item in formatList" :key="item.id">
-				<div class="item" @click="() => itemClick(item)">
-					<div class="cover">
-						<img :src="item.cover" alt="封面加载错误" />
+			<TransitionGroup name="list">
+				<template v-for="item in formatList" :key="item.id">
+					<div class="item" @click="() => itemClick(item)">
+						<div class="cover">
+							<img :src="item.cover" alt="封面加载错误" />
+						</div>
+						<div class="info">
+							<div class="name">
+								{{ item.title }}
+							</div>
+							<div class="author">
+								{{ item.author }}
+							</div>
+							<div class="moreInfo">
+								<div class="related">
+									阅读过 <span :style="{ color: '#605e5e', fontWeight: 600 }">{{ item.result }}</span> 的人都喜欢
+								</div>
+								<div class="percentage" v-if="item.percent">{{ item.percent }}的人读过</div>
+							</div>
+						</div>
 					</div>
-					<div class="info">
-						<div class="name">
-							{{ item.fileName }}
-						</div>
-						<div class="author">
-							{{ item.author }}
-						</div>
-						<div class="moreInfo">
-							<div class="related">阅读过 {{ item.result }} 的人都喜欢</div>
-							<div class="percentage" v-if="item.percent">{{ item.percent }}的人读过</div>
-						</div>
-					</div>
-				</div>
-			</template>
+				</template>
+			</TransitionGroup>
 		</div>
 	</div>
 </template>
@@ -64,6 +68,17 @@ const itemClick = (book: any) => {
 		margin-top: 0.714rem;
 		display: flex;
 		flex-direction: column;
+		.list-enter-active,
+		.list-leave-active,
+		.list-enter-to {
+			transition: all 0.8s ease;
+			transform: translateX(-3.143rem);
+		}
+		.list-enter-from,
+		.list-leave-to {
+			opacity: 0;
+			transform: translateX(30px);
+		}
 		.item {
 			width: 100%;
 			margin: 1.071rem 0;

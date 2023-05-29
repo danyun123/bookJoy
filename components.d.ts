@@ -10,6 +10,7 @@ export {};
 declare module "@vue/runtime-core" {
 	export interface GlobalComponents {
 		Book_detail: typeof import("./src/components/book_detail/index.vue")["default"];
+		Bookshelf_tabbar: typeof import("./src/components/bookshelf_tabbar/index.vue")["default"];
 		Brief_info: typeof import("./src/components/menuBar_directory_cpms/directory_detailed/detailed_cpms/brief_info/index.vue")["default"];
 		Directory: typeof import("./src/components/book_dialog_list/directory/index.vue")["default"];
 		Directory_bookmark: typeof import("./src/components/menuBar_directory_cpms/directory_bookmark/index.vue")["default"];

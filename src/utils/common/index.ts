@@ -12,7 +12,7 @@ export const getBooksConfig = () => {
 };
 
 export const strToNum = (str: string) => {
-	const arr = str.match(/\d+/g) as string[];
+	const arr = (str.match(/\d+/g) as string[]) ?? "";
 	return +arr[0];
 };
 
@@ -80,6 +80,73 @@ export const categoryText = (category: number) => {
 	}
 };
 
+export const getCHNameByEn = (En: string) => {
+	switch (En) {
+		case "computerScience":
+			return "计算机科学";
+		case "socialSciences":
+			return "社会科学";
+		case "economics":
+			return "经济学";
+		case "education":
+			return "教育学";
+		case "engineering":
+			return "工程学";
+		case "environment":
+			return "环境学";
+		case "geography":
+			return "地理学";
+		case "history":
+			return "历史学";
+		case "laws":
+			return "法律学";
+		case "lifeSciences":
+			return "生命科学";
+		case "literature":
+			return "文学";
+		case "biomedicine":
+			return "生物医学";
+		case "businessandManagement":
+			return "管理学";
+		case "earthSciences":
+			return "地球学";
+		case "materialsScience":
+			return "材料学";
+		case "mathematics":
+			return "数学";
+		case "medicineAndPublicHealth":
+			return "生活健康学";
+		case "philosophy":
+			return "哲学";
+		case "physics":
+			return "物理学";
+		case "politicalScienceAndInternationalRelations":
+			return "社会关系学";
+		case "psychology":
+			return "心理学";
+		case "statistics":
+			return "统计数据学";
+	}
+};
+
 export const strFistWordToUp = (str: string): string => {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export function checkBlobValidity(blob: Blob) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onload = () => {
+			const result = reader.result;
+			if (result) {
+				resolve(true);
+			} else {
+				reject(new Error("Blob data is empty."));
+			}
+		};
+		reader.onerror = () => {
+			reject(reader.error);
+		};
+		reader.readAsArrayBuffer(blob);
+	});
+}

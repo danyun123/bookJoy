@@ -9,7 +9,7 @@
 					</div>
 					<div class="info">
 						<div class="name">
-							{{ item.fileName }}
+							{{ item.title }}
 						</div>
 						<div class="author">
 							{{ item.author }}
@@ -69,17 +69,16 @@ const itemClick = (book: any) => {
 		margin-top: 0.714rem;
 		display: flex;
 		flex-wrap: nowrap;
-		&::-webkit-scrollbar {
-			width: 0;
-			background-color: transparent;
-		}
+		@include hideScrollBar;
 		.item {
 			width: 33%;
+			flex-shrink: 0;
 			margin: 1.071rem 0.714rem 1.071rem 0;
 			display: flex;
 			flex-direction: column;
 			.info {
 				width: 70%;
+				height: 30%;
 				font-size: 1.1rem;
 				margin-left: 10px;
 				display: flex;
@@ -100,6 +99,7 @@ const itemClick = (book: any) => {
 			}
 			.cover {
 				width: 100%;
+				height: 70%;
 				img {
 					width: 100%;
 					height: 100%;
