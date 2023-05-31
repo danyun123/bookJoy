@@ -22,7 +22,13 @@ import useBooks, { type currentBookMetaDataType, type themeColorType } from "../
 import { storeToRefs } from "pinia/dist/pinia";
 import { onActivated, onBeforeUnmount, ref, watch, watchEffect } from "vue";
 import { entireThemeColor } from "@/assets/data/global";
-import { ALLBOOKMARK, LOCAL_FONT_FAMILY, LOCAL_FONT_SIZE, LOCAL_THEME_COLOR } from "@/assets/constant";
+import {
+	ALLBOOKMARK,
+	BOOK_DETAIL_CLICK_SECTION,
+	LOCAL_FONT_FAMILY,
+	LOCAL_FONT_SIZE,
+	LOCAL_THEME_COLOR
+} from "@/assets/constant";
 import Bookmark from "@/baseUI/bookmark/index.vue";
 import localForage from "localforage";
 
@@ -76,6 +82,7 @@ const getLocalForage = (key: string) => {
 };
 
 const getEpubBook = async () => {
+	const path = route.path;
 	const bookName = path.split("/")[3].replace(".epub", "");
 	try {
 		const blob = await getLocalForage(bookName);
@@ -88,15 +95,6 @@ const getEpubBook = async () => {
 		console.error("Error retrieving data from local storage:", error);
 	}
 };
-onActivated(() => {
-	const isRefreshed = localStorage.getItem("isRefreshed");
-	if (isRefreshed !== "true") {
-		localStorage.setItem("isRefreshed", "true");
-		location.reload();
-	} else {
-		localStorage.removeItem("isRefreshed");
-	}
-});
 
 const allFun = (book: Book) => {
 	bookPrototype.value = book;
@@ -127,6 +125,7 @@ const allFun = (book: Book) => {
 		});
 		book?.locations.generate(150).then((res) => {
 			totalPageLength.value = res.length;
+			currentLocationPercentage.value = getCurrentLocation(book, totalPageLength.value).percentage;
 			directoryLoadOver.value = true;
 			//@ts-ignore
 			const local_allBookmark: bookmarkType[] = JSON.parse(localStorage.getItem(ALLBOOKMARK + book.cover));
@@ -150,6 +149,14 @@ const allFun = (book: Book) => {
 			// 设置进度百分比
 			currentLocationPercentage.value = percentage;
 			currentSection.value = { isInitialize: true, section: section };
+		}
+		// 点击章节目录进入
+		const bookDetailClickSection: { href: string; section: number } = JSON.parse(
+			localStorage.getItem(BOOK_DETAIL_CLICK_SECTION) ?? "[]"
+		);
+		if (bookDetailClickSection.href) {
+			book.rendition.display(bookDetailClickSection.href);
+			currentSection.value = bookDetailClickSection.section;
 		}
 	});
 	const bookExample = book?.renderTo("book_content", {
@@ -226,7 +233,7 @@ const allFun = (book: Book) => {
 		const { local_font_family, local_font_size, local_theme_color } = getBooksConfig();
 		fontSize.value = local_font_size ? Number(local_font_size) : 12;
 		fontFamily.value = local_font_family ?? "Default";
-		themeColor.value = (local_theme_color as themeColorType) ?? "default";
+		themeColor.value = (local_theme_color as themeColorType) ?? "eye_protection";
 	});
 
 	watchEffect(() => {
@@ -273,19 +280,32 @@ const allFun = (book: Book) => {
 		showBookmark.value = allBookmarks.value.some((item) => item.cfi === getCurrentPageCFI(book));
 	});
 };
-
-getEpubBook().then((res) => {
-	if (res instanceof Blob) {
-		(res as Blob).arrayBuffer().then((resolve) => {
-			const book = Epub(resolve);
-			allFun(book);
-		});
+//
+onActivated(() => {
+	// bookDetailClickSection.value = ;
+	const isRefreshed = localStorage.getItem("isRefreshed");
+	if (isRefreshed !== "true") {
+		localStorage.setItem("isRefreshed", "true");
+		location.reload();
 	} else {
-		const book = Epub(res);
-		allFun(book);
+		localStorage.removeItem("isRefreshed");
 	}
 });
+onActivated(() => {
+	getEpubBook().then((res) => {
+		if (res instanceof Blob) {
+			(res as Blob).arrayBuffer().then((resolve) => {
+				const book = Epub(resolve);
+				allFun(book);
+			});
+		} else {
+			const book = new Book(res);
+			allFun(book);
+		}
+	});
+});
 onBeforeUnmount(() => {
+	localStorage.setItem(BOOK_DETAIL_CLICK_SECTION, "[]");
 	directoryLoadOver.value = false;
 });
 </script>

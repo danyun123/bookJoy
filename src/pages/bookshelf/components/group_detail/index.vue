@@ -9,8 +9,8 @@
 			<!--				{{ !isSelectAll ? "全选" : "取消" }}-->
 			<!--			</div>-->
 			<div class="group_name">{{ groupDetailData.name }}</div>
-			<div class="edit" @click.stop="editCLick">
-				{{ isEditing ? "取消编辑" : "编辑" }}
+			<div class="edit" @click.stop="editCLick" v-if="groupDetailData.bookList && groupDetailData.bookList.length > 0">
+				{{ isEditing ? "取消" : "编辑" }}
 			</div>
 		</div>
 		<TransitionGroup name="list" id="VUE_transition" tag="div">
@@ -75,8 +75,7 @@ const bookClick = (data: any) => {
 		return;
 	}
 	router.push({
-		path: `/bookDetail/${data.fileName}`,
-		query: data
+		path: `/bookDetail/${data.fileName}`
 	});
 };
 </script>
@@ -116,6 +115,9 @@ const bookClick = (data: any) => {
 		color: $themeColor;
 		.return {
 			font-size: 1.3rem;
+		}
+		.edit {
+			@include clickActiveAnimation;
 		}
 		.group_name {
 			flex: 1;

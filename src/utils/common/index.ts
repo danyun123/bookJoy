@@ -82,49 +82,49 @@ export const categoryText = (category: number) => {
 
 export const getCHNameByEn = (En: string) => {
 	switch (En) {
-		case "computerScience":
+		case "ComputerScience":
 			return "计算机科学";
-		case "socialSciences":
+		case "SocialSciences":
 			return "社会科学";
-		case "economics":
+		case "Economics":
 			return "经济学";
-		case "education":
+		case "Education":
 			return "教育学";
-		case "engineering":
+		case "Engineering":
 			return "工程学";
-		case "environment":
+		case "Environment":
 			return "环境学";
-		case "geography":
+		case "Geography":
 			return "地理学";
-		case "history":
+		case "History":
 			return "历史学";
-		case "laws":
+		case "Laws":
 			return "法律学";
-		case "lifeSciences":
+		case "LifeSciences":
 			return "生命科学";
-		case "literature":
+		case "Literature":
 			return "文学";
-		case "biomedicine":
+		case "Biomedicine":
 			return "生物医学";
-		case "businessandManagement":
+		case "BusinessandManagement":
 			return "管理学";
-		case "earthSciences":
+		case "EarthSciences":
 			return "地球学";
-		case "materialsScience":
+		case "MaterialsScience":
 			return "材料学";
-		case "mathematics":
+		case "Mathematics":
 			return "数学";
-		case "medicineAndPublicHealth":
+		case "MedicineAndPublicHealth":
 			return "生活健康学";
-		case "philosophy":
+		case "Philosophy":
 			return "哲学";
-		case "physics":
+		case "Physics":
 			return "物理学";
-		case "politicalScienceAndInternationalRelations":
+		case "PoliticalScienceAndInternationalRelations":
 			return "社会关系学";
-		case "psychology":
+		case "Psychology":
 			return "心理学";
-		case "statistics":
+		case "Statistics":
 			return "统计数据学";
 	}
 };

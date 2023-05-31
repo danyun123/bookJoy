@@ -8,7 +8,10 @@
 			</div>
 			<div class="percentage">
 				<div class="text">进度:</div>
-				<div class="detail_time_percentage">{{ currentLocationPercentage }}%</div>
+				<div class="detail_time_percentage">
+					<span v-if="directoryLoadOver"> {{ currentLocationPercentage }}%</span>
+					<span v-else> <van-loading size="1rem">加载中</van-loading></span>
+				</div>
 			</div>
 		</div>
 		<div class="switch">

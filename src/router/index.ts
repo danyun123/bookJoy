@@ -71,6 +71,13 @@ const router = createRouter({
 			}
 		},
 		{
+			path: "/bookListen/:id",
+			component: () => import("@/pages/listen_book/index.vue"),
+			meta: {
+				hideTabbar: true
+			}
+		},
+		{
 			path: "/own",
 			component: () => import("@/pages/own/index.vue"),
 			meta: {

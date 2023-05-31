@@ -3,6 +3,7 @@ export const LOCAL_FONT_FAMILY = "local_font_family";
 export const LOCAL_THEME_COLOR = "local_theme_color";
 export const SEARCH_HISTORY = "search_history";
 export const DOWN_LOAD_OVER_BOOKS = "download_over_books";
+export const BOOK_DETAIL_CLICK_SECTION = "book_detail_click_section";
 export const BOOKSHELF = "bookshelf";
 export const ALLBOOKSHELFNAME = "all_bookshelf_names";
 export const USERNAME = "username";

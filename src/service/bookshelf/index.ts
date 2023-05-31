@@ -10,7 +10,7 @@ export const download = (
 ) => {
 	return axios
 		.create({
-			baseURL: import.meta.env.VITE_LOCAL_EPUB_URL,
+			baseURL: import.meta.env.VITE_BASE_URL,
 			timeout: 180 * 1000,
 			responseType: "blob",
 			onDownloadProgress: (progressEvent) => {

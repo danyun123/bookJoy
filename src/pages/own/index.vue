@@ -31,38 +31,38 @@
 </template>
 
 <script setup lang="ts">
-import { onActivated, ref, watch } from "vue";
-import { useRouter } from "vue-router";
-import { USERNAME } from "@/assets/constant";
-import useOwnStore from "@/store/own";
-import { storeToRefs } from "pinia/dist/pinia";
-
-const pictureUrl = ref<string>(
-	localStorage.getItem("picUrl") ?? "https://img.zcool.cn/community/0110685f83d17511013f3110cb2adf.jpg"
-);
-const username = ref<string>();
-onActivated(() => {
-	username.value = localStorage.getItem(USERNAME) ?? "";
-});
-const router = useRouter();
-const outLogin = () => {
-	router.push("/login");
-	localStorage.removeItem("token");
-};
-
-const ownStore = useOwnStore();
-const { imgUrl } = storeToRefs(ownStore);
-const beforeRead = (file: File) => {
-	const formData = new FormData();
-	formData.set("avatar", file);
-	ownStore.fetchAccountImage(formData).then(() => {
-		location.reload();
-	});
-};
-watch([imgUrl], () => {
-	localStorage.setItem("picUrl", imgUrl.value);
-	pictureUrl.value = imgUrl.value;
-});
+// import { onActivated, ref, watch } from "vue";
+// import { useRouter } from "vue-router";
+// import { USERNAME } from "@/assets/constant";
+// import useOwnStore from "@/store/own";
+// import { storeToRefs } from "pinia/dist/pinia";
+//
+// const pictureUrl = ref<string>(
+// 	localStorage.getItem("picUrl") ?? "https://img.zcool.cn/community/0110685f83d17511013f3110cb2adf.jpg"
+// );
+// const username = ref<string>();
+// onActivated(() => {
+// 	username.value = localStorage.getItem(USERNAME) ?? "";
+// });
+// const router = useRouter();
+// const outLogin = () => {
+// 	router.push("/login");
+// 	localStorage.removeItem("token");
+// };
+//
+// const ownStore = useOwnStore();
+// const { imgUrl } = storeToRefs(ownStore);
+// const beforeRead = (file: File) => {
+// 	const formData = new FormData();
+// 	formData.set("avatar", file);
+// 	ownStore.fetchAccountImage(formData).then(() => {
+// 		location.reload();
+// 	});
+// };
+// watch([imgUrl], () => {
+// 	localStorage.setItem("picUrl", imgUrl.value);
+// 	pictureUrl.value = imgUrl.value;
+// });
 </script>
 
 <style scoped lang="scss">

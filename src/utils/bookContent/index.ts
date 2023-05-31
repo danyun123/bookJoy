@@ -5,7 +5,7 @@ import { strToNum } from "@/utils/common";
 import pLimit from "p-limit";
 
 export const getBookUrl = (url: String): string => {
-	const baseURL = `${import.meta.env.VITE_BASE_URL}/`;
+	const baseURL = `${import.meta.env.VITE_BASE_URL}`;
 	return `${baseURL}${url}`;
 };
 
@@ -41,13 +41,12 @@ export interface bookmarkType {
 
 // export const getCurrentCFIText = (book: Book, section: number) => {
 // 	const currentCFI: string = getCurrentPageCFI(book);
-// 	const currentBookmark: bookmarkType[] = [{ cfi: currentCFI, text: "" }];
-// 	console.log(book.spine.get(section));
-// 	// const cfibase = currentCFI.replace(/!.*/, "");
-// 	// const cfistart = currentCFI.replace(/.*!/, "").replace(/\)$/, "");
-// 	// const cfiend = book.rendition.currentLocation().end.cfi.replace(/.*!/, "").replace(/\)$/, "");
-// 	// const cfirange = `${cfibase}!,${cfistart},${cfiend})`;
-// 	return currentBookmark;
+// 	// const currentBookmark: bookmarkType[] = [{ cfi: currentCFI, text: "" }];
+// 	const cfibase = currentCFI.replace(/!.*/, "");
+// 	const cfistart = currentCFI.replace(/.*!/, "").replace(/\)$/, "");
+// 	const cfiend = book.rendition.currentLocation().end.cfi.replace(/.*!/, "").replace(/\)$/, "");
+// 	const cfirange = `${cfibase}!,${cfistart},${cfiend})`;
+// 	return cfirange;
 // };
 
 export const getCurrentPageCFI = (book: Book) => {
@@ -56,15 +55,15 @@ export const getCurrentPageCFI = (book: Book) => {
 
 export const flatNavArr = (navArr: any[]) => {
 	const newNav = [];
-	const fun = (arr) => {
+	const fun = (arr, level: number) => {
 		arr.forEach((item) => {
 			const { subitems, ...withoutSubItems } = item;
-			newNav.push(withoutSubItems);
+			newNav.push({ ...withoutSubItems, level });
 			if (item.subitems.length === 0) return;
-			fun(item.subitems);
+			fun(item.subitems, level + 1);
 		});
 	};
-	fun(navArr);
+	fun(navArr, 1);
 	return newNav;
 };
 

@@ -68,8 +68,7 @@ const returnClick = () => {
 };
 const itemClick = (book: any) => {
 	router.push({
-		path: `/bookDetail/${book.fileName}`,
-		query: book
+		path: `/bookDetail/${book.fileName}`
 	});
 };
 const getDataByRoute = () => {

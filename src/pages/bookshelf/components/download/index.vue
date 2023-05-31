@@ -62,8 +62,7 @@ const bookClick = (data: any) => {
 		return;
 	}
 	router.push({
-		path: `/bookDetail/${data.fileName}`,
-		query: data
+		path: `/bookDetail/${data.fileName}`
 	});
 };
 const getProgress = (name: string) => {

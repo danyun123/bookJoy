@@ -28,8 +28,7 @@ const props = defineProps<IProps>();
 const router = useRouter();
 const itemClick = (book: any) => {
 	router.push({
-		path: `/bookDetail/${book.fileName}`,
-		query: book
+		path: `/bookDetail/${book.fileName}`
 	});
 };
 </script>

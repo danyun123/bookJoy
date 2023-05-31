@@ -21,7 +21,14 @@
 						{{ isEditing && currentPage === "download" ? "编辑下载" : "下载" }}
 					</div>
 				</div>
-				<div class="edit" @click="isEditing = !isEditing" v-if="booksList.length > 0 || downloadOverBooks.length > 0">
+				<div
+					class="edit"
+					@click="isEditing = !isEditing"
+					v-if="
+						(booksList.length > 0 && currentPage === 'bookshelf') ||
+						(downloadOverBooks.length > 0 && currentPage === 'download')
+					"
+				>
 					<span v-if="isEditing && currentPage === 'bookshelf'">完成</span>
 					<span v-else>编辑</span>
 				</div>
@@ -29,16 +36,16 @@
 			<div :class="{ allPageBox: true, pageIsDownload: currentPage === 'download' }">
 				<div class="content">
 					<TransitionGroup name="list" id="VUE_transition" tag="div">
-						<div v-for="item in booksList" :key="item.fileName ?? item._value.fileName" class="books">
-							<div class="commonItem item" @click.stop="() => bookClick(item._value)" v-if="!item.type">
+						<div v-for="item in booksList" :key="item.fileName" class="books">
+							<div class="commonItem item" @click.stop="() => bookClick(item)" v-if="!item.type">
 								<div class="cover">
-									<img :src="item._value.cover" alt="图片加载错误" />
+									<img :src="item.cover" alt="图片加载错误" />
 								</div>
 								<div class="author">
-									{{ item._value.author }}
+									{{ item.author }}
 								</div>
 								<div
-									:class="{ selectBtn: true, selected: selectedBooks.find((i) => i.fileName === item._value.fileName) }"
+									:class="{ selectBtn: true, selected: selectedBooks.find((i) => i.fileName === item.fileName) }"
 									v-if="isEditing"
 									@click.stop=""
 								>
@@ -136,22 +143,18 @@ const changePage = (pageName: "bookshelf" | "download") => {
 const selectAll = () => {
 	if (!isSelectAll.value) {
 		if (currentPage.value === "bookshelf") {
-			selectedBooks.value = booksList.value.map((item: any) => {
-				if (item._value) return item._value;
-				return item;
-			});
+			selectedBooks.value = booksList.value;
 		} else {
 			downloadPageSelectedList.value = JSON.parse(localStorage.getItem(DOWN_LOAD_OVER_BOOKS) ?? "[]");
 		}
-		isSelectAll.value = true;
 	} else {
 		if (currentPage.value === "bookshelf") {
 			selectedBooks.value = [];
 		} else {
 			downloadPageSelectedList.value = [];
 		}
-		isSelectAll.value = false;
 	}
+	isSelectAll.value = !isSelectAll.value;
 };
 const groupDetailRemoveFun = () => {
 	const index = booksList.value.findIndex(
@@ -170,7 +173,7 @@ const groupDetailRemoveFun = () => {
 // 移出分组
 const removeGroupClick = () => {
 	groupDetailRemoveFun();
-	const formatArr = groupDetailSelectedList.value.map((item) => ({ _value: item }));
+	const formatArr = groupDetailSelectedList.value;
 	booksList.value = formatArr.concat(booksList.value);
 	groupDetailSelectedList.value = [];
 	isEditing.value = false;
@@ -187,8 +190,7 @@ const bookClick = (data: any) => {
 		}
 	} else if (!data.type) {
 		router.push({
-			path: `/bookDetail/${data.fileName}`,
-			query: data
+			path: `/bookDetail/${data.fileName}`
 		});
 	}
 };
@@ -269,17 +271,14 @@ const deleteClick = () => {
 	if (currentPage.value === "bookshelf") {
 		const names = JSON.parse(localStorage.getItem(ALLBOOKSHELFNAME) ?? "[]");
 		selectedBooks.value.forEach((item) => {
-			const index = booksList.value.findIndex((book: any) => {
-				if (book.type === "group") return item.fileName === book.fileName;
-				return item.fileName === book._value.fileName;
-			});
+			const index = booksList.value.findIndex((book: any) => item.fileName === book.fileName);
 			if (booksList.value[index].type === "group") {
 				booksList.value[index].bookList.forEach((i: any) => {
 					const namesIndex = names.findIndex((key: any) => key === i);
 					names.splice(namesIndex, 1);
 				});
 			} else {
-				const namesIndex = names.findIndex((key: any) => key === booksList.value[index]._value.fileName);
+				const namesIndex = names.findIndex((key: any) => key === booksList.value[index].fileName);
 				names.splice(namesIndex, 1);
 			}
 			booksList.value.splice(index, 1);
@@ -338,13 +337,7 @@ const deleteBooksToGroup = (currentGroup?: string) => {
 			booksList.value[index].bookList = [];
 			return;
 		}
-		const index = booksList.value.findIndex((item: any) => {
-			if (book.type === "group") {
-				return item.fileName === book.fileName;
-			} else {
-				return item._value.fileName === book.fileName;
-			}
-		});
+		const index = booksList.value.findIndex((item: any) => item.fileName === book.fileName);
 		if (index !== -1) booksList.value.splice(index, 1);
 	});
 };
@@ -475,12 +468,14 @@ watchEffect(() => {
 			position: absolute;
 			left: $pagePadding;
 			color: $themeColor;
+			@include clickActiveAnimation;
 		}
 		.edit {
 			position: absolute;
 			right: $pagePadding;
 			font-size: 1rem;
 			color: $themeColor;
+			@include clickActiveAnimation;
 		}
 	}
 	.allPageBox {

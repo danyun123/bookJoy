@@ -54,7 +54,7 @@ const itemClick = (type: "download" | "grouping" | "delete" | "removeGroup") => 
 	width: 100%;
 	background-color: #ececec;
 	font-size: 1rem;
-	padding: 0.214rem 0;
+	padding: 0.314rem 0;
 	margin-left: -$pagePadding;
 	border-top-left-radius: 1.071rem;
 	border-top-right-radius: 1.071rem;
@@ -69,6 +69,7 @@ const itemClick = (type: "download" | "grouping" | "delete" | "removeGroup") => 
 			display: flex;
 			flex-direction: column;
 			color: $themeColor;
+			@include clickActiveAnimation;
 			& > span {
 				margin-top: 0.357rem;
 			}

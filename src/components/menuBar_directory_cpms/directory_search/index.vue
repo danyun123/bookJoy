@@ -1,16 +1,14 @@
 <template>
 	<div class="search" ref="searchRef" @scroll.stop="(e) => handelSearchScroll(e)">
-		<div class="list" ref="listRef" v-if="realProxyObject(listContent ?? []).length > 0">
+		<div class="list" ref="listRef" v-if="listContent?.length > 0">
 			<TransitionGroup name="list">
-				<template v-for="item in realProxyObject(listContent ?? []).splice(0, contentSubsection)" :key="item.cfi">
+				<template v-for="item in listContent?.splice(0, contentSubsection)" :key="item.cfi">
 					<div class="item" v-html="item.excerpt" @click="() => handelClickSearchItem(item.cfi)"></div>
 				</template>
 			</TransitionGroup>
 		</div>
 		<div v-if="isSearching" class="searching">正在为您全速搜索--------</div>
-		<div v-else-if="listContent && realProxyObject(listContent)?.length === 0 && !isSearching" class="searching">
-			未找到结果
-		</div>
+		<div v-else-if="listContent && listContent.length === 0 && !isSearching" class="searching">未找到结果</div>
 	</div>
 </template>
 
@@ -18,7 +16,6 @@
 import useBooks from "@/store/books";
 import { storeToRefs } from "pinia/dist/pinia";
 import { doSearch, getCurrentLocation } from "@/utils/bookContent";
-import { realProxyObject } from "@/utils/common";
 import type { Book } from "epubjs";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import throttle from "@/utils/throttle";
