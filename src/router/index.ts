@@ -7,21 +7,21 @@ const router = createRouter({
 			path: "/",
 			redirect: "/home",
 			meta: {
-				hideTabbar: false
+				displayTabbar: true
 			}
 		},
 		{
 			path: "/home",
 			component: () => import("@/pages/home/index.vue"),
 			meta: {
-				hideTabbar: false
+				displayTabbar: true
 			},
 			children: [
 				{
 					path: "search",
 					component: () => import("@/pages/home/components/search_detail/index.vue"),
 					meta: {
-						hideTabbar: true
+						displayTabbar: false
 					}
 				}
 			]
@@ -30,14 +30,14 @@ const router = createRouter({
 			path: "/books/:category",
 			component: () => import("@/pages/books/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			},
 			children: [
 				{
 					path: ":filename",
 					component: () => import("@/pages/books/index.vue"),
 					meta: {
-						hideTabbar: true
+						displayTabbar: false
 					}
 				}
 			]
@@ -46,54 +46,51 @@ const router = createRouter({
 			path: "/:pathMatch(.*)*",
 			component: () => import("@/pages/404/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			}
 		},
 		{
 			path: "/sortBook/:name",
 			component: () => import("@/pages/all_slot_book/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			}
 		},
 		{
 			path: "/bookDetail/:id",
 			component: () => import("@/components/book_detail/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			}
 		},
 		{
 			path: "/bookshelf",
 			component: () => import("@/pages/bookshelf/index.vue"),
 			meta: {
-				hideTabbar: false
+				displayTabbar: true
 			}
 		},
 		{
 			path: "/bookListen/:id",
+			name: "bookListen",
 			component: () => import("@/pages/listen_book/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			}
 		},
 		{
 			path: "/own",
 			component: () => import("@/pages/own/index.vue"),
 			meta: {
-				hideTabbar: false
+				displayTabbar: true
 			}
 		},
 		{
 			path: "/login",
 			component: () => import("@/pages/login/index.vue"),
 			meta: {
-				hideTabbar: true
+				displayTabbar: false
 			}
-		},
-		{
-			path: "/test",
-			component: () => import("@/baseUI/bookmark/index.vue")
 		}
 	]
 });

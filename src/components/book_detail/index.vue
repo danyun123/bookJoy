@@ -1,9 +1,6 @@
 <template>
 	<div class="detail">
-		<div class="return" @click="router.back()">
-			<van-icon name="arrow-left" />
-			<span>返回</span>
-		</div>
+		<Head_return />
 		<div class="head">
 			<div class="cover">
 				<img :src="bookData?.cover" alt="图片加载错误" />
@@ -11,7 +8,7 @@
 			<div class="text">
 				<div class="name">{{ bookData?.title }}</div>
 				<div class="author">{{ bookData?.author }}</div>
-				<div class="description">{{ bookData?.title }}</div>
+				<!--				<div class="description">{{ bookData?.title }}</div>-->
 			</div>
 			<div class="downloadTip" v-if="isDownload">已下载</div>
 		</div>
@@ -41,7 +38,7 @@
 			<template v-for="(item, index) in entireDirectory" :key="item.id">
 				<div
 					class="directory_item"
-					:style="{ paddingLeft: item.level * 18 + 'px' }"
+					:style="{ paddingLeft: item.level * 1 + 'rem' }"
 					@click="() => directoryItemClick(index)"
 				>
 					{{ index + 1 + ". " + item.label.replace(/[0-9.]/g, "") }}
@@ -79,12 +76,14 @@
 import { useRoute } from "vue-router/dist/vue-router";
 import { useRouter } from "vue-router";
 import { getCHNameByEn, strFistWordToUp } from "@/utils/common";
-import { computed, onActivated, onBeforeMount, onDeactivated, ref, watchEffect } from "vue";
+import { computed, onActivated, onDeactivated, ref, watchEffect } from "vue";
 import { ALLBOOKSHELFNAME, BOOK_DETAIL_CLICK_SECTION, BOOKSHELF, DOWN_LOAD_OVER_BOOKS } from "@/assets/constant";
 import useBookDetail from "@/store/bookDetail";
 import { storeToRefs } from "pinia/dist/pinia";
 import Epub from "epubjs";
 import { flatNavArr } from "@/utils/bookContent";
+import { getLocalForage } from "@/utils/localForage";
+import Head_return from "@/baseUI/head_return/index.vue";
 
 const router = useRouter();
 const bookDetailStore = useBookDetail();
@@ -101,9 +100,8 @@ const bookNavigation = ref();
 const loadOver = ref(false);
 
 const isDownload = computed(() => {
-	console.log(route.path);
 	const fileName = route.path.split("/")[2];
-	return downloadOverBook.value.some((item: any) => item.fileName === fileName);
+	return downloadOverBook.value?.some((item: any) => item.fileName === fileName);
 });
 const readClick = () => {
 	router.push({
@@ -111,8 +109,17 @@ const readClick = () => {
 	});
 };
 const listenBook = () => {
-	router.push({
-		path: `/bookListen/${(bookData.value as any)?.fileName}`
+	getLocalForage(bookName.value, (err, value) => {
+		if (value instanceof Blob) {
+			router.push({
+				path: `/bookListen/${(bookData.value as any)?.fileName}`
+			});
+		} else {
+			router.push({
+				path: `/bookListen/${(bookData.value as any)?.fileName}`,
+				query: { opf: opf.value }
+			});
+		}
 	});
 };
 const addBook = () => {
@@ -159,14 +166,12 @@ const parseBook = (opf: Blob) => {
 		bookNavigation.value = nav;
 	});
 };
-onBeforeMount(() => {
-	downloadOverBook.value = JSON.parse(localStorage.getItem(DOWN_LOAD_OVER_BOOKS) ?? "[]");
-});
 onActivated(() => {
 	const allBookshelfNames = JSON.parse(localStorage.getItem(ALLBOOKSHELFNAME) ?? "[]");
 	bookName.value = route.path.split("/")[2];
 	bookDetailStore.fetchBookData(bookName.value);
 	isAdded.value = allBookshelfNames.includes(bookName.value);
+	downloadOverBook.value = JSON.parse(localStorage.getItem(DOWN_LOAD_OVER_BOOKS) ?? "[]");
 });
 watchEffect(() => {
 	if (bookData.value) {

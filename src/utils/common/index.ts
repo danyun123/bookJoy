@@ -150,3 +150,15 @@ export function checkBlobValidity(blob: Blob) {
 		reader.readAsArrayBuffer(blob);
 	});
 }
+
+export const formatTime = (time: number) => {
+	let m: string | number = Math.floor(time / 60);
+	let s: string | number = time - m * 60;
+	if (m < 10) {
+		m = "0" + m.toString();
+	}
+	if (s < 10) {
+		s = "0" + s.toString();
+	}
+	return m + ":" + s;
+};

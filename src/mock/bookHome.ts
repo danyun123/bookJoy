@@ -186,7 +186,7 @@ export default {
 			percent: "97%"
 		}
 	],
-	banner: "https://s1.ax1x.com/2023/05/11/p9rXO0I.jpg",
+	banner: "https://danyun.oss-cn-chengdu.aliyuncs.com/24972637_0_final.png",
 	recommend: [
 		{
 			id: 324,

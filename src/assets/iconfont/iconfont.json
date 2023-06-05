@@ -1,0 +1,86 @@
+{
+  "id": "4101438",
+  "name": "书悦",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14929900",
+      "name": "多媒体控件Multimedia Controls (3)",
+      "font_class": "duomeitikongjianMultimediaControls3",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "6776437",
+      "name": "声音静音",
+      "font_class": "shengyinjingyin",
+      "unicode": "eca9",
+      "unicode_decimal": 60585
+    },
+    {
+      "icon_id": "11372700",
+      "name": "声音",
+      "font_class": "shengyin",
+      "unicode": "e8b8",
+      "unicode_decimal": 59576
+    },
+    {
+      "icon_id": "1447799",
+      "name": "章节&课程",
+      "font_class": "zhangjiekecheng",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "11891794",
+      "name": "forward",
+      "font_class": "forward",
+      "unicode": "e66d",
+      "unicode_decimal": 58989
+    },
+    {
+      "icon_id": "35805830",
+      "name": "forward-copy",
+      "font_class": "forward-reverse",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "2815702",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6399653",
+      "name": "播放",
+      "font_class": "weibiaoti--",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "14929902",
+      "name": "多媒体控件Multimedia Controls (6)",
+      "font_class": "duomeitikongjianMultimediaControls6",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    },
+    {
+      "icon_id": "14929903",
+      "name": "多媒体控件Multimedia Controls (4)",
+      "font_class": "duomeitikongjianMultimediaControls4",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "14929904",
+      "name": "多媒体控件Multimedia Controls (7)",
+      "font_class": "duomeitikongjianMultimediaControls7",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    }
+  ]
+}

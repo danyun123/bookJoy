@@ -5,7 +5,7 @@
 				<component :is="props.Component"></component>
 			</keep-alive>
 		</router-view>
-		<Tabbar v-if="!$route.meta.hideTabbar ?? false" />
+		<Tabbar v-if="$route.meta.displayTabbar" />
 	</div>
 </template>
 

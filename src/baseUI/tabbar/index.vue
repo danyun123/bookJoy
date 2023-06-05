@@ -1,5 +1,5 @@
 <template>
-	<div class="tabbar" :style="{ display: isEditing ? 'none' : 'block' }">
+	<div class="tabbar" :style="{ display: isEditing ? 'none' : 'block' }" v-if="!refresh">
 		<div class="list">
 			<div :class="{ home: true, item: true, isActive: currentPage === 'home' }" @click="() => itemClick('home')">
 				<van-icon name="wap-home-o" /><span>首页</span>
@@ -29,6 +29,7 @@ type pageType = "home" | "bookshelf" | "own";
 
 const router = useRouter();
 const route = useRoute();
+const refresh = ref(false);
 const { isEditing } = storeToRefs(useBookshelf());
 const currentPage = ref<pageType>("home");
 const itemClick = (page: pageType) => {

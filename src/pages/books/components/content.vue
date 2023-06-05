@@ -161,7 +161,8 @@ const allFun = (book: Book) => {
 	});
 	const bookExample = book?.renderTo("book_content", {
 		width: innerWidth,
-		height: innerHeight
+		height: innerHeight,
+		script: "allow-scripts"
 		// flow: "scrolled-doc"
 	});
 	entireThemeColor.map((item) => {
@@ -282,7 +283,6 @@ const allFun = (book: Book) => {
 };
 //
 onActivated(() => {
-	// bookDetailClickSection.value = ;
 	const isRefreshed = localStorage.getItem("isRefreshed");
 	if (isRefreshed !== "true") {
 		localStorage.setItem("isRefreshed", "true");
@@ -296,6 +296,7 @@ onActivated(() => {
 		if (res instanceof Blob) {
 			(res as Blob).arrayBuffer().then((resolve) => {
 				const book = Epub(resolve);
+				console.log(book);
 				allFun(book);
 			});
 		} else {
