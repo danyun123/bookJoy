@@ -81,21 +81,6 @@ const getLocalForage = (key: string) => {
 	});
 };
 
-const getEpubBook = async () => {
-	const path = route.path;
-	const bookName = path.split("/")[3].replace(".epub", "");
-	try {
-		const blob = await getLocalForage(bookName);
-		if (blob) {
-			return blob;
-		} else {
-			return bookUrl;
-		}
-	} catch (error) {
-		console.error("Error retrieving data from local storage:", error);
-	}
-};
-
 const allFun = (book: Book) => {
 	bookPrototype.value = book;
 	// 设置封面
@@ -291,19 +276,23 @@ onActivated(() => {
 		localStorage.removeItem("isRefreshed");
 	}
 });
-onActivated(() => {
-	getEpubBook().then((res) => {
-		if (res instanceof Blob) {
-			(res as Blob).arrayBuffer().then((resolve) => {
-				const book = Epub(resolve);
-				console.log(book);
-				allFun(book);
-			});
+onActivated(async () => {
+	const path = route.path;
+	const bookName = path.split("/")[3].replace(".epub", "");
+	try {
+		const blob = await getLocalForage(bookName);
+		if (blob) {
+			// 离线
+			const book = new Book(blob)
+			allFun(book);
 		} else {
-			const book = new Book(res);
+			// 在线
+			const book = new Book(bookUrl);
 			allFun(book);
 		}
-	});
+	} catch (error) {
+		console.error("Error retrieving data from local storage:", error);
+	}
 });
 onBeforeUnmount(() => {
 	localStorage.setItem(BOOK_DETAIL_CLICK_SECTION, "[]");
