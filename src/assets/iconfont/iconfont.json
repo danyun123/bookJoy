@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3703028",
+      "name": "文章管理",
+      "font_class": "navicon-wzgl",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
       "icon_id": "14929900",
       "name": "多媒体控件Multimedia Controls (3)",
       "font_class": "duomeitikongjianMultimediaControls3",

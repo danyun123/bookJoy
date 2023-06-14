@@ -84,64 +84,76 @@
 			</div>
 		</div>
 		<div class="moreCpm">
-			<div class="sections" @click="displaySection = true">
+			<div class="original_text moreCom_item" @click="() => changeCpmItem(true, 'originalText')">
+				<van-icon class="iconfont" class-prefix="icon" name="navicon-wzgl" />
+				<span>原文</span>
+			</div>
+			<div class="sections moreCom_item" @click="() => changeCpmItem(true, 'section')">
 				<van-icon class="iconfont" class-prefix="icon" name="zhangjiekecheng" />
 				<span>{{ entireDirectory?.length - 1 }}章</span>
 			</div>
 		</div>
-		<!--    播放器-->
-		<audio ref="audioRef" @loadedmetadata="handelVoiceLoadOver" @timeupdate="handelTimeUpdate" @ended="audioPlayEnd" />
-		<!--    书籍挂载节点，用于获取书籍详细信息-->
-		<div
-			id="virtualBook"
-			style="
-				 {
-					display: inline-block;
-					position: absolute;
-					top: 0;
-					left: 100vw;
-					height: 100vh;
-					overflow: hidden;
-					z-index: 0;
-				}
-			"
-		></div>
 	</div>
-	<div class="displaySection">
+	<div class="displayDialog">
 		<div
-			:class="{ displaySection_mark: true, show_displaySection_mark: displaySection }"
-			@click="displaySection = false"
+			:class="{ displayDialog_mark: true, show_displayDialog_mark: displayDialog }"
+			@click="() => changeCpmItem(false)"
 		></div>
-		<div :class="{ displaySection_content: true, show_displaySection: displaySection }">
-			<div class="displaySection_content_head">
-				<div class="displaySection_content_head_return" @click.stop="displaySection = false">
-					<van-icon name="arrow-down" />
-				</div>
-				<div class="displaySection_content_head_title">章节</div>
-			</div>
-			<div class="section_list">
-				<template v-for="(item, index) in entireDirectory" :key="item.id">
-					<div
-						:class="{ directory_item: true, disabled: index === 0 }"
-						:style="{
-							paddingLeft: item.level * 0.7 + 'rem',
-							color: index + 1 === currentSection ? '#ff5b00' : '#212020'
-						}"
-						@click="() => directoryItemClick(index)"
-					>
-						<Audio_fluctuation v-if="index + 1 === currentSection && index !== 0" :isPause="pause" />
-						<span>
-							{{ index + ". " + item.label.replace(/[0-9.]/g, "") }}
-						</span>
-						<span v-if="index === 0">（封面）</span>
+		<div
+			:class="{ displayDialog_content: true, show_displayDialog: displayDialog }"
+			:style="{ backgroundColor: moreCpmValue === 'section' ? 'white' : '#e9ec93' }"
+		>
+			<div class="dialog_content">
+				<div class="displayDialog_content_head">
+					<div class="displayDialog_content_head_return" @click.stop="() => changeCpmItem(false)">
+						<van-icon name="arrow-down" />
 					</div>
-				</template>
+					<div class="displayDialog_content_head_title">{{ dialogHeadTitle }}</div>
+				</div>
+				<div class="section_list" v-if="moreCpmValue === 'section'">
+					<template v-for="(item, index) in entireDirectory" :key="item.id">
+						<div
+							:class="{ directory_item: true, disabled: index === 0 }"
+							:style="{
+								paddingLeft: item.level * 0.7 + 'rem',
+								color: index + 1 === currentSection ? '#ff5b00' : '#212020'
+							}"
+							@click="() => directoryItemClick(index)"
+						>
+							<Audio_fluctuation v-if="index + 1 === currentSection && index !== 0" :isPause="pause" />
+							<span>
+								{{ index + ". " + item.label.replace(/[0-9.]/g, "") }}
+							</span>
+							<span v-if="index === 0">（封面）</span>
+						</div>
+					</template>
+				</div>
+				<div class="original_text_content" v-else-if="moreCpmValue === 'originalText'">
+					{{ sectionTextArr[currentSectionVoiceIndex - 1] }}
+				</div>
 			</div>
 		</div>
 	</div>
 	<div :class="{ pageIndexTips: true, displayPageIndexTips: pageIndexTips }">
 		由于讯飞平台一次性支持传入的字符有限，因此将一章中的内容分割为更多的小章节
 	</div>
+	<!--    播放器-->
+	<audio ref="audioRef" @loadedmetadata="handelVoiceLoadOver" @timeupdate="handelTimeUpdate" @ended="audioPlayEnd" />
+	<!--    书籍挂载节点，用于获取书籍详细信息-->
+	<div
+		id="virtualBook"
+		style="
+			 {
+				display: inline-block;
+				position: absolute;
+				top: 0;
+				left: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				z-index: 0;
+			}
+		"
+	></div>
 </template>
 
 <script setup lang="ts">
@@ -157,6 +169,8 @@ import { showToast } from "vant";
 import { formatTime } from "@/utils/common";
 import throttle from "@/utils/throttle";
 
+type moreCpmType = "section" | "originalText";
+
 const pageIndexTips = ref(false);
 const bookDetailStore = useBookDetail();
 const { bookData } = storeToRefs(bookDetailStore);
@@ -168,7 +182,7 @@ const currentSection = ref(2);
 const audioRef = ref<HTMLAudioElement>();
 const route = useRoute();
 const pause = ref(true);
-const displaySection = ref(false);
+const displayDialog = ref(false);
 const rendition = ref();
 const sectionText = ref<string>();
 const bookMetaData = ref();
@@ -181,13 +195,37 @@ const getTextOver = ref(false);
 const sectionTextArr = ref<string[]>([]);
 const currentSectionTotalVoiceNum = ref(0);
 const currentSectionVoiceIndex = ref(1);
+const moreCpmValue = ref<moreCpmType | undefined>();
+const playPercentage = ref(0);
 
+const changeCpmItem = (enter: boolean, name?: moreCpmType) => {
+	if (enter) {
+		moreCpmValue.value = name;
+		displayDialog.value = true;
+	} else {
+		moreCpmValue.value = undefined;
+		displayDialog.value = false;
+	}
+};
 const displayPageIndexTip = () => {
 	pageIndexTips.value = true;
 	setTimeout(() => {
 		pageIndexTips.value = false;
 	}, 2000);
 };
+const dialogHeadTitle = computed(() => {
+	switch (moreCpmValue.value) {
+		case "originalText": {
+			return `第${currentSection.value}章${currentSectionVoiceIndex.value}页`;
+		}
+		case "section": {
+			return `章节`;
+		}
+		default: {
+			return "";
+		}
+	}
+});
 const formatTotalTime = computed(() => {
 	return formatTime(totalTime.value);
 });
@@ -200,6 +238,7 @@ const handelVoiceLoadOver = () => {
 };
 const handelTimeUpdate = throttle(() => {
 	currentTime.value = Math.floor(audioRef.value?.currentTime!);
+	playPercentage.value = Math.floor((currentTime.value / totalTime.value) * 100);
 }, 500);
 const switchVoice = (isNext: boolean) => {
 	const newIndex = isNext ? currentSectionVoiceIndex.value + 1 : currentSectionVoiceIndex.value - 1;
@@ -247,7 +286,7 @@ const resetAudio = () => {
 };
 
 const directoryItemClick = (index: number) => {
-	displaySection.value = false;
+	displayDialog.value = false;
 	currentSection.value = index + 1;
 };
 // 将书挂载到页面上
@@ -284,7 +323,7 @@ const speak = (sectionIndex: number) => {
 			});
 			await rendition.value.next();
 		}
-		sectionText.value = `第 ${sectionIndex} 章` + sectionText.value;
+		sectionText.value = `第${sectionIndex}章 ` + sectionText.value;
 		getTextOver.value = true;
 	});
 };
@@ -535,7 +574,9 @@ watch([currentSectionVoiceIndex], () => {
 		z-index: 10;
 		margin-top: 2rem;
 		width: 100%;
-		.sections {
+		display: flex;
+		justify-content: space-around;
+		.moreCom_item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -547,8 +588,8 @@ watch([currentSectionVoiceIndex], () => {
 		}
 	}
 }
-.displaySection {
-	.displaySection_mark {
+.displayDialog {
+	.displayDialog_mark {
 		height: 100vh;
 		width: 100vw;
 		background-color: rgba(0, 0, 0, 0.5);
@@ -557,37 +598,39 @@ watch([currentSectionVoiceIndex], () => {
 		display: none;
 		bottom: 0;
 	}
-	.show_displaySection_mark {
+	.show_displayDialog_mark {
 		display: inline-block !important;
 	}
-	.displaySection_content {
+	.displayDialog_content {
 		position: absolute;
 		z-index: 16;
 		width: 100vw;
 		height: 87vh;
 		bottom: -100%;
 		box-sizing: border-box;
-		background-color: white;
 		border-top-left-radius: 15px;
 		border-top-right-radius: 15px;
 		transition: bottom $transition;
 		padding: $pagePadding;
-		.displaySection_content_head {
+		.displayDialog_content_head {
 			color: $themeColor;
 			display: flex;
-			.displaySection_content_head_return {
+			.displayDialog_content_head_return {
 				font-size: 1.3rem;
-				flex: 1;
 			}
-			.displaySection_content_head_title {
+			.displayDialog_content_head_title {
 				font-size: 1.1rem;
-				flex: 1;
+				position: relative;
+				left: calc(50% - #{$pagePadding});
+				transform: translateX(-50%);
 			}
+		}
+		.dialog_content {
+			overflow: scroll;
+			height: 100%;
 		}
 		.section_list {
 			margin-top: 2.857rem;
-			overflow: scroll;
-			height: calc(100% - 3rem);
 			.directory_item {
 				border-bottom: 1px solid #aba4a4;
 				padding: 1.071rem 0;
@@ -597,8 +640,13 @@ watch([currentSectionVoiceIndex], () => {
 				box-sizing: border-box;
 			}
 		}
+		.original_text_content {
+			margin-top: 1.5rem;
+			line-height: 40px;
+			word-spacing: 0.8rem;
+		}
 	}
-	.show_displaySection {
+	.show_displayDialog {
 		bottom: 0;
 	}
 }
