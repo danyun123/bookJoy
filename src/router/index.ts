@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+import { localCache } from "@/utils/cache";
 
 const router = createRouter({
 	history: createWebHashHistory(),
@@ -95,11 +96,21 @@ const router = createRouter({
 	]
 });
 
-// router.beforeEach((to) => {
-// 	const token = localCache.getCache("token");
-// 	if (to.path.startsWith("/home") && !token) {
-// 		return "/login";
-// 	}
-// 	if (to.path.startsWith("/login") && token) return false;
-// });
+router.beforeEach((to) => {
+	const token = localStorage.getItem("token");
+	if (token) {
+		// 解析 token 中的 payload 部分
+		const payload = JSON.parse(atob(token.split(".")[1]));
+		// 检查 token 是否过期
+		if (payload.exp * 1000 < Date.now()) {
+			localStorage.removeItem("token");
+		}
+	}
+	if (to.path.startsWith("/login") && !token) return true;
+	if (!token) return "/login";
+	if (to.path.startsWith("/home") && !token) {
+		return "/login";
+	}
+	if (to.path.startsWith("/login") && token) return false;
+});
 export default router;

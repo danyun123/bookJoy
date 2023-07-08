@@ -1,6 +1,7 @@
 {
   "name": "vue-project",
   "version": "0.0.0",
+  "description": "book_joy 前端",
   "private": true,
   "scripts": {
     "dev": "vite",

@@ -1,20 +1,27 @@
 import hyRequest from "..";
 
-export function accountLoginRequest(account: any) {
+interface accountType {
+	name: string;
+	password: string;
+}
+
+export function accountLoginRequest(account: accountType) {
 	return hyRequest.post({
 		url: "/login",
 		data: account
 	});
 }
-export function accountCreate(account: any) {
+
+export function accountRegisterRequest(account: accountType) {
 	return hyRequest.post({
-		url: "/users",
+		url: "/register",
 		data: account
 	});
 }
-export function passwordmodify(account: any) {
-	return hyRequest.patch({
-		url: "/users",
-		data: account
-	});
-}
+
+// export function passwordmodify(account: any) {
+// 	return hyRequest.patch({
+// 		url: "/users",
+// 		data: account
+// 	});
+// }

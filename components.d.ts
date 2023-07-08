@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Account_management: typeof import('./src/components/input_field/account_management/index.vue')['default']
     Book_detail: typeof import('./src/components/book_detail/index.vue')['default']
     Bookshelf_tabbar: typeof import('./src/components/bookshelf_tabbar/index.vue')['default']
     Brief_info: typeof import('./src/components/menuBar_directory_cpms/directory_detailed/detailed_cpms/brief_info/index.vue')['default']
@@ -23,17 +24,18 @@ declare module '@vue/runtime-core' {
     FontSize: typeof import('./src/components/book_dialog_list/fontSize/index.vue')['default']
     Home_classification: typeof import('./src/components/home_classification/index.vue')['default']
     Home_recommend_card: typeof import("./src/components/home_recommend_card/index.vue")["default"]
+    Input_field: typeof import('./src/components/input_field/index.vue')['default']
     Progress: typeof import('./src/components/book_dialog_list/progress/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ThemeColor: typeof import('./src/components/book_dialog_list/themeColor/index.vue')['default']
-    VanButton: typeof import("vant/es")["Button"]
+    VanButton: typeof import('vant/es')['Button']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanCollapse: typeof import('vant/es')['Collapse']
     VanCollapseItem: typeof import('vant/es')['CollapseItem']
     VanDialog: typeof import('vant/es')['Dialog']
     VanField: typeof import('vant/es')['Field']
-    VanForm: typeof import("vant/es")["Form"]
+    VanForm: typeof import('vant/es')['Form']
     VanIcon: typeof import('vant/es')['Icon']
     VanLoading: typeof import('vant/es')['Loading']
     VanNoticeBar: typeof import('vant/es')['NoticeBar']

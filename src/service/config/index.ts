@@ -1,2 +1,2 @@
-export const BASE_URL = "http://47.109.55.63:8000";
-export const TIME_OUT = 1000;
+export const BASE_URL = "http://124.71.33.153:8888";
+export const TIME_OUT = 5000;
