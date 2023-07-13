@@ -32,6 +32,7 @@ interface IProps {
 	data: any;
 	text: String;
 }
+
 const router = useRouter();
 const homeStore = useHome();
 const { fetchBookList } = homeStore;
@@ -61,21 +62,25 @@ const itemClick = (book: any) => {
 .root {
 	padding: 0 $pagePadding;
 	margin: 1.814rem 0;
+
 	:deep(.title) {
 		font-size: 1.25rem;
 	}
+
 	.list {
 		overflow: scroll;
 		margin-top: 0.714rem;
 		display: flex;
 		flex-wrap: nowrap;
 		@include hideScrollBar;
+
 		.item {
 			width: 33%;
 			flex-shrink: 0;
 			margin: 1.071rem 0.714rem 1.071rem 0;
 			display: flex;
 			flex-direction: column;
+
 			.info {
 				width: 70%;
 				height: 30%;
@@ -83,6 +88,7 @@ const itemClick = (book: any) => {
 				margin-left: 10px;
 				display: flex;
 				flex-direction: column;
+
 				.name {
 					width: 100%;
 					margin-bottom: 0.829rem;
@@ -91,15 +97,18 @@ const itemClick = (book: any) => {
 					@include displayMultiline();
 					margin-top: 0.429rem;
 				}
+
 				.author {
 					color: $themeGreyColor;
 					font-size: 1rem;
 					@include displayOneLine();
 				}
 			}
+
 			.cover {
 				width: 100%;
 				height: 70%;
+
 				img {
 					width: 100%;
 					height: 100%;

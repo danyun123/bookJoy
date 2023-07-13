@@ -40,7 +40,7 @@ const useHome = defineStore("home", {
 	actions: {
 		async fetchHomeData() {
 			const data = await getHomeData();
-			this.homeData = data.data;
+			this.homeData = data.data.data;
 		},
 		async fetchBookList() {
 			const data = await getBookList();

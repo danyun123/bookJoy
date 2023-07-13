@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import { localCache } from "@/utils/cache";
 
 const router = createRouter({
 	history: createWebHashHistory(),

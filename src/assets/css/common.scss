@@ -8,6 +8,8 @@ $pagePadding: 1.071rem;
 $themeGreyColor: #a19f9f;
 $boxShadow: 0 0 0.6rem 0.069rem #c9c9c9;
 $shakeAnimation: shake 0.5s ease-in-out infinite;
+$minHeight: 400px;
+$minWidth: 300px;
 @mixin bookBar {
   position: absolute;
   display: flex;
@@ -24,11 +26,11 @@ $shakeAnimation: shake 0.5s ease-in-out infinite;
 }
 
 @mixin bookFontSizeAnimation {
-  transition: left $transition,transform $transition,visibility $transition,opacity $transition ;
+  transition: left $transition, transform $transition, visibility $transition, opacity $transition;
 }
 
 @mixin bookFontProgressAnimation {
-  transition: opacity $transition,scale $transition,visibility $transition;
+  transition: opacity $transition, scale $transition, visibility $transition;
 }
 
 @mixin clickActiveAnimation {
@@ -52,6 +54,7 @@ $shakeAnimation: shake 0.5s ease-in-out infinite;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 @mixin displayMultiline($lines: 2) {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -92,10 +95,11 @@ $shakeAnimation: shake 0.5s ease-in-out infinite;
 }
 
 @mixin textDisplayInit {
-  opacity: 0 ;
-  visibility: hidden ;
+  opacity: 0;
+  visibility: hidden;
   @include bookFontProgressAnimation
 }
+
 @mixin textDisplayOver {
   opacity: 1;
   visibility: visible;

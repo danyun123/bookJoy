@@ -14,7 +14,7 @@
 		<Home_recommend :data="homeData.recommend" />
 		<Home_featured :data="homeData.featured" />
 		<template v-for="(item, index) in homeData.categoryList" :key="index">
-			<Home_classification :data="item.list" :text="item.categoryText" />
+			<Home_classification :data="item.list.slice(0, 8)" :text="item.categoryClass" />
 		</template>
 		<Home_slot :data="homeData.categories" />
 	</div>
@@ -81,13 +81,16 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 @import "../../assets/css/common";
+
 .home {
 	width: 100%;
 	height: 100vh;
 	background-color: #f4f4f4;
 	overflow: scroll;
+
 	.rcmdCard {
 		visibility: hidden;
+
 		:deep(.recommend_card_content) {
 			transition: opacity $transition, transform $transition;
 			opacity: 0;
@@ -95,8 +98,10 @@ onUnmounted(() => {
 			transform-origin: center;
 		}
 	}
+
 	.showCard {
 		visibility: visible;
+
 		:deep(.recommend_card_content) {
 			opacity: 1;
 			transform: scale(1);

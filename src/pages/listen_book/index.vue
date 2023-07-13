@@ -393,6 +393,7 @@ const parseBook = (opf?: string | null, local_blob?: Blob) => {
 
 const fetchBookData = () => {
 	bookName.value = route.path.split("/")[2];
+	//@ts-ignore
 	bookDetailStore.fetchBookData(bookName.value);
 };
 
@@ -454,6 +455,7 @@ watch([currentSectionVoiceIndex], () => {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	position: relative;
+
 	.cover {
 		position: relative;
 		width: 16.429rem;
@@ -463,6 +465,7 @@ watch([currentSectionVoiceIndex], () => {
 		overflow: hidden;
 		z-index: 9;
 		box-shadow: 0 6px 9px -1px black;
+
 		.mask {
 			position: absolute;
 			bottom: 0;
@@ -476,14 +479,17 @@ watch([currentSectionVoiceIndex], () => {
 			flex-direction: column;
 			justify-content: center;
 			padding: 0 0 0 1.229rem;
+
 			.section {
 				z-index: 10;
 				width: 100%;
+
 				.scroll_text {
 					font-size: 1.1rem;
 					margin-left: -1.229rem;
 				}
 			}
+
 			.description {
 				z-index: 10;
 				margin-top: 0.514rem;
@@ -493,13 +499,16 @@ watch([currentSectionVoiceIndex], () => {
 			}
 		}
 	}
+
 	.audio {
 		width: 100%;
 		margin-top: 10vh;
 		position: relative;
+
 		.audio_item {
 			@include clickActiveAnimation;
 		}
+
 		.progress {
 			input[type="range"] {
 				position: absolute;
@@ -509,6 +518,7 @@ watch([currentSectionVoiceIndex], () => {
 				height: 0.714rem;
 				border-radius: 0.357rem;
 			}
+
 			.time {
 				width: 85%;
 				display: flex;
@@ -517,11 +527,13 @@ watch([currentSectionVoiceIndex], () => {
 				position: relative;
 				left: 50%;
 				transform: translateX(-50%);
+
 				.pageNum {
 					font-size: 0.9rem;
 				}
 			}
 		}
+
 		.controller {
 			position: relative;
 			display: flex;
@@ -530,35 +542,43 @@ watch([currentSectionVoiceIndex], () => {
 			margin-top: 3.5rem;
 			font-size: 1.4rem;
 			width: 100%;
+
 			.speed {
 				width: auto;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				justify-content: center;
+
 				span {
 					font-size: 1rem !important;
 				}
 			}
+
 			.speed_retreat,
 			.speed_advance {
 				span {
 					font-size: 1.2rem;
 				}
 			}
+
 			.play_controls {
 				display: flex;
 				align-items: center;
 				color: #1a1919;
+
 				.icon-forward-reverse {
 					text-align: center;
 				}
+
 				.icon::before {
 					font-size: 3.5rem !important;
 				}
+
 				.icon-duomeitikongjianMultimediaControls7,
 				.icon-duomeitikongjianMultimediaControls6 {
 					margin: 0 20px;
+
 					&::before {
 						font-size: 4.5rem !important;
 					}
@@ -566,9 +586,11 @@ watch([currentSectionVoiceIndex], () => {
 			}
 		}
 	}
+
 	.audioDisabled {
 		@include disabledStyle;
 	}
+
 	.moreCpm {
 		position: relative;
 		z-index: 10;
@@ -576,11 +598,13 @@ watch([currentSectionVoiceIndex], () => {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
+
 		.moreCom_item {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: space-around;
+
 			.icon {
 				font-weight: 600;
 				font-size: 1.5rem;
@@ -588,6 +612,7 @@ watch([currentSectionVoiceIndex], () => {
 		}
 	}
 }
+
 .displayDialog {
 	.displayDialog_mark {
 		height: 100vh;
@@ -598,9 +623,11 @@ watch([currentSectionVoiceIndex], () => {
 		display: none;
 		bottom: 0;
 	}
+
 	.show_displayDialog_mark {
 		display: inline-block !important;
 	}
+
 	.displayDialog_content {
 		position: absolute;
 		z-index: 16;
@@ -612,12 +639,15 @@ watch([currentSectionVoiceIndex], () => {
 		border-top-right-radius: 15px;
 		transition: bottom $transition;
 		padding: $pagePadding;
+
 		.displayDialog_content_head {
 			color: $themeColor;
 			display: flex;
+
 			.displayDialog_content_head_return {
 				font-size: 1.3rem;
 			}
+
 			.displayDialog_content_head_title {
 				font-size: 1.1rem;
 				position: relative;
@@ -625,12 +655,15 @@ watch([currentSectionVoiceIndex], () => {
 				transform: translateX(-50%);
 			}
 		}
+
 		.dialog_content {
 			overflow: scroll;
 			height: 100%;
 		}
+
 		.section_list {
 			margin-top: 2.857rem;
+
 			.directory_item {
 				border-bottom: 1px solid #aba4a4;
 				padding: 1.071rem 0;
@@ -640,19 +673,23 @@ watch([currentSectionVoiceIndex], () => {
 				box-sizing: border-box;
 			}
 		}
+
 		.original_text_content {
 			margin-top: 1.5rem;
 			line-height: 40px;
 			word-spacing: 0.8rem;
 		}
 	}
+
 	.show_displayDialog {
 		bottom: 0;
 	}
 }
+
 .disabled {
 	@include disabledStyle;
 }
+
 .pageIndexTips {
 	position: fixed;
 	bottom: 30%;
@@ -666,6 +703,7 @@ watch([currentSectionVoiceIndex], () => {
 	letter-spacing: 1.5px;
 	transition: left $transition, transform $transition;
 }
+
 .displayPageIndexTips {
 	left: 50%;
 	transform: translateX(-50%);

@@ -54,9 +54,15 @@
 			</van-loading>
 		</div>
 		<div class="btn">
-			<div class="readBook btn_item" @click="readClick"><van-icon name="graphic" />立即阅读</div>
+			<div class="readBook btn_item" @click="readClick">
+				<van-icon name="graphic" />
+				立即阅读
+			</div>
 			<span class="dividing_line"></span>
-			<div class="listenBook btn_item" @click="listenBook"><van-icon name="service-o" />听书</div>
+			<div class="listenBook btn_item" @click="listenBook">
+				<van-icon name="service-o" />
+				听书
+			</div>
 			<span class="dividing_line"></span>
 			<div :class="{ addBook: true, isadded: isAdded, btn_item: true }" @click="addBook">
 				<span v-if="isAdded">
@@ -191,16 +197,19 @@ onDeactivated(() => {
 
 <style scoped lang="scss">
 @import "../../assets/css/common";
+
 .detail {
 	padding: 0.714rem $pagePadding;
 	height: calc(100vh - 5.6rem);
 	overflow-y: scroll;
+
 	.return {
 		display: inline-block;
 		margin-left: -0.414rem;
 		font-size: 1.2rem;
 		color: $themeColor;
 	}
+
 	.head {
 		display: flex;
 		width: 100%;
@@ -209,32 +218,39 @@ onDeactivated(() => {
 		margin: 0 -#{$pagePadding};
 		margin-top: 1.143rem;
 		position: relative;
+
 		.cover {
 			width: 40%;
+
 			img {
 				width: 100%;
 				height: 100%;
 				object-fit: contain;
 			}
 		}
+
 		.text {
 			width: 60%;
 			margin-left: 0.714rem;
+
 			.name {
 				font-size: 2rem;
 				width: 100%;
 				word-wrap: break-word;
 			}
+
 			.author {
 				color: #4b98ff;
 				margin: 0.557rem 0;
 				font-size: 1.2rem;
 			}
+
 			.description {
 				margin-top: 20px;
 				font-size: 1.2rem;
 			}
 		}
+
 		.downloadTip {
 			position: absolute;
 			right: 0;
@@ -246,37 +262,45 @@ onDeactivated(() => {
 			box-shadow: 0 3px 6px 1px #696666;
 		}
 	}
+
 	.copyright {
 		margin-top: 2.857rem;
 		border-bottom: 1px solid #cccaca;
+
 		.title_v1 {
 			width: 100%;
 			font-size: 2rem;
 			margin-bottom: 20px;
 			font-weight: 600;
 		}
+
 		.clo {
 			margin: 15px 0;
 			display: flex;
 			align-items: center;
 			color: $themeGreyColor;
+
 			.title {
 				font-size: 1.3rem;
 				width: 35%;
 			}
+
 			.title_info {
 				width: 65%;
 				font-size: 1.1rem;
 			}
 		}
 	}
+
 	.directory {
 		margin-top: 1.429rem;
+
 		.directory_title {
 			font-size: 2rem;
 			font-weight: 600;
 			margin-bottom: 1.429rem;
 		}
+
 		.directory_item {
 			font-size: 1.1rem;
 			margin: 0.714rem 0;
@@ -285,6 +309,7 @@ onDeactivated(() => {
 			color: #5d5d5d;
 		}
 	}
+
 	.btn {
 		position: fixed;
 		bottom: 0;
@@ -299,29 +324,36 @@ onDeactivated(() => {
 		text-align: center;
 		background-color: #72bbf8;
 		width: 100%;
+
 		.btn_item {
 			@include clickActiveAnimation;
 			flex: 1;
+
 			.van-icon {
 				margin-right: 0.357rem;
 			}
 		}
+
 		.listenBook {
 			.van-icon {
 				color: #0032ff;
 			}
 		}
+
 		.readBook {
 			box-sizing: border-box;
+
 			.van-icon {
 				color: #22201a;
 			}
 		}
+
 		.dividing_line {
 			width: 0.101rem;
 			height: 1.8rem;
 			background-color: #8a8383;
 		}
+
 		.isadded {
 			.icon {
 				color: rgb(255, 215, 0);

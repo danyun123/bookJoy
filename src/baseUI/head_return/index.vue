@@ -19,5 +19,6 @@ const router = useRouter();
 	margin-left: -0.414rem;
 	font-size: 1.2rem;
 	color: $themeColor;
+	min-width: $minWidth;
 }
 </style>

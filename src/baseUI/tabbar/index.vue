@@ -2,7 +2,8 @@
 	<div class="tabbar" :style="{ display: isEditing ? 'none' : 'block' }" v-if="!refresh">
 		<div class="list">
 			<div :class="{ home: true, item: true, isActive: currentPage === 'home' }" @click="() => itemClick('home')">
-				<van-icon name="wap-home-o" /><span>首页</span>
+				<van-icon name="wap-home-o" />
+				<span>首页</span>
 			</div>
 			<div
 				:class="{ bookshelf: true, item: true, isActive: currentPage === 'bookshelf' }"
@@ -12,7 +13,8 @@
 				<span>书架</span>
 			</div>
 			<div :class="{ own: true, item: true, isActive: currentPage === 'own' }" @click="() => itemClick('own')">
-				<van-icon name="manager-o" /><span>我的</span>
+				<van-icon name="manager-o" />
+				<span>我的</span>
 			</div>
 		</div>
 	</div>
@@ -43,6 +45,7 @@ watchEffect(() => {
 
 <style scoped lang="scss">
 @import "../../assets/css/common";
+
 .list {
 	position: fixed;
 	bottom: -1px;
@@ -55,6 +58,8 @@ watchEffect(() => {
 	display: flex;
 	justify-content: space-around;
 	color: $themeColor;
+	min-width: $minWidth;
+
 	.item {
 		padding: 0.21rem;
 		display: flex;
@@ -64,10 +69,12 @@ watchEffect(() => {
 		height: 2.857rem;
 		box-sizing: border-box;
 		transition: all $transition;
+
 		& > span {
 			margin-top: 0.357rem;
 		}
 	}
+
 	.isActive {
 		background-color: #52f6ee;
 		border-radius: 50%;

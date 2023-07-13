@@ -10,8 +10,8 @@ Mock.setup({
 });
 
 Mock.mock(/\/book\/home/, "get", BookHomeApi);
-Mock.mock(/\/book\/shelf/, "get", BookShelfApi);
 Mock.mock(/\/book\/list/, "get", BookHomeList);
+Mock.mock(/\/book\/shelf/, "get", BookShelfApi);
 Mock.mock(/\/book\/flat-list/, "get", BookFlatList);
 Mock.mock(/\/book\/category/, "get", BookCategoryList);
 

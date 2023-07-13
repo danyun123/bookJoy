@@ -140,4 +140,9 @@ onDeactivated(() => {
 	opacity: 1;
 	visibility: visible;
 }
+
+:deep(.van-icon-clear) {
+	position: absolute;
+	right: -5px;
+}
 </style>

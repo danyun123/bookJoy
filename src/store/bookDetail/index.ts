@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import { getBookDetail } from "@/service/listenBook";
+import { getBookDetail } from "@/service/bookDetail";
 
-const useBookDetail = defineStore("listenBook", {
+const useBookDetail = defineStore("bookDetail", {
 	state: () => ({
 		bookData: null as any
 	}),

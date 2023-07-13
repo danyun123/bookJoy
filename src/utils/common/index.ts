@@ -126,6 +126,8 @@ export const getCHNameByEn = (En: string) => {
 			return "心理学";
 		case "Statistics":
 			return "统计数据学";
+		default:
+			return En;
 	}
 };
 

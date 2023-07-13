@@ -1,10 +1,9 @@
 import axios from "axios";
-import "@/mock/index.js";
 
 export function getHomeData() {
-	return axios.get(`${import.meta.env.VITE_MOCKJS_SERVICE_URL}/book/home`);
+	return axios.get(`${import.meta.env.VITE_BOOKS_BASE_URL}/book/home`);
 }
 
 export function getBookList() {
-	return axios.get(`${import.meta.env.VITE_MOCKJS_SERVICE_URL}/book/list`);
+	return axios.get(`${import.meta.env.VITE_BOOKS_BASE_URL}/book/list`);
 }

@@ -1,3 +1,5 @@
+@import "./common";
+
 :root:root {
   --van-popup-background: rgba(97, 177, 245, 0.9);
   --van-collapse-item-content-background: rgba(226, 226, 226, 0.8);
@@ -36,6 +38,15 @@ body {
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
   -webkit-tap-highlight-color: transparent;
+  background-color: #F5F7FA;
+  min-height: $minHeight;
+  min-width: $minWidth;
+}
+
+@media screen and (max-width: 299px) {
+  body {
+    overflow-x: scroll;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -50,17 +61,24 @@ body {
   }
 }
 
-@media screen and (min-width: 699px) and (max-width: 912px) {
+@media screen and (min-width: 699px) and (max-width: 856px) {
   html {
     font-size: 18px;
   }
 }
 
-@media screen and (min-width: 912px) {
+@media screen and (min-width: 856px) and (max-width: 1056px) {
+  html {
+    font-size: 21px;
+  }
+}
+
+@media screen and (min-width: 1056px) {
   html {
     font-size: 25px;
   }
 }
+
 
 #app {
   width: 100%;
