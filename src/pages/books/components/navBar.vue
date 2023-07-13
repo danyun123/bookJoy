@@ -11,18 +11,16 @@
 				@click="bookmarkClick"
 			>
 				<van-loading size="24px" vertical class="bookmarkLoading" color="#f100ff" v-if="!directoryLoadOver"
-					>加载中...</van-loading
-				>
+					>加载中...
+				</van-loading>
 				<van-icon name="bookmark-o fun_item" class="bookmarkIcon" />
 			</div>
-			<div class="bookshelf fun_item" title="书架">
-				<van-icon name="home-o" />
-			</div>
-			<div class="shoppingCar fun_item" title="购物车">
-				<van-icon name="shopping-cart-o" />
-			</div>
-			<div class="more fun_item" title="更多">
-				<van-icon name="descending" />
+			<div
+				:class="{ bookshelf: true, fun_item: true, addBookShelfed: isAdded }"
+				title="书架"
+				@click="addBookShelfClick"
+			>
+				<van-icon name="star" />
 			</div>
 		</div>
 	</div>
@@ -37,12 +35,33 @@ import { getCurrentPageCFI } from "@/utils/bookContent";
 import type { Book } from "epubjs";
 import throttle from "@/utils/throttle";
 import dayjs from "dayjs";
-import { ALLBOOKMARK } from "@/assets/constant";
+import { ALLBOOKMARK, ALLBOOKSHELFNAME, BOOKSHELF } from "@/assets/constant";
+import { onBeforeMount, ref } from "vue";
+import { useRoute } from "vue-router/dist/vue-router";
+import useHome from "@/store/home";
 
 const booksStore = useBooks();
+const isAdded = ref(false);
 const { showBar, bookPrototype, allBookmarks, directoryLoadOver, currentSection, entireFlatDirectory } =
 	storeToRefs(booksStore);
 const router = useRouter();
+const route = useRoute();
+const bookClass = ref(route.path.split("/")[2]);
+const bookName = ref(route.path.split("/")[3].slice(0, -5));
+const bookData = ref();
+const homeStore = useHome();
+const { fetchBookList } = homeStore;
+const { bookList } = storeToRefs(homeStore);
+
+onBeforeMount(async () => {
+	await fetchBookList();
+	bookList.value.data[bookClass.value].forEach((item: any) => {
+		if (item.fileName === bookName.value) {
+			bookData.value = item;
+			return;
+		}
+	});
+});
 const returnClick = () => {
 	router.back();
 };
@@ -74,6 +93,32 @@ const bookmarkClick = throttle(async () => {
 	//@ts-ignore
 	localStorage.setItem(ALLBOOKMARK + bookPrototype.value.cover, JSON.stringify(newBookmarks));
 }, 666);
+const addBookShelfClick = () => {
+	const books = JSON.parse(localStorage.getItem(BOOKSHELF) ?? "[]");
+	const names = JSON.parse(localStorage.getItem(ALLBOOKSHELFNAME) ?? "[]");
+	if (isAdded.value) {
+		names.splice(
+			names.findIndex((item: string) => item === bookName.value),
+			1
+		);
+		books.forEach((item: any) => {
+			let index;
+			if (item.type === "group") {
+				index = item.bookList.findIndex((book: any) => book.fileName === bookName.value);
+				if (index !== -1) item.bookList.splice(index, 1);
+			} else {
+				index = books.findIndex((item: any) => item.fileName === bookName.value);
+				if (index !== -1) books.splice(index, 1);
+			}
+		});
+		localStorage.setItem(ALLBOOKSHELFNAME, JSON.stringify(names));
+		localStorage.setItem(BOOKSHELF, JSON.stringify(books));
+	} else {
+		localStorage.setItem(ALLBOOKSHELFNAME, JSON.stringify([bookName.value, ...names]));
+		localStorage.setItem(BOOKSHELF, JSON.stringify([bookData.value, ...books]));
+	}
+	isAdded.value = !isAdded.value;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -84,6 +129,7 @@ const bookmarkClick = throttle(async () => {
 	top: 0;
 	border-radius: 0 0 $raduisWidth $raduisWidth;
 	z-index: 9;
+
 	.back {
 		color: $themeColor;
 		margin-left: 0.5rem;
@@ -92,9 +138,11 @@ const bookmarkClick = throttle(async () => {
 		justify-content: center;
 		line-height: 1.6rem;
 	}
+
 	.function {
 		display: flex;
 		justify-content: space-around;
+
 		.fun_item {
 			display: flex;
 			justify-content: center;
@@ -104,17 +152,32 @@ const bookmarkClick = throttle(async () => {
 			width: 3.8rem;
 			height: $barHeight;
 			@include clickActiveAnimation;
+
 			.van-icon {
 				line-height: $barHeight;
 			}
+
+			.van-icon-star {
+				color: black;
+			}
 		}
+
+		.addBookShelfed {
+			.van-icon-star {
+				color: #d5d100 !important;
+			}
+		}
+
 		.disabledBkmk {
 			@include disabledStyle;
 		}
+
 		.bookmark {
 			position: relative;
+
 			:deep(.bookmarkLoading) {
 				position: absolute !important;
+
 				.van-loading__text {
 					white-space: nowrap;
 					margin-left: 0.929rem;
