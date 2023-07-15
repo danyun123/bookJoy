@@ -70,7 +70,7 @@ const beforeRead = async (file: File) => {
 	const result = await ownStore.fetchEditUserImg(formData);
 	showToast({
 		message: `上传完毕`,
-		duration: 0,
+		duration: 1500,
 		closeOnClick: true,
 		position: "top"
 	});
