@@ -7,9 +7,10 @@
 
 <script setup lang="ts">
 interface IProps {
-	title: string;
+	title: any;
 	right?: string;
 }
+
 const props = defineProps<IProps>();
 const emit = defineEmits(["rightSizeClick"]);
 const rightClick = () => {
@@ -19,6 +20,7 @@ const rightClick = () => {
 
 <style scoped lang="scss">
 @import "../../assets/css/common";
+
 .head {
 	display: flex;
 	justify-content: space-between;
@@ -26,6 +28,7 @@ const rightClick = () => {
 	flex-wrap: wrap;
 	font-size: 1rem;
 	font-weight: 600;
+
 	.right {
 		color: $themeColor2;
 		transform: translateY(15%);

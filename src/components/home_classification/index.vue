@@ -30,7 +30,7 @@ import { useRouter } from "vue-router";
 
 interface IProps {
 	data: any;
-	text: String;
+	text: string;
 }
 
 const router = useRouter();

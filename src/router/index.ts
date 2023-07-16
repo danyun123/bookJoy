@@ -98,13 +98,27 @@ const router = createRouter({
 router.beforeEach((to) => {
 	const token = localStorage.getItem("token");
 	if (token) {
-		// 解析 token 中的 payload 部分
-		const payload = JSON.parse(atob(token.split(".")[1]));
-		// 检查 token 是否过期
-		if (payload.exp * 1000 < Date.now()) {
-			localStorage.removeItem("token");
+		// 检查 token 是否存在并且是否有效
+		const parts = token.split(".");
+		if (parts.length >= 2) {
+			// 检查 base64 编码的字符串是否正确
+			const payloadEncoded = parts[1];
+			if (payloadEncoded.length % 4 === 0 && /^[\w+/=]+$/.test(payloadEncoded)) {
+				// 解析 token 中的 payload 部分
+				const payload = JSON.parse(atob(payloadEncoded));
+				// 检查 token 是否过期
+				if (payload.exp * 1000 < Date.now()) {
+					localStorage.removeItem("token");
+				}
+			} else {
+				// console.error("Invalid token: not a valid base64 string");
+			}
+		} else {
+			console.error("Invalid token: not enough parts");
 		}
 	}
+
+	// 下面的逻辑没有改变...
 	if (to.path.startsWith("/login") && !token) return true;
 	if (!token) return "/login";
 	if (to.path.startsWith("/home") && !token) {

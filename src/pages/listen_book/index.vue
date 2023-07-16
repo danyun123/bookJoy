@@ -216,7 +216,7 @@ const displayPageIndexTip = () => {
 const dialogHeadTitle = computed(() => {
 	switch (moreCpmValue.value) {
 		case "originalText": {
-			return `第${currentSection.value}章${currentSectionVoiceIndex.value}页`;
+			return `第${currentSection.value - 1}章${currentSectionVoiceIndex.value}页`;
 		}
 		case "section": {
 			return `章节`;

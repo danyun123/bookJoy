@@ -122,6 +122,7 @@ const itemClick = (book: any) => {
 					color: #fc4242;
 					bottom: 0;
 					right: 0;
+					background-color: #f5f7fa;
 				}
 			}
 

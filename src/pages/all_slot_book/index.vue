@@ -15,7 +15,8 @@
 						:class="{
 							menu_item: true,
 							active_menu_item: currentMenu === item,
-							disabled_menu_item: !selectableMenuList.includes(item) && item !== '全部'
+							disabled_menu_item:
+								route.params.name === 'home_search' && !selectableMenuList.includes(item) && item !== '全部'
 						}"
 						@click="() => menuItemClick(item)"
 					>

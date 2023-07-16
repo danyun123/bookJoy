@@ -52,7 +52,7 @@ const homeScroll = throttle((e: Event) => {
 		throttleTime.value = 0;
 		return;
 	}
-	throttleTime.value = 666;
+	throttleTime.value = 333;
 }, throttleTime.value);
 const setHomeScrollTop = () => {
 	homeRef.value!.scrollTop = parseInt(localStorage.getItem(HOMESCROLLTOP) ?? "0") ?? 0;

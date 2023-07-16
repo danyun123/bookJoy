@@ -9,7 +9,7 @@
 				:class="{ bookshelf: true, item: true, isActive: currentPage === 'bookshelf' }"
 				@click="() => itemClick('bookshelf')"
 			>
-				<van-icon name="https://s1.ax1x.com/2023/05/29/p9XM5i4.png" />
+				<van-icon class="iconfont" class-prefix="icon" name="shujia" />
 				<span>书架</span>
 			</div>
 			<div :class="{ own: true, item: true, isActive: currentPage === 'own' }" @click="() => itemClick('own')">

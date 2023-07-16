@@ -108,9 +108,11 @@ watch(
 
 <style scoped lang="scss">
 @import "../../../../assets/css/common";
+
 .download {
 	.download_content {
 		height: 100%;
+
 		#VUE_transition {
 			display: flex;
 			flex-wrap: wrap;
@@ -120,25 +122,31 @@ watch(
 			overflow-x: hidden;
 			height: 100%;
 			@include hideScrollBar;
+
 			.list-move {
 				transition: transform 0.5s;
 			}
+
 			.list-leave-active {
 				display: none;
 			}
+
 			.downloading {
 				@include disabledStyle;
 			}
+
 			.books {
 				height: auto;
 				margin: 0.371rem 0;
 				width: calc(33% - 0.57733333rem);
 				position: relative;
+
 				.mark {
 					position: absolute;
 					width: 100%;
 					height: calc(100% - 2.714rem);
 					background-color: rgba(0, 0, 0, 0.4);
+
 					.progress {
 						position: absolute;
 						top: 40%;
@@ -149,27 +157,33 @@ watch(
 						white-space: nowrap;
 					}
 				}
+
 				.commonItem {
 					width: 100%;
 					height: auto;
+
 					.cover {
 						width: 100%;
 						height: auto;
 						margin-bottom: 0.314rem;
 						@include bookFartherStyle;
+
 						img {
 							@include bookStyle;
 						}
 					}
+
 					.author {
 						@include displayMultiline();
 						height: 2.4rem;
 						text-align: center;
 					}
+
 					.selectBtn {
 						position: absolute;
 						bottom: 2.186rem;
 						right: -0.207rem;
+
 						:deep(.van-badge__wrapper) {
 							transition: color $transition, background-color $transition;
 							padding: 0.214rem;
@@ -178,6 +192,7 @@ watch(
 							border-radius: 50%;
 						}
 					}
+
 					.selected {
 						:deep(.van-badge__wrapper) {
 							color: #e5f802;
@@ -186,10 +201,12 @@ watch(
 					}
 				}
 			}
+
 			.books:not(:nth-child(3n)) {
 				margin-right: 0.871rem;
 			}
 		}
+
 		.downloadNoone {
 			@include remindInfo;
 			left: calc(50% + 50vw - #{$pagePadding});

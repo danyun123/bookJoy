@@ -23,7 +23,6 @@ declare module '@vue/runtime-core' {
     FontFamily: typeof import('./src/components/book_dialog_list/fontFamily/index.vue')['default']
     FontSize: typeof import('./src/components/book_dialog_list/fontSize/index.vue')['default']
     Home_classification: typeof import('./src/components/home_classification/index.vue')['default']
-    Home_recommend_card: typeof import("./src/components/home_recommend_card/index.vue")["default"]
     Input_field: typeof import('./src/components/input_field/index.vue')['default']
     Progress: typeof import('./src/components/book_dialog_list/progress/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -41,10 +40,8 @@ declare module '@vue/runtime-core' {
     VanNoticeBar: typeof import('vant/es')['NoticeBar']
     VanPicker: typeof import('vant/es')['Picker']
     VanPopup: typeof import('vant/es')['Popup']
-    VanPullRefresh: typeof import("vant/es")["PullRefresh"]
     VanSearch: typeof import('vant/es')['Search']
     VanSlider: typeof import('vant/es')['Slider']
     VanUploader: typeof import('vant/es')['Uploader']
-    VanWatermark: typeof import("vant/es")["Watermark"]
   }
 }

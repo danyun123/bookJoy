@@ -418,14 +418,17 @@ watchEffect(() => {
 .textInit {
 	@include textDisplayInit;
 }
+
 .textDisplay {
 	@include textDisplayOver;
 }
+
 .bookshelf {
 	padding: 0 $pagePadding;
 	height: 100vh;
 	width: auto;
 	overflow-x: visible;
+
 	.head {
 		width: calc(100%);
 		position: fixed;
@@ -435,6 +438,7 @@ watchEffect(() => {
 		margin-left: -$pagePadding;
 		z-index: 2;
 		background: linear-gradient(to right, #efbec3, #e7e7e7);
+
 		.title {
 			position: absolute;
 			left: 50%;
@@ -442,11 +446,13 @@ watchEffect(() => {
 			font-size: 1.2rem;
 			display: flex;
 			align-items: center;
+
 			.isSelected {
 				border-bottom: 0.221rem solid #25d9d3;
 				border-radius: 2px;
 				color: black !important;
 			}
+
 			.shelf {
 				display: inline-block;
 				padding: 0 0.257rem 0.25rem 0.257rem;
@@ -455,6 +461,7 @@ watchEffect(() => {
 				color: #6e6a6a;
 				box-sizing: border-box;
 			}
+
 			.load {
 				display: inline-block;
 				padding: 0 0.275rem 0.25rem 0.257rem;
@@ -464,12 +471,14 @@ watchEffect(() => {
 				box-sizing: border-box;
 			}
 		}
+
 		.selectAll {
 			position: absolute;
 			left: $pagePadding;
 			color: $themeColor;
 			@include clickActiveAnimation;
 		}
+
 		.edit {
 			position: absolute;
 			right: $pagePadding;
@@ -478,6 +487,7 @@ watchEffect(() => {
 			@include clickActiveAnimation;
 		}
 	}
+
 	.allPageBox {
 		width: calc(2 * 100vw);
 		display: flex;
@@ -486,10 +496,12 @@ watchEffect(() => {
 		height: calc(100% - 6.8rem);
 		margin-top: 3.514rem;
 		overflow-x: visible;
+
 		.content {
 			height: 100%;
 			width: calc(100vw - 2 * #{$pagePadding});
 			overflow-x: visible;
+
 			#VUE_transition {
 				display: flex;
 				flex-wrap: wrap;
@@ -499,41 +511,50 @@ watchEffect(() => {
 				overflow-x: hidden;
 				height: 100%;
 				@include hideScrollBar;
+
 				.list-move {
 					transition: transform 0.5s;
 				}
+
 				.list-leave-active {
 					display: none;
 				}
+
 				.books {
 					height: auto;
 					margin: 0.371rem 0;
 					width: calc(33% - 0.57733333rem);
 					position: relative;
+
 					.item {
 						width: 100%;
 						height: auto;
 					}
+
 					.commonItem {
 						.cover {
 							width: 100%;
 							height: auto;
 							margin-bottom: 0.314rem;
 							@include bookFartherStyle;
+
 							img {
 								@include bookStyle;
 							}
 						}
+
 						.author {
 							@include displayMultiline();
 							height: 2.4rem;
 							text-align: center;
 						}
+
 						.selectBtn {
 							position: absolute;
 							z-index: 11;
 							bottom: 2.186rem;
 							right: -0.207rem;
+
 							:deep(.van-badge__wrapper) {
 								transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
 								padding: 0.214rem;
@@ -542,6 +563,7 @@ watchEffect(() => {
 								border-radius: 50%;
 							}
 						}
+
 						.selected {
 							:deep(.van-badge__wrapper) {
 								color: #e5f802;
@@ -549,6 +571,7 @@ watchEffect(() => {
 							}
 						}
 					}
+
 					.groupItem {
 						:deep(.van-badge__wrapper) {
 							transition: color $transition, background-color $transition;
@@ -557,10 +580,12 @@ watchEffect(() => {
 							background-color: rgba(0, 0, 0, 0.7);
 							border-radius: 50%;
 						}
+
 						.selectBtn {
 							position: absolute;
 							bottom: 2.186rem;
 							right: -0.207rem;
+
 							:deep(.van-badge__wrapper) {
 								transition: color $transition, background-color $transition;
 								padding: 0.214rem;
@@ -569,6 +594,7 @@ watchEffect(() => {
 								border-radius: 50%;
 							}
 						}
+
 						.selected {
 							:deep(.van-badge__wrapper) {
 								color: #e5f802;
@@ -577,20 +603,24 @@ watchEffect(() => {
 						}
 					}
 				}
+
 				.books:not(:nth-child(3n)) {
 					margin-right: 0.871rem;
 				}
 			}
+
 			.remind {
 				@include remindInfo;
 				right: calc(-38%);
 			}
 		}
+
 		.download {
 			width: calc(100vw - 2 * #{$pagePadding});
 			margin-left: calc(2 * #{$pagePadding});
 		}
 	}
+
 	.pageIsDownload {
 		transform: translateX(-100vw);
 	}
